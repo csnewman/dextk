@@ -10,6 +10,7 @@ import (
 var (
 	ErrInvalidHeader   = errors.New("invalid header")
 	ErrInvalidStringID = errors.New("invalid string id")
+	ErrInvalidTypeID   = errors.New("invalid type id")
 )
 
 const (
@@ -22,11 +23,11 @@ type Reader struct {
 	Version       string
 	ReverseEndian bool
 
-	mapOff      uint32
-	StringMaxID uint32
-	stringIDOff uint32
-	typeIDCount uint32
-	typeIDOff   uint32
+	mapOff        uint32
+	StringIDCount uint32
+	stringIDOff   uint32
+	TypeIDCount   uint32
+	typeIDOff     uint32
 }
 
 func Open(path string) (*Reader, error) {
@@ -71,9 +72,9 @@ func Open(path string) (*Reader, error) {
 	}
 
 	r.mapOff = r.toUint(header[52:56])
-	r.StringMaxID = r.toUint(header[56:60])
+	r.StringIDCount = r.toUint(header[56:60])
 	r.stringIDOff = r.toUint(header[60:64])
-	r.typeIDCount = r.toUint(header[64:68])
+	r.TypeIDCount = r.toUint(header[64:68])
 	r.typeIDOff = r.toUint(header[68:72])
 
 	return r, nil
@@ -84,7 +85,7 @@ func (r *Reader) Close() error {
 }
 
 func (r *Reader) GetString(id uint32) (string, error) {
-	if id >= r.StringMaxID {
+	if id >= r.StringIDCount {
 		return "", ErrInvalidStringID
 	}
 
@@ -108,4 +109,28 @@ func (r *Reader) GetString(id uint32) (string, error) {
 	}
 
 	return string(data), nil
+}
+
+type Type struct {
+	DescriptorStringID uint32
+}
+
+func (r *Reader) GetType(id uint32) (Type, error) {
+	var (
+		res Type
+		err error
+	)
+
+	if id >= r.TypeIDCount {
+		return res, ErrInvalidTypeID
+	}
+
+	entryPos := r.typeIDOff + (id * 4)
+
+	res.DescriptorStringID, err = r.readUint(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
 }
