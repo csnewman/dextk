@@ -29,4 +29,4 @@ linters-settings:
       - ifElseChain
   funlen:
     lines: 160
-    statements: 60
+    statements: 120

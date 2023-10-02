@@ -15,6 +15,14 @@ func (r *Reader) toUint(data []byte) uint32 {
 	return binary.LittleEndian.Uint32(data)
 }
 
+func (r *Reader) toUshort(data []byte) uint16 {
+	if r.ReverseEndian {
+		panic(reNotImpl)
+	}
+
+	return binary.LittleEndian.Uint16(data)
+}
+
 func (r *Reader) readUint(pos uint32) (uint32, error) {
 	raw := make([]byte, 4)
 
@@ -24,6 +32,17 @@ func (r *Reader) readUint(pos uint32) (uint32, error) {
 	}
 
 	return r.toUint(raw), nil
+}
+
+func (r *Reader) readUshort(pos uint32) (uint16, error) {
+	raw := make([]byte, 2)
+
+	_, err := r.file.ReadAt(raw, int64(pos))
+	if err != nil {
+		return 0, err
+	}
+
+	return r.toUshort(raw), nil
 }
 
 func (r *Reader) readLeb128(pos uint32) (uint32, uint32, error) {

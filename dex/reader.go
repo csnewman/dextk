@@ -8,15 +8,19 @@ import (
 )
 
 var (
-	ErrInvalidHeader   = errors.New("invalid header")
-	ErrInvalidStringID = errors.New("invalid string id")
-	ErrInvalidTypeID   = errors.New("invalid type id")
-	ErrInvalidProtoID  = errors.New("invalid proto id")
+	ErrInvalidHeader     = errors.New("invalid header")
+	ErrInvalidStringID   = errors.New("invalid string id")
+	ErrInvalidTypeID     = errors.New("invalid type id")
+	ErrInvalidProtoID    = errors.New("invalid proto id")
+	ErrInvalidFieldID    = errors.New("invalid field id")
+	ErrInvalidMethodID   = errors.New("invalid method id")
+	ErrInvalidClassDefID = errors.New("invalid class def id")
 )
 
 const (
 	EndianConst        = uint32(0x12345678)
 	ReverseEndianConst = uint32(0x78563412)
+	NoIndex            = uint32(0xFFFFFFFF)
 )
 
 type Reader struct {
@@ -31,6 +35,12 @@ type Reader struct {
 	typeIDOff     uint32
 	ProtoIDCount  uint32
 	protoIDOff    uint32
+	FieldIDCount  uint32
+	fieldIDOff    uint32
+	MethodIDCount uint32
+	methodIDOff   uint32
+	ClassDefCount uint32
+	classDefOff   uint32
 }
 
 func Open(path string) (*Reader, error) {
@@ -81,6 +91,12 @@ func Open(path string) (*Reader, error) {
 	r.typeIDOff = r.toUint(header[68:72])
 	r.ProtoIDCount = r.toUint(header[72:76])
 	r.protoIDOff = r.toUint(header[76:80])
+	r.FieldIDCount = r.toUint(header[80:84])
+	r.fieldIDOff = r.toUint(header[84:88])
+	r.MethodIDCount = r.toUint(header[88:92])
+	r.methodIDOff = r.toUint(header[92:96])
+	r.ClassDefCount = r.toUint(header[96:100])
+	r.classDefOff = r.toUint(header[100:104])
 
 	return r, nil
 }
@@ -171,6 +187,339 @@ func (r *Reader) GetProto(id uint32) (Proto, error) {
 	res.ParametersTypeListOff, err = r.readUint(entryPos + 8)
 	if err != nil {
 		return res, err
+	}
+
+	return res, nil
+}
+
+type Field struct {
+	ClassTypeID  uint16
+	TypeID       uint16
+	NameStringID uint32
+}
+
+func (r *Reader) GetField(id uint32) (Field, error) {
+	var (
+		res Field
+		err error
+	)
+
+	if id >= r.FieldIDCount {
+		return res, ErrInvalidFieldID
+	}
+
+	entryPos := r.fieldIDOff + (id * 8)
+
+	res.ClassTypeID, err = r.readUshort(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	res.TypeID, err = r.readUshort(entryPos + 2)
+	if err != nil {
+		return res, err
+	}
+
+	res.NameStringID, err = r.readUint(entryPos + 4)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+type Method struct {
+	ClassTypeID  uint16
+	ProtoID      uint16
+	NameStringID uint32
+}
+
+func (r *Reader) GetMethod(id uint32) (Method, error) {
+	var (
+		res Method
+		err error
+	)
+
+	if id >= r.MethodIDCount {
+		return res, ErrInvalidMethodID
+	}
+
+	entryPos := r.methodIDOff + (id * 8)
+
+	res.ClassTypeID, err = r.readUshort(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	res.ProtoID, err = r.readUshort(entryPos + 2)
+	if err != nil {
+		return res, err
+	}
+
+	res.NameStringID, err = r.readUint(entryPos + 4)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+type ClassDef struct {
+	ClassTypeID             uint32
+	AccessFlags             uint32
+	SuperclassTypeID        uint32
+	InterfacesTypeListOff   uint32
+	SourceFileStringID      uint32
+	AnnotationsDirectoryOff uint32
+	ClassDataOff            uint32
+	StaticValuesOff         uint32
+}
+
+func (r *Reader) GetClassDef(id uint32) (ClassDef, error) {
+	var (
+		res ClassDef
+		err error
+	)
+
+	if id >= r.ClassDefCount {
+		return res, ErrInvalidClassDefID
+	}
+
+	entryPos := r.classDefOff + (id * 32)
+
+	res.ClassTypeID, err = r.readUint(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	res.AccessFlags, err = r.readUint(entryPos + 4)
+	if err != nil {
+		return res, err
+	}
+
+	res.SuperclassTypeID, err = r.readUint(entryPos + 8)
+	if err != nil {
+		return res, err
+	}
+
+	res.InterfacesTypeListOff, err = r.readUint(entryPos + 12)
+	if err != nil {
+		return res, err
+	}
+
+	res.SourceFileStringID, err = r.readUint(entryPos + 16)
+	if err != nil {
+		return res, err
+	}
+
+	res.AnnotationsDirectoryOff, err = r.readUint(entryPos + 20)
+	if err != nil {
+		return res, err
+	}
+
+	res.ClassDataOff, err = r.readUint(entryPos + 24)
+	if err != nil {
+		return res, err
+	}
+
+	res.StaticValuesOff, err = r.readUint(entryPos + 28)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+type EncodedField struct {
+	FieldID     uint32
+	AccessFlags uint32
+}
+
+type EncodedMethod struct {
+	MethodID    uint32
+	AccessFlags uint32
+	CodeOff     uint32
+}
+
+type ClassData struct {
+	StaticFields   []EncodedField
+	InstanceFields []EncodedField
+	DirectMethods  []EncodedMethod
+	VirtualMethods []EncodedMethod
+}
+
+func (r *Reader) GetClassData(off uint32) (ClassData, error) {
+	var (
+		res ClassData
+		err error
+	)
+
+	staticCount, n, err := r.readLeb128(off)
+	if err != nil {
+		return res, err
+	}
+
+	res.StaticFields = make([]EncodedField, staticCount)
+	off += n
+
+	instanceCount, n, err := r.readLeb128(off)
+	if err != nil {
+		return res, err
+	}
+
+	res.InstanceFields = make([]EncodedField, instanceCount)
+	off += n
+
+	directCount, n, err := r.readLeb128(off)
+	if err != nil {
+		return res, err
+	}
+
+	res.DirectMethods = make([]EncodedMethod, directCount)
+	off += n
+
+	virtualCount, n, err := r.readLeb128(off)
+	if err != nil {
+		return res, err
+	}
+
+	res.VirtualMethods = make([]EncodedMethod, virtualCount)
+	off += n
+
+	lastFieldId := uint32(0)
+
+	for i := uint32(0); i < staticCount; i++ {
+		idOff, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		lastFieldId += idOff
+		off += n
+
+		flags, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		res.StaticFields[i].FieldID = lastFieldId
+		res.StaticFields[i].AccessFlags = flags
+	}
+
+	lastFieldId = uint32(0)
+
+	for i := uint32(0); i < instanceCount; i++ {
+		idOff, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		lastFieldId += idOff
+		off += n
+
+		flags, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		res.InstanceFields[i].FieldID = lastFieldId
+		res.InstanceFields[i].AccessFlags = flags
+	}
+
+	lastMethodId := uint32(0)
+
+	for i := uint32(0); i < directCount; i++ {
+		idOff, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		lastMethodId += idOff
+		off += n
+
+		flags, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		code, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		res.DirectMethods[i].MethodID = lastMethodId
+		res.DirectMethods[i].AccessFlags = flags
+		res.DirectMethods[i].CodeOff = code
+	}
+
+	lastMethodId = uint32(0)
+
+	for i := uint32(0); i < virtualCount; i++ {
+		idOff, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		lastMethodId += idOff
+		off += n
+
+		flags, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		code, n, err := r.readLeb128(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += n
+
+		res.VirtualMethods[i].MethodID = lastMethodId
+		res.VirtualMethods[i].AccessFlags = flags
+		res.VirtualMethods[i].CodeOff = code
+	}
+
+	return res, nil
+}
+
+type TypeList struct {
+	TypeIds []uint16
+}
+
+func (r *Reader) GetTypeList(off uint32) (TypeList, error) {
+	var (
+		res TypeList
+		err error
+	)
+
+	size, err := r.readUint(off)
+	if err != nil {
+		return res, err
+	}
+
+	off += 4
+	res.TypeIds = make([]uint16, size)
+
+	for i := uint32(0); i < size; i++ {
+		id, err := r.readUshort(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += 2
+
+		res.TypeIds[i] = id
 	}
 
 	return res, nil
