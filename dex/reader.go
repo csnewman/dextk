@@ -11,6 +11,7 @@ var (
 	ErrInvalidHeader   = errors.New("invalid header")
 	ErrInvalidStringID = errors.New("invalid string id")
 	ErrInvalidTypeID   = errors.New("invalid type id")
+	ErrInvalidProtoID  = errors.New("invalid proto id")
 )
 
 const (
@@ -28,6 +29,8 @@ type Reader struct {
 	stringIDOff   uint32
 	TypeIDCount   uint32
 	typeIDOff     uint32
+	ProtoIDCount  uint32
+	protoIDOff    uint32
 }
 
 func Open(path string) (*Reader, error) {
@@ -76,6 +79,8 @@ func Open(path string) (*Reader, error) {
 	r.stringIDOff = r.toUint(header[60:64])
 	r.TypeIDCount = r.toUint(header[64:68])
 	r.typeIDOff = r.toUint(header[68:72])
+	r.ProtoIDCount = r.toUint(header[72:76])
+	r.protoIDOff = r.toUint(header[76:80])
 
 	return r, nil
 }
@@ -128,6 +133,42 @@ func (r *Reader) GetType(id uint32) (Type, error) {
 	entryPos := r.typeIDOff + (id * 4)
 
 	res.DescriptorStringID, err = r.readUint(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+type Proto struct {
+	ShortyStringID        uint32
+	ReturnTypeID          uint32
+	ParametersTypeListOff uint32
+}
+
+func (r *Reader) GetProto(id uint32) (Proto, error) {
+	var (
+		res Proto
+		err error
+	)
+
+	if id >= r.ProtoIDCount {
+		return res, ErrInvalidProtoID
+	}
+
+	entryPos := r.protoIDOff + (id * 12)
+
+	res.ShortyStringID, err = r.readUint(entryPos)
+	if err != nil {
+		return res, err
+	}
+
+	res.ReturnTypeID, err = r.readUint(entryPos + 4)
+	if err != nil {
+		return res, err
+	}
+
+	res.ParametersTypeListOff, err = r.readUint(entryPos + 8)
 	if err != nil {
 		return res, err
 	}
