@@ -1,2 +1,2 @@
-# go-javatk
-Go java toolkit
+# dextk
+Android dex file parser in Go
