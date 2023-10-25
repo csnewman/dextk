@@ -4,17 +4,18 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"os"
+	"io"
 )
 
 var (
-	ErrInvalidHeader     = errors.New("invalid header")
-	ErrInvalidStringID   = errors.New("invalid string id")
-	ErrInvalidTypeID     = errors.New("invalid type id")
-	ErrInvalidProtoID    = errors.New("invalid proto id")
-	ErrInvalidFieldID    = errors.New("invalid field id")
-	ErrInvalidMethodID   = errors.New("invalid method id")
-	ErrInvalidClassDefID = errors.New("invalid class def id")
+	ErrInvalidHeader           = errors.New("invalid header")
+	ErrInvalidStringID         = errors.New("invalid string id")
+	ErrInvalidTypeID           = errors.New("invalid type id")
+	ErrInvalidProtoID          = errors.New("invalid proto id")
+	ErrInvalidFieldID          = errors.New("invalid field id")
+	ErrInvalidMethodID         = errors.New("invalid method id")
+	ErrInvalidClassDefID       = errors.New("invalid class def id")
+	ErrInvalidTryHandlerOffset = errors.New("invalid try handler offset")
 )
 
 const (
@@ -24,7 +25,7 @@ const (
 )
 
 type Reader struct {
-	file          *os.File
+	file          io.ReaderAt
 	Version       string
 	ReverseEndian bool
 
@@ -43,15 +44,10 @@ type Reader struct {
 	classDefOff   uint32
 }
 
-func Open(path string) (*Reader, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
+func Read(file io.ReaderAt) (*Reader, error) {
 	header := make([]byte, 112)
 
-	_, err = f.ReadAt(header[0:40], 0)
+	_, err := file.ReadAt(header[0:40], 0)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrInvalidHeader, err)
 	}
@@ -70,7 +66,7 @@ func Open(path string) (*Reader, error) {
 		return nil, fmt.Errorf("%w: header too small %d", ErrInvalidHeader, headerSize)
 	}
 
-	_, err = f.ReadAt(header[40:112], 40)
+	_, err = file.ReadAt(header[40:112], 40)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrInvalidHeader, err)
 	}
@@ -79,7 +75,7 @@ func Open(path string) (*Reader, error) {
 	reverseEndian := endian == ReverseEndianConst
 
 	r := &Reader{
-		file:          f,
+		file:          file,
 		Version:       ver,
 		ReverseEndian: reverseEndian,
 	}
@@ -101,10 +97,6 @@ func Open(path string) (*Reader, error) {
 	return r, nil
 }
 
-func (r *Reader) Close() error {
-	return r.file.Close()
-}
-
 func (r *Reader) GetString(id uint32) (string, error) {
 	if id >= r.StringIDCount {
 		return "", ErrInvalidStringID
@@ -117,7 +109,7 @@ func (r *Reader) GetString(id uint32) (string, error) {
 		return "", err
 	}
 
-	strSize, n, err := r.readLeb128(strPos)
+	strSize, n, err := r.readUleb128(strPos)
 	if err != nil {
 		return "", err
 	}
@@ -349,12 +341,16 @@ type ClassData struct {
 }
 
 func (r *Reader) GetClassData(off uint32) (ClassData, error) {
+	if off == 0 {
+		panic("invalid class data offset")
+	}
+
 	var (
 		res ClassData
 		err error
 	)
 
-	staticCount, n, err := r.readLeb128(off)
+	staticCount, n, err := r.readUleb128(off)
 	if err != nil {
 		return res, err
 	}
@@ -362,7 +358,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	res.StaticFields = make([]EncodedField, staticCount)
 	off += n
 
-	instanceCount, n, err := r.readLeb128(off)
+	instanceCount, n, err := r.readUleb128(off)
 	if err != nil {
 		return res, err
 	}
@@ -370,7 +366,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	res.InstanceFields = make([]EncodedField, instanceCount)
 	off += n
 
-	directCount, n, err := r.readLeb128(off)
+	directCount, n, err := r.readUleb128(off)
 	if err != nil {
 		return res, err
 	}
@@ -378,7 +374,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	res.DirectMethods = make([]EncodedMethod, directCount)
 	off += n
 
-	virtualCount, n, err := r.readLeb128(off)
+	virtualCount, n, err := r.readUleb128(off)
 	if err != nil {
 		return res, err
 	}
@@ -389,7 +385,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	lastFieldId := uint32(0)
 
 	for i := uint32(0); i < staticCount; i++ {
-		idOff, n, err := r.readLeb128(off)
+		idOff, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -397,7 +393,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 		lastFieldId += idOff
 		off += n
 
-		flags, n, err := r.readLeb128(off)
+		flags, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -411,7 +407,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	lastFieldId = uint32(0)
 
 	for i := uint32(0); i < instanceCount; i++ {
-		idOff, n, err := r.readLeb128(off)
+		idOff, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -419,7 +415,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 		lastFieldId += idOff
 		off += n
 
-		flags, n, err := r.readLeb128(off)
+		flags, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -433,7 +429,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	lastMethodId := uint32(0)
 
 	for i := uint32(0); i < directCount; i++ {
-		idOff, n, err := r.readLeb128(off)
+		idOff, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -441,14 +437,14 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 		lastMethodId += idOff
 		off += n
 
-		flags, n, err := r.readLeb128(off)
+		flags, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
 
 		off += n
 
-		code, n, err := r.readLeb128(off)
+		code, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -463,7 +459,7 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 	lastMethodId = uint32(0)
 
 	for i := uint32(0); i < virtualCount; i++ {
-		idOff, n, err := r.readLeb128(off)
+		idOff, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -471,14 +467,14 @@ func (r *Reader) GetClassData(off uint32) (ClassData, error) {
 		lastMethodId += idOff
 		off += n
 
-		flags, n, err := r.readLeb128(off)
+		flags, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
 
 		off += n
 
-		code, n, err := r.readLeb128(off)
+		code, n, err := r.readUleb128(off)
 		if err != nil {
 			return res, err
 		}
@@ -498,6 +494,10 @@ type TypeList struct {
 }
 
 func (r *Reader) GetTypeList(off uint32) (TypeList, error) {
+	if off == 0 {
+		panic("invalid type list offset")
+	}
+
 	var (
 		res TypeList
 		err error
@@ -520,6 +520,186 @@ func (r *Reader) GetTypeList(off uint32) (TypeList, error) {
 		off += 2
 
 		res.TypeIds[i] = id
+	}
+
+	return res, nil
+}
+
+type Code struct {
+	RegisterCount uint16
+	IncomingCount uint16
+	OutgoingCount uint16
+	DebugInfoOff  uint32
+	Insns         []uint16
+	Tries         []Try
+	Handlers      []CatchHandler
+}
+
+type Try struct {
+	StartAddr uint32
+	InsnCount uint16
+	HandlerId uint16
+}
+
+type CatchHandler struct {
+	Handlers     []HandlerPair
+	HasCatchAll  bool
+	CatchAllAddr uint32
+}
+
+type HandlerPair struct {
+	TypeID uint32
+	Addr   uint32
+}
+
+func (r *Reader) GetCode(off uint32) (Code, error) {
+	if off == 0 {
+		panic("invalid code offset")
+	}
+
+	var (
+		res Code
+		err error
+	)
+
+	res.RegisterCount, err = r.readUshort(off)
+	if err != nil {
+		return res, err
+	}
+
+	res.IncomingCount, err = r.readUshort(off + 2)
+	if err != nil {
+		return res, err
+	}
+
+	res.OutgoingCount, err = r.readUshort(off + 4)
+	if err != nil {
+		return res, err
+	}
+
+	triesCount, err := r.readUshort(off + 6)
+	if err != nil {
+		return res, err
+	}
+
+	res.DebugInfoOff, err = r.readUint(off + 8)
+	if err != nil {
+		return res, err
+	}
+
+	insCount, err := r.readUint(off + 12)
+	if err != nil {
+		return res, err
+	}
+
+	off += 16
+
+	res.Insns = make([]uint16, insCount)
+
+	for i := uint32(0); i < insCount; i++ {
+		res.Insns[i], err = r.readUshort(off)
+		if err != nil {
+			return res, err
+		}
+
+		off += 2
+	}
+
+	if triesCount == 0 {
+		return res, err
+	}
+
+	// Padding
+	if triesCount != 0 && insCount%2 == 1 {
+		off += 2
+	}
+
+	// Skip ahead and read handlers
+	handlerMap := make(map[uint16]uint16)
+	handOff := off + (uint32(triesCount) * 8)
+	handOffStart := handOff
+
+	handlerCount, n, err := r.readUleb128(handOff)
+	if err != nil {
+		return res, err
+	}
+
+	handOff += n
+	res.Handlers = make([]CatchHandler, handlerCount)
+
+	for i := uint16(0); i < uint16(handlerCount); i++ {
+		handlerMap[uint16(handOff-handOffStart)] = i
+
+		size, n, err := r.readSleb128(handOff)
+		if err != nil {
+			return res, err
+		}
+
+		handOff += n
+
+		if size <= 0 {
+			res.Handlers[i].HasCatchAll = true
+			size = -size
+		}
+
+		res.Handlers[i].Handlers = make([]HandlerPair, size)
+
+		for j := uint16(0); j < uint16(size); j++ {
+			typeIdx, n, err := r.readUleb128(handOff)
+			if err != nil {
+				return res, err
+			}
+			handOff += n
+
+			addr, n, err := r.readUleb128(handOff)
+			if err != nil {
+				return res, err
+			}
+			handOff += n
+
+			res.Handlers[i].Handlers[j] = HandlerPair{
+				TypeID: typeIdx,
+				Addr:   addr,
+			}
+		}
+
+		if res.Handlers[i].HasCatchAll {
+			res.Handlers[i].CatchAllAddr, n, err = r.readUleb128(handOff)
+			if err != nil {
+				return res, err
+			}
+			handOff += n
+		}
+	}
+
+	// Jump back and read try blocks
+	res.Tries = make([]Try, triesCount)
+
+	for i := uint16(0); i < triesCount; i++ {
+		res.Tries[i].StartAddr, err = r.readUint(off)
+		if err != nil {
+			return res, err
+		}
+
+		res.Tries[i].InsnCount, err = r.readUshort(off + 4)
+		if err != nil {
+			return res, err
+		}
+
+		handlerOff, err := r.readUshort(off + 6)
+		if err != nil {
+			return res, err
+		}
+
+		handlerId, found := handlerMap[handlerOff]
+
+		if !found {
+			return res, ErrInvalidTryHandlerOffset
+		}
+
+		res.Tries[i].HandlerId = handlerId
+
+		off += 8
 	}
 
 	return res, nil
