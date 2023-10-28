@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"text/template"
 
@@ -26,15 +25,9 @@ func main() {
 	d := &Data{}
 
 	for _, op := range Ops {
-		size, err := strconv.Atoi(string(op.Fmt[0]))
-		if err != nil {
-			panic(err)
-		}
-
 		d.Ops = append(d.Ops, GenOp{
 			DisplayName: op.Name,
 			PascalName:  strcase.ToCamel(strings.ReplaceAll(op.Name, "/", "_")),
-			Size:        size,
 			CodeConst:   fmt.Sprintf("%x", op.Code),
 			Fmt:         op.Fmt,
 		})
@@ -52,7 +45,6 @@ type Data struct {
 type GenOp struct {
 	DisplayName string
 	PascalName  string
-	Size        int
 	CodeConst   string
 	Fmt         string
 }
@@ -72,7 +64,7 @@ var opConfigs = map[OpCode]opConfig{
 {{- range $o := $top.Ops}}
 	OpCode{{$o.PascalName}}: {
 		Name: "{{$o.DisplayName}}",
-		Size: {{$o.Size}},
+		Size: fmt{{$o.Fmt}}Size,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 

@@ -40,12 +40,40 @@ const (
 	OpCodeNewArray OpCode = 0x23
 	OpCodeThrow OpCode = 0x27
 	OpCodeGoto OpCode = 0x28
+	OpCodeGoto16 OpCode = 0x29
+	OpCodeGoto32 OpCode = 0x2a
+	OpCodePackedSwitch OpCode = 0x2b
+	OpCodeCmplFloat OpCode = 0x2d
+	OpCodeCmpgFloat OpCode = 0x2e
+	OpCodeCmplDouble OpCode = 0x2f
+	OpCodeCmpgDouble OpCode = 0x30
+	OpCodeCmpLong OpCode = 0x31
+	OpCodeIfEq OpCode = 0x32
+	OpCodeIfNe OpCode = 0x33
+	OpCodeIfLt OpCode = 0x34
+	OpCodeIfGe OpCode = 0x35
+	OpCodeIfGt OpCode = 0x36
+	OpCodeIfLe OpCode = 0x37
 	OpCodeIfEqz OpCode = 0x38
 	OpCodeIfNez OpCode = 0x39
 	OpCodeIfLtz OpCode = 0x3a
 	OpCodeIfGez OpCode = 0x3b
 	OpCodeIfGtz OpCode = 0x3c
 	OpCodeIfLez OpCode = 0x3d
+	OpCodeAget OpCode = 0x44
+	OpCodeAgetWide OpCode = 0x45
+	OpCodeAgetObject OpCode = 0x46
+	OpCodeAgetBoolean OpCode = 0x47
+	OpCodeAgetByte OpCode = 0x48
+	OpCodeAgetChar OpCode = 0x49
+	OpCodeAgetShort OpCode = 0x4a
+	OpCodeAput OpCode = 0x4b
+	OpCodeAputWide OpCode = 0x4c
+	OpCodeAputObject OpCode = 0x4d
+	OpCodeAputBoolean OpCode = 0x4e
+	OpCodeAputByte OpCode = 0x4f
+	OpCodeAputChar OpCode = 0x50
+	OpCodeAputShort OpCode = 0x51
 	OpCodeIget OpCode = 0x52
 	OpCodeIgetWide OpCode = 0x53
 	OpCodeIgetObject OpCode = 0x54
@@ -60,17 +88,47 @@ const (
 	OpCodeIputByte OpCode = 0x5d
 	OpCodeIputChar OpCode = 0x5e
 	OpCodeIputShort OpCode = 0x5f
+	OpCodeSget OpCode = 0x60
+	OpCodeSgetWide OpCode = 0x61
+	OpCodeSgetObject OpCode = 0x62
+	OpCodeSgetBoolean OpCode = 0x63
+	OpCodeSgetByte OpCode = 0x64
+	OpCodeSgetChar OpCode = 0x65
+	OpCodeSgetShort OpCode = 0x66
+	OpCodeSput OpCode = 0x67
+	OpCodeSputWide OpCode = 0x68
+	OpCodeSputObject OpCode = 0x69
+	OpCodeSputBoolean OpCode = 0x6a
+	OpCodeSputByte OpCode = 0x6b
+	OpCodeSputChar OpCode = 0x6c
+	OpCodeSputShort OpCode = 0x6d
 	OpCodeInvokeVirtual OpCode = 0x6e
 	OpCodeInvokeSuper OpCode = 0x6f
 	OpCodeInvokeDirect OpCode = 0x70
 	OpCodeInvokeStatic OpCode = 0x71
 	OpCodeInvokeInterface OpCode = 0x72
+	OpCodeInvokeVirtualRange OpCode = 0x74
+	OpCodeInvokeSuperRange OpCode = 0x75
+	OpCodeInvokeDirectRange OpCode = 0x76
+	OpCodeInvokeStaticRange OpCode = 0x77
+	OpCodeInvokeInterfaceRange OpCode = 0x78
+	OpCodeAddIntLit8 OpCode = 0xd8
+	OpCodeRsubIntLit8 OpCode = 0xd9
+	OpCodeMulIntLit8 OpCode = 0xda
+	OpCodeDivIntLit8 OpCode = 0xdb
+	OpCodeRemIntLit8 OpCode = 0xdc
+	OpCodeAndIntLit8 OpCode = 0xdd
+	OpCodeOrIntLit8 OpCode = 0xde
+	OpCodeXorIntLit8 OpCode = 0xdf
+	OpCodeShlIntLit8 OpCode = 0xe0
+	OpCodeShrIntLit8 OpCode = 0xe1
+	OpCodeUshrIntLit8 OpCode = 0xe2
 )
 
 var opConfigs = map[OpCode]opConfig{
 	OpCodeNop: {
 		Name: "nop",
-		Size: 1,
+		Size: fmt10xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -87,7 +145,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMove: {
 		Name: "move",
-		Size: 1,
+		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -104,7 +162,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveFrom16: {
 		Name: "move/from16",
-		Size: 2,
+		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -121,7 +179,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMove16: {
 		Name: "move/16",
-		Size: 3,
+		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -138,7 +196,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveWide: {
 		Name: "move-wide",
-		Size: 1,
+		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -155,7 +213,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveWideFrom16: {
 		Name: "move-wide/from16",
-		Size: 2,
+		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -172,7 +230,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveWide16: {
 		Name: "move-wide/16",
-		Size: 3,
+		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -189,7 +247,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveObject: {
 		Name: "move-object",
-		Size: 1,
+		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -206,7 +264,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveObjectFrom16: {
 		Name: "move-object/from16",
-		Size: 2,
+		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -223,7 +281,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveObject16: {
 		Name: "move-object/16",
-		Size: 3,
+		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -240,7 +298,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveResult: {
 		Name: "move-result",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -257,7 +315,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveResultWide: {
 		Name: "move-result-wide",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -274,7 +332,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveResultObject: {
 		Name: "move-result-object",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -291,7 +349,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMoveException: {
 		Name: "move-exception",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -308,7 +366,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeReturnVoid: {
 		Name: "return-void",
-		Size: 1,
+		Size: fmt10xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -325,7 +383,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeReturn: {
 		Name: "return",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -342,7 +400,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeReturnWide: {
 		Name: "return-wide",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -359,7 +417,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeReturnObject: {
 		Name: "return-object",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -376,7 +434,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConst4: {
 		Name: "const/4",
-		Size: 1,
+		Size: fmt11nSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -393,7 +451,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConst16: {
 		Name: "const/16",
-		Size: 2,
+		Size: fmt21sSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -410,7 +468,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConst: {
 		Name: "const",
-		Size: 3,
+		Size: fmt31iSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -427,7 +485,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstHigh16: {
 		Name: "const/high16",
-		Size: 2,
+		Size: fmt21hSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -444,7 +502,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstWide16: {
 		Name: "const-wide/16",
-		Size: 2,
+		Size: fmt21sSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -461,7 +519,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstWide32: {
 		Name: "const-wide/32",
-		Size: 3,
+		Size: fmt31iSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -478,7 +536,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstWideHigh16: {
 		Name: "const-wide/high16",
-		Size: 2,
+		Size: fmt21hSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -495,7 +553,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstString: {
 		Name: "const-string",
-		Size: 2,
+		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -512,7 +570,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstStringJumbo: {
 		Name: "const-string/jumbo",
-		Size: 3,
+		Size: fmt31cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -529,7 +587,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeConstClass: {
 		Name: "const-class",
-		Size: 2,
+		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -546,7 +604,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMonitorEnter: {
 		Name: "monitor-enter",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -563,7 +621,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeMonitorExit: {
 		Name: "monitor-exit",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -580,7 +638,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeCheckCast: {
 		Name: "check-cast",
-		Size: 2,
+		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -597,7 +655,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeInstanceOf: {
 		Name: "instance-of",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -614,7 +672,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeArrayLength: {
 		Name: "array-length",
-		Size: 1,
+		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -631,7 +689,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeNewInstance: {
 		Name: "new-instance",
-		Size: 2,
+		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -648,7 +706,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeNewArray: {
 		Name: "new-array",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -665,7 +723,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeThrow: {
 		Name: "throw",
-		Size: 1,
+		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -682,7 +740,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeGoto: {
 		Name: "goto",
-		Size: 1,
+		Size: fmt10tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -697,9 +755,247 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeGoto16: {
+		Name: "goto/16",
+		Size: fmt20tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt20t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpGoto16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeGoto32: {
+		Name: "goto/32",
+		Size: fmt30tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt30t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpGoto32 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodePackedSwitch: {
+		Name: "packed-switch",
+		Size: fmt31tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt31t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpPackedSwitch {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeCmplFloat: {
+		Name: "cmpl-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpCmplFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeCmpgFloat: {
+		Name: "cmpg-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpCmpgFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeCmplDouble: {
+		Name: "cmpl-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpCmplDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeCmpgDouble: {
+		Name: "cmpg-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpCmpgDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeCmpLong: {
+		Name: "cmp-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpCmpLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfEq: {
+		Name: "if-eq",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfEq {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfNe: {
+		Name: "if-ne",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfNe {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfLt: {
+		Name: "if-lt",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfLt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfGe: {
+		Name: "if-ge",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfGe {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfGt: {
+		Name: "if-gt",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfGt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIfLe: {
+		Name: "if-le",
+		Size: fmt22tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIfLe {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeIfEqz: {
 		Name: "if-eqz",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -716,7 +1012,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIfNez: {
 		Name: "if-nez",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -733,7 +1029,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIfLtz: {
 		Name: "if-ltz",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -750,7 +1046,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIfGez: {
 		Name: "if-gez",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -767,7 +1063,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIfGtz: {
 		Name: "if-gtz",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -784,7 +1080,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIfLez: {
 		Name: "if-lez",
-		Size: 2,
+		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -799,9 +1095,247 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeAget: {
+		Name: "aget",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAget {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetWide: {
+		Name: "aget-wide",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetWide {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetObject: {
+		Name: "aget-object",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetObject {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetBoolean: {
+		Name: "aget-boolean",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetBoolean {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetByte: {
+		Name: "aget-byte",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetByte {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetChar: {
+		Name: "aget-char",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetChar {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAgetShort: {
+		Name: "aget-short",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAgetShort {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAput: {
+		Name: "aput",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAput {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputWide: {
+		Name: "aput-wide",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputWide {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputObject: {
+		Name: "aput-object",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputObject {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputBoolean: {
+		Name: "aput-boolean",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputBoolean {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputByte: {
+		Name: "aput-byte",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputByte {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputChar: {
+		Name: "aput-char",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputChar {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAputShort: {
+		Name: "aput-short",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAputShort {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeIget: {
 		Name: "iget",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -818,7 +1352,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetWide: {
 		Name: "iget-wide",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -835,7 +1369,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetObject: {
 		Name: "iget-object",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -852,7 +1386,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetBoolean: {
 		Name: "iget-boolean",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -869,7 +1403,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetByte: {
 		Name: "iget-byte",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -886,7 +1420,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetChar: {
 		Name: "iget-char",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -903,7 +1437,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIgetShort: {
 		Name: "iget-short",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -920,7 +1454,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIput: {
 		Name: "iput",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -937,7 +1471,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputWide: {
 		Name: "iput-wide",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -954,7 +1488,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputObject: {
 		Name: "iput-object",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -971,7 +1505,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputBoolean: {
 		Name: "iput-boolean",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -988,7 +1522,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputByte: {
 		Name: "iput-byte",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1005,7 +1539,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputChar: {
 		Name: "iput-char",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1022,7 +1556,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeIputShort: {
 		Name: "iput-short",
-		Size: 2,
+		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1037,9 +1571,247 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeSget: {
+		Name: "sget",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSget {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetWide: {
+		Name: "sget-wide",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetWide {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetObject: {
+		Name: "sget-object",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetObject {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetBoolean: {
+		Name: "sget-boolean",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetBoolean {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetByte: {
+		Name: "sget-byte",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetByte {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetChar: {
+		Name: "sget-char",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetChar {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSgetShort: {
+		Name: "sget-short",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSgetShort {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSput: {
+		Name: "sput",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSput {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputWide: {
+		Name: "sput-wide",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputWide {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputObject: {
+		Name: "sput-object",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputObject {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputBoolean: {
+		Name: "sput-boolean",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputBoolean {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputByte: {
+		Name: "sput-byte",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputByte {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputChar: {
+		Name: "sput-char",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputChar {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSputShort: {
+		Name: "sput-short",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSputShort {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeInvokeVirtual: {
 		Name: "invoke-virtual",
-		Size: 3,
+		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1056,7 +1828,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeInvokeSuper: {
 		Name: "invoke-super",
-		Size: 3,
+		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1073,7 +1845,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeInvokeDirect: {
 		Name: "invoke-direct",
-		Size: 3,
+		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1090,7 +1862,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeInvokeStatic: {
 		Name: "invoke-static",
-		Size: 3,
+		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1107,7 +1879,7 @@ var opConfigs = map[OpCode]opConfig{
 	},
 	OpCodeInvokeInterface: {
 		Name: "invoke-interface",
-		Size: 3,
+		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
 			pos := r.pos
 
@@ -1117,6 +1889,278 @@ var opConfigs = map[OpCode]opConfig{
 			}
 
 			return &OpInvokeInterface {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeVirtualRange: {
+		Name: "invoke-virtual/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeVirtualRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeSuperRange: {
+		Name: "invoke-super/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeSuperRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeDirectRange: {
+		Name: "invoke-direct/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeDirectRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeStaticRange: {
+		Name: "invoke-static/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeStaticRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeInterfaceRange: {
+		Name: "invoke-interface/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeInterfaceRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddIntLit8: {
+		Name: "add-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRsubIntLit8: {
+		Name: "rsub-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRsubIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulIntLit8: {
+		Name: "mul-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivIntLit8: {
+		Name: "div-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemIntLit8: {
+		Name: "rem-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndIntLit8: {
+		Name: "and-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrIntLit8: {
+		Name: "or-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorIntLit8: {
+		Name: "xor-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShlIntLit8: {
+		Name: "shl-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShlIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShrIntLit8: {
+		Name: "shr-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShrIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeUshrIntLit8: {
+		Name: "ushr-int/lit8",
+		Size: fmt22bSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22b()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpUshrIntLit8 {
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1938,6 +2982,314 @@ func (o OpGoto) String() string {
 	return fmt.Sprintf("0x%x: goto", o.pos)
 }
 
+type OpGoto16 struct {
+	opBase
+	Fmt20t
+}
+
+func (o OpGoto16) Code() OpCode {
+	return OpCodeGoto16
+}
+
+func (o OpGoto16) Fmt() Fmt {
+	return o.Fmt20t
+}
+
+func (o OpGoto16) String() string {
+	f := o.Fmt20t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: goto/16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: goto/16", o.pos)
+}
+
+type OpGoto32 struct {
+	opBase
+	Fmt30t
+}
+
+func (o OpGoto32) Code() OpCode {
+	return OpCodeGoto32
+}
+
+func (o OpGoto32) Fmt() Fmt {
+	return o.Fmt30t
+}
+
+func (o OpGoto32) String() string {
+	f := o.Fmt30t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: goto/32 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: goto/32", o.pos)
+}
+
+type OpPackedSwitch struct {
+	opBase
+	Fmt31t
+}
+
+func (o OpPackedSwitch) Code() OpCode {
+	return OpCodePackedSwitch
+}
+
+func (o OpPackedSwitch) Fmt() Fmt {
+	return o.Fmt31t
+}
+
+func (o OpPackedSwitch) String() string {
+	f := o.Fmt31t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: packed-switch %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: packed-switch", o.pos)
+}
+
+type OpCmplFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpCmplFloat) Code() OpCode {
+	return OpCodeCmplFloat
+}
+
+func (o OpCmplFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpCmplFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: cmpl-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: cmpl-float", o.pos)
+}
+
+type OpCmpgFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpCmpgFloat) Code() OpCode {
+	return OpCodeCmpgFloat
+}
+
+func (o OpCmpgFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpCmpgFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: cmpg-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: cmpg-float", o.pos)
+}
+
+type OpCmplDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpCmplDouble) Code() OpCode {
+	return OpCodeCmplDouble
+}
+
+func (o OpCmplDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpCmplDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: cmpl-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: cmpl-double", o.pos)
+}
+
+type OpCmpgDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpCmpgDouble) Code() OpCode {
+	return OpCodeCmpgDouble
+}
+
+func (o OpCmpgDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpCmpgDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: cmpg-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: cmpg-double", o.pos)
+}
+
+type OpCmpLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpCmpLong) Code() OpCode {
+	return OpCodeCmpLong
+}
+
+func (o OpCmpLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpCmpLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: cmp-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: cmp-long", o.pos)
+}
+
+type OpIfEq struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfEq) Code() OpCode {
+	return OpCodeIfEq
+}
+
+func (o OpIfEq) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfEq) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-eq %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-eq", o.pos)
+}
+
+type OpIfNe struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfNe) Code() OpCode {
+	return OpCodeIfNe
+}
+
+func (o OpIfNe) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfNe) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-ne %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-ne", o.pos)
+}
+
+type OpIfLt struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfLt) Code() OpCode {
+	return OpCodeIfLt
+}
+
+func (o OpIfLt) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfLt) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-lt %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-lt", o.pos)
+}
+
+type OpIfGe struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfGe) Code() OpCode {
+	return OpCodeIfGe
+}
+
+func (o OpIfGe) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfGe) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-ge %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-ge", o.pos)
+}
+
+type OpIfGt struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfGt) Code() OpCode {
+	return OpCodeIfGt
+}
+
+func (o OpIfGt) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfGt) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-gt %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-gt", o.pos)
+}
+
+type OpIfLe struct {
+	opBase
+	Fmt22t
+}
+
+func (o OpIfLe) Code() OpCode {
+	return OpCodeIfLe
+}
+
+func (o OpIfLe) Fmt() Fmt {
+	return o.Fmt22t
+}
+
+func (o OpIfLe) String() string {
+	f := o.Fmt22t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: if-le %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: if-le", o.pos)
+}
+
 type OpIfEqz struct {
 	opBase
 	Fmt21t
@@ -2068,6 +3420,314 @@ func (o OpIfLez) String() string {
 	}
 
 	return fmt.Sprintf("0x%x: if-lez", o.pos)
+}
+
+type OpAget struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAget) Code() OpCode {
+	return OpCodeAget
+}
+
+func (o OpAget) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAget) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget", o.pos)
+}
+
+type OpAgetWide struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetWide) Code() OpCode {
+	return OpCodeAgetWide
+}
+
+func (o OpAgetWide) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetWide) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-wide %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-wide", o.pos)
+}
+
+type OpAgetObject struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetObject) Code() OpCode {
+	return OpCodeAgetObject
+}
+
+func (o OpAgetObject) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetObject) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-object %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-object", o.pos)
+}
+
+type OpAgetBoolean struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetBoolean) Code() OpCode {
+	return OpCodeAgetBoolean
+}
+
+func (o OpAgetBoolean) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetBoolean) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-boolean %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-boolean", o.pos)
+}
+
+type OpAgetByte struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetByte) Code() OpCode {
+	return OpCodeAgetByte
+}
+
+func (o OpAgetByte) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetByte) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-byte %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-byte", o.pos)
+}
+
+type OpAgetChar struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetChar) Code() OpCode {
+	return OpCodeAgetChar
+}
+
+func (o OpAgetChar) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetChar) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-char %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-char", o.pos)
+}
+
+type OpAgetShort struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAgetShort) Code() OpCode {
+	return OpCodeAgetShort
+}
+
+func (o OpAgetShort) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAgetShort) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aget-short %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aget-short", o.pos)
+}
+
+type OpAput struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAput) Code() OpCode {
+	return OpCodeAput
+}
+
+func (o OpAput) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAput) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput", o.pos)
+}
+
+type OpAputWide struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputWide) Code() OpCode {
+	return OpCodeAputWide
+}
+
+func (o OpAputWide) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputWide) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-wide %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-wide", o.pos)
+}
+
+type OpAputObject struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputObject) Code() OpCode {
+	return OpCodeAputObject
+}
+
+func (o OpAputObject) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputObject) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-object %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-object", o.pos)
+}
+
+type OpAputBoolean struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputBoolean) Code() OpCode {
+	return OpCodeAputBoolean
+}
+
+func (o OpAputBoolean) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputBoolean) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-boolean %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-boolean", o.pos)
+}
+
+type OpAputByte struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputByte) Code() OpCode {
+	return OpCodeAputByte
+}
+
+func (o OpAputByte) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputByte) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-byte %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-byte", o.pos)
+}
+
+type OpAputChar struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputChar) Code() OpCode {
+	return OpCodeAputChar
+}
+
+func (o OpAputChar) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputChar) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-char %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-char", o.pos)
+}
+
+type OpAputShort struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAputShort) Code() OpCode {
+	return OpCodeAputShort
+}
+
+func (o OpAputShort) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAputShort) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: aput-short %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: aput-short", o.pos)
 }
 
 type OpIget struct {
@@ -2378,6 +4038,314 @@ func (o OpIputShort) String() string {
 	return fmt.Sprintf("0x%x: iput-short", o.pos)
 }
 
+type OpSget struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSget) Code() OpCode {
+	return OpCodeSget
+}
+
+func (o OpSget) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSget) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget", o.pos)
+}
+
+type OpSgetWide struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetWide) Code() OpCode {
+	return OpCodeSgetWide
+}
+
+func (o OpSgetWide) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetWide) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-wide %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-wide", o.pos)
+}
+
+type OpSgetObject struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetObject) Code() OpCode {
+	return OpCodeSgetObject
+}
+
+func (o OpSgetObject) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetObject) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-object %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-object", o.pos)
+}
+
+type OpSgetBoolean struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetBoolean) Code() OpCode {
+	return OpCodeSgetBoolean
+}
+
+func (o OpSgetBoolean) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetBoolean) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-boolean %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-boolean", o.pos)
+}
+
+type OpSgetByte struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetByte) Code() OpCode {
+	return OpCodeSgetByte
+}
+
+func (o OpSgetByte) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetByte) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-byte %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-byte", o.pos)
+}
+
+type OpSgetChar struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetChar) Code() OpCode {
+	return OpCodeSgetChar
+}
+
+func (o OpSgetChar) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetChar) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-char %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-char", o.pos)
+}
+
+type OpSgetShort struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSgetShort) Code() OpCode {
+	return OpCodeSgetShort
+}
+
+func (o OpSgetShort) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSgetShort) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sget-short %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sget-short", o.pos)
+}
+
+type OpSput struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSput) Code() OpCode {
+	return OpCodeSput
+}
+
+func (o OpSput) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSput) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput", o.pos)
+}
+
+type OpSputWide struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputWide) Code() OpCode {
+	return OpCodeSputWide
+}
+
+func (o OpSputWide) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputWide) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-wide %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-wide", o.pos)
+}
+
+type OpSputObject struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputObject) Code() OpCode {
+	return OpCodeSputObject
+}
+
+func (o OpSputObject) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputObject) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-object %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-object", o.pos)
+}
+
+type OpSputBoolean struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputBoolean) Code() OpCode {
+	return OpCodeSputBoolean
+}
+
+func (o OpSputBoolean) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputBoolean) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-boolean %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-boolean", o.pos)
+}
+
+type OpSputByte struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputByte) Code() OpCode {
+	return OpCodeSputByte
+}
+
+func (o OpSputByte) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputByte) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-byte %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-byte", o.pos)
+}
+
+type OpSputChar struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputChar) Code() OpCode {
+	return OpCodeSputChar
+}
+
+func (o OpSputChar) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputChar) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-char %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-char", o.pos)
+}
+
+type OpSputShort struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpSputShort) Code() OpCode {
+	return OpCodeSputShort
+}
+
+func (o OpSputShort) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpSputShort) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sput-short %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sput-short", o.pos)
+}
+
 type OpInvokeVirtual struct {
 	opBase
 	Fmt35c
@@ -2486,4 +4454,356 @@ func (o OpInvokeInterface) String() string {
 	}
 
 	return fmt.Sprintf("0x%x: invoke-interface", o.pos)
+}
+
+type OpInvokeVirtualRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeVirtualRange) Code() OpCode {
+	return OpCodeInvokeVirtualRange
+}
+
+func (o OpInvokeVirtualRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeVirtualRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-virtual/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-virtual/range", o.pos)
+}
+
+type OpInvokeSuperRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeSuperRange) Code() OpCode {
+	return OpCodeInvokeSuperRange
+}
+
+func (o OpInvokeSuperRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeSuperRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-super/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-super/range", o.pos)
+}
+
+type OpInvokeDirectRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeDirectRange) Code() OpCode {
+	return OpCodeInvokeDirectRange
+}
+
+func (o OpInvokeDirectRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeDirectRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-direct/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-direct/range", o.pos)
+}
+
+type OpInvokeStaticRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeStaticRange) Code() OpCode {
+	return OpCodeInvokeStaticRange
+}
+
+func (o OpInvokeStaticRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeStaticRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-static/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-static/range", o.pos)
+}
+
+type OpInvokeInterfaceRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeInterfaceRange) Code() OpCode {
+	return OpCodeInvokeInterfaceRange
+}
+
+func (o OpInvokeInterfaceRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeInterfaceRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-interface/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-interface/range", o.pos)
+}
+
+type OpAddIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpAddIntLit8) Code() OpCode {
+	return OpCodeAddIntLit8
+}
+
+func (o OpAddIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpAddIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-int/lit8", o.pos)
+}
+
+type OpRsubIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpRsubIntLit8) Code() OpCode {
+	return OpCodeRsubIntLit8
+}
+
+func (o OpRsubIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpRsubIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rsub-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rsub-int/lit8", o.pos)
+}
+
+type OpMulIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpMulIntLit8) Code() OpCode {
+	return OpCodeMulIntLit8
+}
+
+func (o OpMulIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpMulIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-int/lit8", o.pos)
+}
+
+type OpDivIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpDivIntLit8) Code() OpCode {
+	return OpCodeDivIntLit8
+}
+
+func (o OpDivIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpDivIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-int/lit8", o.pos)
+}
+
+type OpRemIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpRemIntLit8) Code() OpCode {
+	return OpCodeRemIntLit8
+}
+
+func (o OpRemIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpRemIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-int/lit8", o.pos)
+}
+
+type OpAndIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpAndIntLit8) Code() OpCode {
+	return OpCodeAndIntLit8
+}
+
+func (o OpAndIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpAndIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-int/lit8", o.pos)
+}
+
+type OpOrIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpOrIntLit8) Code() OpCode {
+	return OpCodeOrIntLit8
+}
+
+func (o OpOrIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpOrIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-int/lit8", o.pos)
+}
+
+type OpXorIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpXorIntLit8) Code() OpCode {
+	return OpCodeXorIntLit8
+}
+
+func (o OpXorIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpXorIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-int/lit8", o.pos)
+}
+
+type OpShlIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpShlIntLit8) Code() OpCode {
+	return OpCodeShlIntLit8
+}
+
+func (o OpShlIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpShlIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shl-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shl-int/lit8", o.pos)
+}
+
+type OpShrIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpShrIntLit8) Code() OpCode {
+	return OpCodeShrIntLit8
+}
+
+func (o OpShrIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpShrIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shr-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shr-int/lit8", o.pos)
+}
+
+type OpUshrIntLit8 struct {
+	opBase
+	Fmt22b
+}
+
+func (o OpUshrIntLit8) Code() OpCode {
+	return OpCodeUshrIntLit8
+}
+
+func (o OpUshrIntLit8) Fmt() Fmt {
+	return o.Fmt22b
+}
+
+func (o OpUshrIntLit8) String() string {
+	f := o.Fmt22b.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: ushr-int/lit8 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: ushr-int/lit8", o.pos)
 }
