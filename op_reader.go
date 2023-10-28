@@ -47,6 +47,10 @@ func (r *OpReader) PeekCode() (OpCode, error) {
 			// Standard noop
 		case 1:
 			return OpCodePseudoPackedSwitchPayload, nil
+		case 2:
+			return OpCodePseudoSparseSwitchPayload, nil
+		case 3:
+			return OpCodePseudoFillArrayDataPayload, nil
 		default:
 			return OpCodeInvalid, fmt.Errorf("%w: unknown pseudo %x", ErrUnsupportedOp, pseudo)
 		}
@@ -94,6 +98,40 @@ func init() {
 			}
 
 			return &OpPseudoPackedSwitchPayload{
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	}
+	opConfigs[OpCodePseudoSparseSwitchPayload] = opConfig{
+		Name: "pseudo-sparse-switch-payload",
+		Size: fmtSparseSwitchPayloadSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmtSparseSwitchPayload()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpPseudoSparseSwitchPayload{
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	}
+	opConfigs[OpCodePseudoFillArrayDataPayload] = opConfig{
+		Name: "pseudo-fill-array-data-payload",
+		Size: fmtFillArrayDataPayloadSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmtFillArrayDataPayload()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpPseudoFillArrayDataPayload{
 				opBase{pos: pos},
 				f,
 			}, nil

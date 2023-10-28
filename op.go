@@ -11,8 +11,10 @@ type opConfig struct {
 }
 
 const (
-	OpCodeInvalid                   OpCode = -1
-	OpCodePseudoPackedSwitchPayload OpCode = -10
+	OpCodeInvalid                    OpCode = -1
+	OpCodePseudoPackedSwitchPayload  OpCode = -10
+	OpCodePseudoSparseSwitchPayload  OpCode = -11
+	OpCodePseudoFillArrayDataPayload OpCode = -12
 )
 
 func (c OpCode) String() string {

@@ -127,7 +127,11 @@ var Ops = []Op{
 		Name: "const-wide/32",
 		Fmt:  "31i",
 	},
-	// TODO: 0x18
+	{
+		Code: 0x18,
+		Name: "const-wide",
+		Fmt:  "51l",
+	},
 	{
 		Code: 0x19,
 		Name: "const-wide/high16",
@@ -183,7 +187,21 @@ var Ops = []Op{
 		Name: "new-array",
 		Fmt:  "22c",
 	},
-	// TODO: missing
+	{
+		Code: 0x24,
+		Name: "filled-new-array",
+		Fmt:  "35c",
+	},
+	{
+		Code: 0x25,
+		Name: "filled-new-array/range",
+		Fmt:  "3rc",
+	},
+	{
+		Code: 0x26,
+		Name: "fill-array-data",
+		Fmt:  "31t",
+	},
 	{
 		Code: 0x27,
 		Name: "throw",
@@ -209,7 +227,11 @@ var Ops = []Op{
 		Name: "packed-switch",
 		Fmt:  "31t",
 	},
-	// TODO: missing
+	{
+		Code: 0x2c,
+		Name: "sparse-switch",
+		Fmt:  "31t",
+	},
 	{
 		Code: 0x2d,
 		Name: "cmpl-float",
@@ -557,7 +579,472 @@ var Ops = []Op{
 		Name: "invoke-interface/range",
 		Fmt:  "3rc",
 	},
-	// TODO: missing
+	// 0x79-0x7a unused
+	{
+		Code: 0x7b,
+		Name: "neg-int",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x7c,
+		Name: "not-int",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x7d,
+		Name: "neg-long",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x7e,
+		Name: "not-long",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x7f,
+		Name: "neg-float",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x80,
+		Name: "neg-double",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x81,
+		Name: "int-to-long",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x82,
+		Name: "int-to-float",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x83,
+		Name: "int-to-double",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x84,
+		Name: "long-to-int",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x85,
+		Name: "long-to-float",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x86,
+		Name: "long-to-double",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x87,
+		Name: "float-to-int",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x88,
+		Name: "float-to-long",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x89,
+		Name: "float-to-double",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8a,
+		Name: "double-to-int",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8b,
+		Name: "double-to-long",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8c,
+		Name: "double-to-float",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8d,
+		Name: "int-to-byte",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8e,
+		Name: "int-to-char",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x8f,
+		Name: "int-to-short",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0x90,
+		Name: "add-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x91,
+		Name: "sub-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x92,
+		Name: "mul-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x93,
+		Name: "div-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x94,
+		Name: "rem-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x95,
+		Name: "and-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x96,
+		Name: "or-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x97,
+		Name: "xor-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x98,
+		Name: "shl-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x99,
+		Name: "shr-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9a,
+		Name: "ushr-int",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9b,
+		Name: "add-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9c,
+		Name: "sub-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9d,
+		Name: "mul-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9e,
+		Name: "div-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0x9f,
+		Name: "rem-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa0,
+		Name: "and-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa1,
+		Name: "or-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa2,
+		Name: "xor-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa3,
+		Name: "shl-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa4,
+		Name: "shr-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa5,
+		Name: "ushr-long",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa6,
+		Name: "add-float",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa7,
+		Name: "sub-float",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa8,
+		Name: "mul-float",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xa9,
+		Name: "div-float",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xaa,
+		Name: "rem-float",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xab,
+		Name: "add-double",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xac,
+		Name: "sub-double",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xad,
+		Name: "mul-double",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xae,
+		Name: "div-double",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xaf,
+		Name: "rem-double",
+		Fmt:  "23x",
+	},
+	{
+		Code: 0xb0,
+		Name: "add-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb1,
+		Name: "sub-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb2,
+		Name: "mul-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb3,
+		Name: "div-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb4,
+		Name: "rem-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb5,
+		Name: "and-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb6,
+		Name: "or-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb7,
+		Name: "xor-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb8,
+		Name: "shl-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xb9,
+		Name: "shr-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xba,
+		Name: "ushr-int/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xbb,
+		Name: "add-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xbc,
+		Name: "sub-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xbd,
+		Name: "mul-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xbe,
+		Name: "div-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xbf,
+		Name: "rem-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc0,
+		Name: "and-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc1,
+		Name: "or-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc2,
+		Name: "xor-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc3,
+		Name: "shl-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc4,
+		Name: "shr-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc5,
+		Name: "ushr-long/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc6,
+		Name: "add-float/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc7,
+		Name: "sub-float/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc8,
+		Name: "mul-float/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xc9,
+		Name: "div-float/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xca,
+		Name: "rem-float/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xcb,
+		Name: "add-double/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xcc,
+		Name: "sub-double/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xcd,
+		Name: "mul-double/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xce,
+		Name: "div-double/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xcf,
+		Name: "rem-double/2addr",
+		Fmt:  "12x",
+	},
+	{
+		Code: 0xd0,
+		Name: "add-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd1,
+		Name: "rsub-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd2,
+		Name: "mul-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd3,
+		Name: "div-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd4,
+		Name: "rem-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd5,
+		Name: "and-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd6,
+		Name: "or-int/lit16",
+		Fmt:  "22s",
+	},
+	{
+		Code: 0xd7,
+		Name: "xor-int/lit16",
+		Fmt:  "22s",
+	},
 	{
 		Code: 0xd8,
 		Name: "add-int/lit8",
@@ -613,5 +1100,35 @@ var Ops = []Op{
 		Name: "ushr-int/lit8",
 		Fmt:  "22b",
 	},
-	// TODO: missing
+	// 0xe3-0xf9 unused
+	{
+		Code: 0xfa,
+		Name: "invoke-polymorphic",
+		Fmt:  "45cc",
+	},
+	{
+		Code: 0xfb,
+		Name: "invoke-polymorphic/range",
+		Fmt:  "4rcc",
+	},
+	{
+		Code: 0xfc,
+		Name: "invoke-custom",
+		Fmt:  "35c",
+	},
+	{
+		Code: 0xfd,
+		Name: "invoke-custom/range",
+		Fmt:  "3rc",
+	},
+	{
+		Code: 0xfe,
+		Name: "const-method-handle",
+		Fmt:  "21c",
+	},
+	{
+		Code: 0xff,
+		Name: "const-method-type",
+		Fmt:  "21c",
+	},
 }

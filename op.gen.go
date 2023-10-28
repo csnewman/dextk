@@ -27,6 +27,7 @@ const (
 	OpCodeConstHigh16 OpCode = 0x15
 	OpCodeConstWide16 OpCode = 0x16
 	OpCodeConstWide32 OpCode = 0x17
+	OpCodeConstWide OpCode = 0x18
 	OpCodeConstWideHigh16 OpCode = 0x19
 	OpCodeConstString OpCode = 0x1a
 	OpCodeConstStringJumbo OpCode = 0x1b
@@ -38,11 +39,15 @@ const (
 	OpCodeArrayLength OpCode = 0x21
 	OpCodeNewInstance OpCode = 0x22
 	OpCodeNewArray OpCode = 0x23
+	OpCodeFilledNewArray OpCode = 0x24
+	OpCodeFilledNewArrayRange OpCode = 0x25
+	OpCodeFillArrayData OpCode = 0x26
 	OpCodeThrow OpCode = 0x27
 	OpCodeGoto OpCode = 0x28
 	OpCodeGoto16 OpCode = 0x29
 	OpCodeGoto32 OpCode = 0x2a
 	OpCodePackedSwitch OpCode = 0x2b
+	OpCodeSparseSwitch OpCode = 0x2c
 	OpCodeCmplFloat OpCode = 0x2d
 	OpCodeCmpgFloat OpCode = 0x2e
 	OpCodeCmplDouble OpCode = 0x2f
@@ -112,6 +117,99 @@ const (
 	OpCodeInvokeDirectRange OpCode = 0x76
 	OpCodeInvokeStaticRange OpCode = 0x77
 	OpCodeInvokeInterfaceRange OpCode = 0x78
+	OpCodeNegInt OpCode = 0x7b
+	OpCodeNotInt OpCode = 0x7c
+	OpCodeNegLong OpCode = 0x7d
+	OpCodeNotLong OpCode = 0x7e
+	OpCodeNegFloat OpCode = 0x7f
+	OpCodeNegDouble OpCode = 0x80
+	OpCodeIntToLong OpCode = 0x81
+	OpCodeIntToFloat OpCode = 0x82
+	OpCodeIntToDouble OpCode = 0x83
+	OpCodeLongToInt OpCode = 0x84
+	OpCodeLongToFloat OpCode = 0x85
+	OpCodeLongToDouble OpCode = 0x86
+	OpCodeFloatToInt OpCode = 0x87
+	OpCodeFloatToLong OpCode = 0x88
+	OpCodeFloatToDouble OpCode = 0x89
+	OpCodeDoubleToInt OpCode = 0x8a
+	OpCodeDoubleToLong OpCode = 0x8b
+	OpCodeDoubleToFloat OpCode = 0x8c
+	OpCodeIntToByte OpCode = 0x8d
+	OpCodeIntToChar OpCode = 0x8e
+	OpCodeIntToShort OpCode = 0x8f
+	OpCodeAddInt OpCode = 0x90
+	OpCodeSubInt OpCode = 0x91
+	OpCodeMulInt OpCode = 0x92
+	OpCodeDivInt OpCode = 0x93
+	OpCodeRemInt OpCode = 0x94
+	OpCodeAndInt OpCode = 0x95
+	OpCodeOrInt OpCode = 0x96
+	OpCodeXorInt OpCode = 0x97
+	OpCodeShlInt OpCode = 0x98
+	OpCodeShrInt OpCode = 0x99
+	OpCodeUshrInt OpCode = 0x9a
+	OpCodeAddLong OpCode = 0x9b
+	OpCodeSubLong OpCode = 0x9c
+	OpCodeMulLong OpCode = 0x9d
+	OpCodeDivLong OpCode = 0x9e
+	OpCodeRemLong OpCode = 0x9f
+	OpCodeAndLong OpCode = 0xa0
+	OpCodeOrLong OpCode = 0xa1
+	OpCodeXorLong OpCode = 0xa2
+	OpCodeShlLong OpCode = 0xa3
+	OpCodeShrLong OpCode = 0xa4
+	OpCodeUshrLong OpCode = 0xa5
+	OpCodeAddFloat OpCode = 0xa6
+	OpCodeSubFloat OpCode = 0xa7
+	OpCodeMulFloat OpCode = 0xa8
+	OpCodeDivFloat OpCode = 0xa9
+	OpCodeRemFloat OpCode = 0xaa
+	OpCodeAddDouble OpCode = 0xab
+	OpCodeSubDouble OpCode = 0xac
+	OpCodeMulDouble OpCode = 0xad
+	OpCodeDivDouble OpCode = 0xae
+	OpCodeRemDouble OpCode = 0xaf
+	OpCodeAddInt2Addr OpCode = 0xb0
+	OpCodeSubInt2Addr OpCode = 0xb1
+	OpCodeMulInt2Addr OpCode = 0xb2
+	OpCodeDivInt2Addr OpCode = 0xb3
+	OpCodeRemInt2Addr OpCode = 0xb4
+	OpCodeAndInt2Addr OpCode = 0xb5
+	OpCodeOrInt2Addr OpCode = 0xb6
+	OpCodeXorInt2Addr OpCode = 0xb7
+	OpCodeShlInt2Addr OpCode = 0xb8
+	OpCodeShrInt2Addr OpCode = 0xb9
+	OpCodeUshrInt2Addr OpCode = 0xba
+	OpCodeAddLong2Addr OpCode = 0xbb
+	OpCodeSubLong2Addr OpCode = 0xbc
+	OpCodeMulLong2Addr OpCode = 0xbd
+	OpCodeDivLong2Addr OpCode = 0xbe
+	OpCodeRemLong2Addr OpCode = 0xbf
+	OpCodeAndLong2Addr OpCode = 0xc0
+	OpCodeOrLong2Addr OpCode = 0xc1
+	OpCodeXorLong2Addr OpCode = 0xc2
+	OpCodeShlLong2Addr OpCode = 0xc3
+	OpCodeShrLong2Addr OpCode = 0xc4
+	OpCodeUshrLong2Addr OpCode = 0xc5
+	OpCodeAddFloat2Addr OpCode = 0xc6
+	OpCodeSubFloat2Addr OpCode = 0xc7
+	OpCodeMulFloat2Addr OpCode = 0xc8
+	OpCodeDivFloat2Addr OpCode = 0xc9
+	OpCodeRemFloat2Addr OpCode = 0xca
+	OpCodeAddDouble2Addr OpCode = 0xcb
+	OpCodeSubDouble2Addr OpCode = 0xcc
+	OpCodeMulDouble2Addr OpCode = 0xcd
+	OpCodeDivDouble2Addr OpCode = 0xce
+	OpCodeRemDouble2Addr OpCode = 0xcf
+	OpCodeAddIntLit16 OpCode = 0xd0
+	OpCodeRsubIntLit16 OpCode = 0xd1
+	OpCodeMulIntLit16 OpCode = 0xd2
+	OpCodeDivIntLit16 OpCode = 0xd3
+	OpCodeRemIntLit16 OpCode = 0xd4
+	OpCodeAndIntLit16 OpCode = 0xd5
+	OpCodeOrIntLit16 OpCode = 0xd6
+	OpCodeXorIntLit16 OpCode = 0xd7
 	OpCodeAddIntLit8 OpCode = 0xd8
 	OpCodeRsubIntLit8 OpCode = 0xd9
 	OpCodeMulIntLit8 OpCode = 0xda
@@ -123,6 +221,12 @@ const (
 	OpCodeShlIntLit8 OpCode = 0xe0
 	OpCodeShrIntLit8 OpCode = 0xe1
 	OpCodeUshrIntLit8 OpCode = 0xe2
+	OpCodeInvokePolymorphic OpCode = 0xfa
+	OpCodeInvokePolymorphicRange OpCode = 0xfb
+	OpCodeInvokeCustom OpCode = 0xfc
+	OpCodeInvokeCustomRange OpCode = 0xfd
+	OpCodeConstMethodHandle OpCode = 0xfe
+	OpCodeConstMethodType OpCode = 0xff
 )
 
 var opConfigs = map[OpCode]opConfig{
@@ -534,6 +638,23 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeConstWide: {
+		Name: "const-wide",
+		Size: fmt51lSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt51l()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpConstWide {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeConstWideHigh16: {
 		Name: "const-wide/high16",
 		Size: fmt21hSize,
@@ -721,6 +842,57 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeFilledNewArray: {
+		Name: "filled-new-array",
+		Size: fmt35cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt35c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFilledNewArray {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeFilledNewArrayRange: {
+		Name: "filled-new-array/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFilledNewArrayRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeFillArrayData: {
+		Name: "fill-array-data",
+		Size: fmt31tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt31t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFillArrayData {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeThrow: {
 		Name: "throw",
 		Size: fmt11xSize,
@@ -801,6 +973,23 @@ var opConfigs = map[OpCode]opConfig{
 			}
 
 			return &OpPackedSwitch {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSparseSwitch: {
+		Name: "sparse-switch",
+		Size: fmt31tSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt31t()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSparseSwitch {
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1979,6 +2168,1587 @@ var opConfigs = map[OpCode]opConfig{
 			}, nil
 		},
 	},
+	OpCodeNegInt: {
+		Name: "neg-int",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNegInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeNotInt: {
+		Name: "not-int",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNotInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeNegLong: {
+		Name: "neg-long",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNegLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeNotLong: {
+		Name: "not-long",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNotLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeNegFloat: {
+		Name: "neg-float",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNegFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeNegDouble: {
+		Name: "neg-double",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpNegDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToLong: {
+		Name: "int-to-long",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToFloat: {
+		Name: "int-to-float",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToDouble: {
+		Name: "int-to-double",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeLongToInt: {
+		Name: "long-to-int",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpLongToInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeLongToFloat: {
+		Name: "long-to-float",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpLongToFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeLongToDouble: {
+		Name: "long-to-double",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpLongToDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeFloatToInt: {
+		Name: "float-to-int",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFloatToInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeFloatToLong: {
+		Name: "float-to-long",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFloatToLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeFloatToDouble: {
+		Name: "float-to-double",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpFloatToDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDoubleToInt: {
+		Name: "double-to-int",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDoubleToInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDoubleToLong: {
+		Name: "double-to-long",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDoubleToLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDoubleToFloat: {
+		Name: "double-to-float",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDoubleToFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToByte: {
+		Name: "int-to-byte",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToByte {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToChar: {
+		Name: "int-to-char",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToChar {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeIntToShort: {
+		Name: "int-to-short",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpIntToShort {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddInt: {
+		Name: "add-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubInt: {
+		Name: "sub-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulInt: {
+		Name: "mul-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivInt: {
+		Name: "div-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemInt: {
+		Name: "rem-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndInt: {
+		Name: "and-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrInt: {
+		Name: "or-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorInt: {
+		Name: "xor-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShlInt: {
+		Name: "shl-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShlInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShrInt: {
+		Name: "shr-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShrInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeUshrInt: {
+		Name: "ushr-int",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpUshrInt {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddLong: {
+		Name: "add-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubLong: {
+		Name: "sub-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulLong: {
+		Name: "mul-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivLong: {
+		Name: "div-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemLong: {
+		Name: "rem-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndLong: {
+		Name: "and-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrLong: {
+		Name: "or-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorLong: {
+		Name: "xor-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShlLong: {
+		Name: "shl-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShlLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShrLong: {
+		Name: "shr-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShrLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeUshrLong: {
+		Name: "ushr-long",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpUshrLong {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddFloat: {
+		Name: "add-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubFloat: {
+		Name: "sub-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulFloat: {
+		Name: "mul-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivFloat: {
+		Name: "div-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemFloat: {
+		Name: "rem-float",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemFloat {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddDouble: {
+		Name: "add-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubDouble: {
+		Name: "sub-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulDouble: {
+		Name: "mul-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivDouble: {
+		Name: "div-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemDouble: {
+		Name: "rem-double",
+		Size: fmt23xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt23x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemDouble {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddInt2Addr: {
+		Name: "add-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubInt2Addr: {
+		Name: "sub-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulInt2Addr: {
+		Name: "mul-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivInt2Addr: {
+		Name: "div-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemInt2Addr: {
+		Name: "rem-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndInt2Addr: {
+		Name: "and-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrInt2Addr: {
+		Name: "or-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorInt2Addr: {
+		Name: "xor-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShlInt2Addr: {
+		Name: "shl-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShlInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShrInt2Addr: {
+		Name: "shr-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShrInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeUshrInt2Addr: {
+		Name: "ushr-int/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpUshrInt2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddLong2Addr: {
+		Name: "add-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubLong2Addr: {
+		Name: "sub-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulLong2Addr: {
+		Name: "mul-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivLong2Addr: {
+		Name: "div-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemLong2Addr: {
+		Name: "rem-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndLong2Addr: {
+		Name: "and-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrLong2Addr: {
+		Name: "or-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorLong2Addr: {
+		Name: "xor-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShlLong2Addr: {
+		Name: "shl-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShlLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeShrLong2Addr: {
+		Name: "shr-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpShrLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeUshrLong2Addr: {
+		Name: "ushr-long/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpUshrLong2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddFloat2Addr: {
+		Name: "add-float/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddFloat2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubFloat2Addr: {
+		Name: "sub-float/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubFloat2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulFloat2Addr: {
+		Name: "mul-float/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulFloat2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivFloat2Addr: {
+		Name: "div-float/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivFloat2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemFloat2Addr: {
+		Name: "rem-float/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemFloat2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddDouble2Addr: {
+		Name: "add-double/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddDouble2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeSubDouble2Addr: {
+		Name: "sub-double/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpSubDouble2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulDouble2Addr: {
+		Name: "mul-double/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulDouble2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivDouble2Addr: {
+		Name: "div-double/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivDouble2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemDouble2Addr: {
+		Name: "rem-double/2addr",
+		Size: fmt12xSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt12x()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemDouble2Addr {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAddIntLit16: {
+		Name: "add-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAddIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRsubIntLit16: {
+		Name: "rsub-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRsubIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeMulIntLit16: {
+		Name: "mul-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpMulIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeDivIntLit16: {
+		Name: "div-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpDivIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeRemIntLit16: {
+		Name: "rem-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpRemIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeAndIntLit16: {
+		Name: "and-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpAndIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeOrIntLit16: {
+		Name: "or-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpOrIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeXorIntLit16: {
+		Name: "xor-int/lit16",
+		Size: fmt22sSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt22s()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpXorIntLit16 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
 	OpCodeAddIntLit8: {
 		Name: "add-int/lit8",
 		Size: fmt22bSize,
@@ -2161,6 +3931,108 @@ var opConfigs = map[OpCode]opConfig{
 			}
 
 			return &OpUshrIntLit8 {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokePolymorphic: {
+		Name: "invoke-polymorphic",
+		Size: fmt45ccSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt45cc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokePolymorphic {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokePolymorphicRange: {
+		Name: "invoke-polymorphic/range",
+		Size: fmt4rccSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt4rcc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokePolymorphicRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeCustom: {
+		Name: "invoke-custom",
+		Size: fmt35cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt35c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeCustom {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeInvokeCustomRange: {
+		Name: "invoke-custom/range",
+		Size: fmt3rcSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt3rc()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpInvokeCustomRange {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeConstMethodHandle: {
+		Name: "const-method-handle",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpConstMethodHandle {
+				opBase{pos: pos},
+				f,
+			}, nil
+		},
+	},
+	OpCodeConstMethodType: {
+		Name: "const-method-type",
+		Size: fmt21cSize,
+		Reader: func(r *OpReader) (Op, error) {
+			pos := r.pos
+
+			f, err := r.readFmt21c()
+			if err != nil {
+				return nil, err
+			}
+
+			return &OpConstMethodType {
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2696,6 +4568,28 @@ func (o OpConstWide32) String() string {
 	return fmt.Sprintf("0x%x: const-wide/32", o.pos)
 }
 
+type OpConstWide struct {
+	opBase
+	Fmt51l
+}
+
+func (o OpConstWide) Code() OpCode {
+	return OpCodeConstWide
+}
+
+func (o OpConstWide) Fmt() Fmt {
+	return o.Fmt51l
+}
+
+func (o OpConstWide) String() string {
+	f := o.Fmt51l.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: const-wide %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: const-wide", o.pos)
+}
+
 type OpConstWideHigh16 struct {
 	opBase
 	Fmt21h
@@ -2938,6 +4832,72 @@ func (o OpNewArray) String() string {
 	return fmt.Sprintf("0x%x: new-array", o.pos)
 }
 
+type OpFilledNewArray struct {
+	opBase
+	Fmt35c
+}
+
+func (o OpFilledNewArray) Code() OpCode {
+	return OpCodeFilledNewArray
+}
+
+func (o OpFilledNewArray) Fmt() Fmt {
+	return o.Fmt35c
+}
+
+func (o OpFilledNewArray) String() string {
+	f := o.Fmt35c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: filled-new-array %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: filled-new-array", o.pos)
+}
+
+type OpFilledNewArrayRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpFilledNewArrayRange) Code() OpCode {
+	return OpCodeFilledNewArrayRange
+}
+
+func (o OpFilledNewArrayRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpFilledNewArrayRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: filled-new-array/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: filled-new-array/range", o.pos)
+}
+
+type OpFillArrayData struct {
+	opBase
+	Fmt31t
+}
+
+func (o OpFillArrayData) Code() OpCode {
+	return OpCodeFillArrayData
+}
+
+func (o OpFillArrayData) Fmt() Fmt {
+	return o.Fmt31t
+}
+
+func (o OpFillArrayData) String() string {
+	f := o.Fmt31t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: fill-array-data %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: fill-array-data", o.pos)
+}
+
 type OpThrow struct {
 	opBase
 	Fmt11x
@@ -3046,6 +5006,28 @@ func (o OpPackedSwitch) String() string {
 	}
 
 	return fmt.Sprintf("0x%x: packed-switch", o.pos)
+}
+
+type OpSparseSwitch struct {
+	opBase
+	Fmt31t
+}
+
+func (o OpSparseSwitch) Code() OpCode {
+	return OpCodeSparseSwitch
+}
+
+func (o OpSparseSwitch) Fmt() Fmt {
+	return o.Fmt31t
+}
+
+func (o OpSparseSwitch) String() string {
+	f := o.Fmt31t.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sparse-switch %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sparse-switch", o.pos)
 }
 
 type OpCmplFloat struct {
@@ -4566,6 +6548,2052 @@ func (o OpInvokeInterfaceRange) String() string {
 	return fmt.Sprintf("0x%x: invoke-interface/range", o.pos)
 }
 
+type OpNegInt struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNegInt) Code() OpCode {
+	return OpCodeNegInt
+}
+
+func (o OpNegInt) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNegInt) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: neg-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: neg-int", o.pos)
+}
+
+type OpNotInt struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNotInt) Code() OpCode {
+	return OpCodeNotInt
+}
+
+func (o OpNotInt) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNotInt) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: not-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: not-int", o.pos)
+}
+
+type OpNegLong struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNegLong) Code() OpCode {
+	return OpCodeNegLong
+}
+
+func (o OpNegLong) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNegLong) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: neg-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: neg-long", o.pos)
+}
+
+type OpNotLong struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNotLong) Code() OpCode {
+	return OpCodeNotLong
+}
+
+func (o OpNotLong) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNotLong) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: not-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: not-long", o.pos)
+}
+
+type OpNegFloat struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNegFloat) Code() OpCode {
+	return OpCodeNegFloat
+}
+
+func (o OpNegFloat) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNegFloat) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: neg-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: neg-float", o.pos)
+}
+
+type OpNegDouble struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpNegDouble) Code() OpCode {
+	return OpCodeNegDouble
+}
+
+func (o OpNegDouble) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpNegDouble) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: neg-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: neg-double", o.pos)
+}
+
+type OpIntToLong struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToLong) Code() OpCode {
+	return OpCodeIntToLong
+}
+
+func (o OpIntToLong) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToLong) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-long", o.pos)
+}
+
+type OpIntToFloat struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToFloat) Code() OpCode {
+	return OpCodeIntToFloat
+}
+
+func (o OpIntToFloat) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToFloat) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-float", o.pos)
+}
+
+type OpIntToDouble struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToDouble) Code() OpCode {
+	return OpCodeIntToDouble
+}
+
+func (o OpIntToDouble) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToDouble) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-double", o.pos)
+}
+
+type OpLongToInt struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpLongToInt) Code() OpCode {
+	return OpCodeLongToInt
+}
+
+func (o OpLongToInt) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpLongToInt) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: long-to-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: long-to-int", o.pos)
+}
+
+type OpLongToFloat struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpLongToFloat) Code() OpCode {
+	return OpCodeLongToFloat
+}
+
+func (o OpLongToFloat) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpLongToFloat) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: long-to-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: long-to-float", o.pos)
+}
+
+type OpLongToDouble struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpLongToDouble) Code() OpCode {
+	return OpCodeLongToDouble
+}
+
+func (o OpLongToDouble) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpLongToDouble) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: long-to-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: long-to-double", o.pos)
+}
+
+type OpFloatToInt struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpFloatToInt) Code() OpCode {
+	return OpCodeFloatToInt
+}
+
+func (o OpFloatToInt) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpFloatToInt) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: float-to-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: float-to-int", o.pos)
+}
+
+type OpFloatToLong struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpFloatToLong) Code() OpCode {
+	return OpCodeFloatToLong
+}
+
+func (o OpFloatToLong) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpFloatToLong) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: float-to-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: float-to-long", o.pos)
+}
+
+type OpFloatToDouble struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpFloatToDouble) Code() OpCode {
+	return OpCodeFloatToDouble
+}
+
+func (o OpFloatToDouble) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpFloatToDouble) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: float-to-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: float-to-double", o.pos)
+}
+
+type OpDoubleToInt struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDoubleToInt) Code() OpCode {
+	return OpCodeDoubleToInt
+}
+
+func (o OpDoubleToInt) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDoubleToInt) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: double-to-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: double-to-int", o.pos)
+}
+
+type OpDoubleToLong struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDoubleToLong) Code() OpCode {
+	return OpCodeDoubleToLong
+}
+
+func (o OpDoubleToLong) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDoubleToLong) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: double-to-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: double-to-long", o.pos)
+}
+
+type OpDoubleToFloat struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDoubleToFloat) Code() OpCode {
+	return OpCodeDoubleToFloat
+}
+
+func (o OpDoubleToFloat) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDoubleToFloat) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: double-to-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: double-to-float", o.pos)
+}
+
+type OpIntToByte struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToByte) Code() OpCode {
+	return OpCodeIntToByte
+}
+
+func (o OpIntToByte) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToByte) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-byte %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-byte", o.pos)
+}
+
+type OpIntToChar struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToChar) Code() OpCode {
+	return OpCodeIntToChar
+}
+
+func (o OpIntToChar) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToChar) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-char %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-char", o.pos)
+}
+
+type OpIntToShort struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpIntToShort) Code() OpCode {
+	return OpCodeIntToShort
+}
+
+func (o OpIntToShort) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpIntToShort) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: int-to-short %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: int-to-short", o.pos)
+}
+
+type OpAddInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAddInt) Code() OpCode {
+	return OpCodeAddInt
+}
+
+func (o OpAddInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAddInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-int", o.pos)
+}
+
+type OpSubInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpSubInt) Code() OpCode {
+	return OpCodeSubInt
+}
+
+func (o OpSubInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpSubInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-int", o.pos)
+}
+
+type OpMulInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpMulInt) Code() OpCode {
+	return OpCodeMulInt
+}
+
+func (o OpMulInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpMulInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-int", o.pos)
+}
+
+type OpDivInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpDivInt) Code() OpCode {
+	return OpCodeDivInt
+}
+
+func (o OpDivInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpDivInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-int", o.pos)
+}
+
+type OpRemInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpRemInt) Code() OpCode {
+	return OpCodeRemInt
+}
+
+func (o OpRemInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpRemInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-int", o.pos)
+}
+
+type OpAndInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAndInt) Code() OpCode {
+	return OpCodeAndInt
+}
+
+func (o OpAndInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAndInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-int", o.pos)
+}
+
+type OpOrInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpOrInt) Code() OpCode {
+	return OpCodeOrInt
+}
+
+func (o OpOrInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpOrInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-int", o.pos)
+}
+
+type OpXorInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpXorInt) Code() OpCode {
+	return OpCodeXorInt
+}
+
+func (o OpXorInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpXorInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-int", o.pos)
+}
+
+type OpShlInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpShlInt) Code() OpCode {
+	return OpCodeShlInt
+}
+
+func (o OpShlInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpShlInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shl-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shl-int", o.pos)
+}
+
+type OpShrInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpShrInt) Code() OpCode {
+	return OpCodeShrInt
+}
+
+func (o OpShrInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpShrInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shr-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shr-int", o.pos)
+}
+
+type OpUshrInt struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpUshrInt) Code() OpCode {
+	return OpCodeUshrInt
+}
+
+func (o OpUshrInt) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpUshrInt) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: ushr-int %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: ushr-int", o.pos)
+}
+
+type OpAddLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAddLong) Code() OpCode {
+	return OpCodeAddLong
+}
+
+func (o OpAddLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAddLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-long", o.pos)
+}
+
+type OpSubLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpSubLong) Code() OpCode {
+	return OpCodeSubLong
+}
+
+func (o OpSubLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpSubLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-long", o.pos)
+}
+
+type OpMulLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpMulLong) Code() OpCode {
+	return OpCodeMulLong
+}
+
+func (o OpMulLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpMulLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-long", o.pos)
+}
+
+type OpDivLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpDivLong) Code() OpCode {
+	return OpCodeDivLong
+}
+
+func (o OpDivLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpDivLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-long", o.pos)
+}
+
+type OpRemLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpRemLong) Code() OpCode {
+	return OpCodeRemLong
+}
+
+func (o OpRemLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpRemLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-long", o.pos)
+}
+
+type OpAndLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAndLong) Code() OpCode {
+	return OpCodeAndLong
+}
+
+func (o OpAndLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAndLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-long", o.pos)
+}
+
+type OpOrLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpOrLong) Code() OpCode {
+	return OpCodeOrLong
+}
+
+func (o OpOrLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpOrLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-long", o.pos)
+}
+
+type OpXorLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpXorLong) Code() OpCode {
+	return OpCodeXorLong
+}
+
+func (o OpXorLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpXorLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-long", o.pos)
+}
+
+type OpShlLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpShlLong) Code() OpCode {
+	return OpCodeShlLong
+}
+
+func (o OpShlLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpShlLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shl-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shl-long", o.pos)
+}
+
+type OpShrLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpShrLong) Code() OpCode {
+	return OpCodeShrLong
+}
+
+func (o OpShrLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpShrLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shr-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shr-long", o.pos)
+}
+
+type OpUshrLong struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpUshrLong) Code() OpCode {
+	return OpCodeUshrLong
+}
+
+func (o OpUshrLong) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpUshrLong) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: ushr-long %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: ushr-long", o.pos)
+}
+
+type OpAddFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAddFloat) Code() OpCode {
+	return OpCodeAddFloat
+}
+
+func (o OpAddFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAddFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-float", o.pos)
+}
+
+type OpSubFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpSubFloat) Code() OpCode {
+	return OpCodeSubFloat
+}
+
+func (o OpSubFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpSubFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-float", o.pos)
+}
+
+type OpMulFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpMulFloat) Code() OpCode {
+	return OpCodeMulFloat
+}
+
+func (o OpMulFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpMulFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-float", o.pos)
+}
+
+type OpDivFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpDivFloat) Code() OpCode {
+	return OpCodeDivFloat
+}
+
+func (o OpDivFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpDivFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-float", o.pos)
+}
+
+type OpRemFloat struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpRemFloat) Code() OpCode {
+	return OpCodeRemFloat
+}
+
+func (o OpRemFloat) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpRemFloat) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-float %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-float", o.pos)
+}
+
+type OpAddDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpAddDouble) Code() OpCode {
+	return OpCodeAddDouble
+}
+
+func (o OpAddDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpAddDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-double", o.pos)
+}
+
+type OpSubDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpSubDouble) Code() OpCode {
+	return OpCodeSubDouble
+}
+
+func (o OpSubDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpSubDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-double", o.pos)
+}
+
+type OpMulDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpMulDouble) Code() OpCode {
+	return OpCodeMulDouble
+}
+
+func (o OpMulDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpMulDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-double", o.pos)
+}
+
+type OpDivDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpDivDouble) Code() OpCode {
+	return OpCodeDivDouble
+}
+
+func (o OpDivDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpDivDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-double", o.pos)
+}
+
+type OpRemDouble struct {
+	opBase
+	Fmt23x
+}
+
+func (o OpRemDouble) Code() OpCode {
+	return OpCodeRemDouble
+}
+
+func (o OpRemDouble) Fmt() Fmt {
+	return o.Fmt23x
+}
+
+func (o OpRemDouble) String() string {
+	f := o.Fmt23x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-double %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-double", o.pos)
+}
+
+type OpAddInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAddInt2Addr) Code() OpCode {
+	return OpCodeAddInt2Addr
+}
+
+func (o OpAddInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAddInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-int/2addr", o.pos)
+}
+
+type OpSubInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpSubInt2Addr) Code() OpCode {
+	return OpCodeSubInt2Addr
+}
+
+func (o OpSubInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpSubInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-int/2addr", o.pos)
+}
+
+type OpMulInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpMulInt2Addr) Code() OpCode {
+	return OpCodeMulInt2Addr
+}
+
+func (o OpMulInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpMulInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-int/2addr", o.pos)
+}
+
+type OpDivInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDivInt2Addr) Code() OpCode {
+	return OpCodeDivInt2Addr
+}
+
+func (o OpDivInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDivInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-int/2addr", o.pos)
+}
+
+type OpRemInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpRemInt2Addr) Code() OpCode {
+	return OpCodeRemInt2Addr
+}
+
+func (o OpRemInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpRemInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-int/2addr", o.pos)
+}
+
+type OpAndInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAndInt2Addr) Code() OpCode {
+	return OpCodeAndInt2Addr
+}
+
+func (o OpAndInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAndInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-int/2addr", o.pos)
+}
+
+type OpOrInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpOrInt2Addr) Code() OpCode {
+	return OpCodeOrInt2Addr
+}
+
+func (o OpOrInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpOrInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-int/2addr", o.pos)
+}
+
+type OpXorInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpXorInt2Addr) Code() OpCode {
+	return OpCodeXorInt2Addr
+}
+
+func (o OpXorInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpXorInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-int/2addr", o.pos)
+}
+
+type OpShlInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpShlInt2Addr) Code() OpCode {
+	return OpCodeShlInt2Addr
+}
+
+func (o OpShlInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpShlInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shl-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shl-int/2addr", o.pos)
+}
+
+type OpShrInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpShrInt2Addr) Code() OpCode {
+	return OpCodeShrInt2Addr
+}
+
+func (o OpShrInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpShrInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shr-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shr-int/2addr", o.pos)
+}
+
+type OpUshrInt2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpUshrInt2Addr) Code() OpCode {
+	return OpCodeUshrInt2Addr
+}
+
+func (o OpUshrInt2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpUshrInt2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: ushr-int/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: ushr-int/2addr", o.pos)
+}
+
+type OpAddLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAddLong2Addr) Code() OpCode {
+	return OpCodeAddLong2Addr
+}
+
+func (o OpAddLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAddLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-long/2addr", o.pos)
+}
+
+type OpSubLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpSubLong2Addr) Code() OpCode {
+	return OpCodeSubLong2Addr
+}
+
+func (o OpSubLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpSubLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-long/2addr", o.pos)
+}
+
+type OpMulLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpMulLong2Addr) Code() OpCode {
+	return OpCodeMulLong2Addr
+}
+
+func (o OpMulLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpMulLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-long/2addr", o.pos)
+}
+
+type OpDivLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDivLong2Addr) Code() OpCode {
+	return OpCodeDivLong2Addr
+}
+
+func (o OpDivLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDivLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-long/2addr", o.pos)
+}
+
+type OpRemLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpRemLong2Addr) Code() OpCode {
+	return OpCodeRemLong2Addr
+}
+
+func (o OpRemLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpRemLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-long/2addr", o.pos)
+}
+
+type OpAndLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAndLong2Addr) Code() OpCode {
+	return OpCodeAndLong2Addr
+}
+
+func (o OpAndLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAndLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-long/2addr", o.pos)
+}
+
+type OpOrLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpOrLong2Addr) Code() OpCode {
+	return OpCodeOrLong2Addr
+}
+
+func (o OpOrLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpOrLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-long/2addr", o.pos)
+}
+
+type OpXorLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpXorLong2Addr) Code() OpCode {
+	return OpCodeXorLong2Addr
+}
+
+func (o OpXorLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpXorLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-long/2addr", o.pos)
+}
+
+type OpShlLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpShlLong2Addr) Code() OpCode {
+	return OpCodeShlLong2Addr
+}
+
+func (o OpShlLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpShlLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shl-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shl-long/2addr", o.pos)
+}
+
+type OpShrLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpShrLong2Addr) Code() OpCode {
+	return OpCodeShrLong2Addr
+}
+
+func (o OpShrLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpShrLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: shr-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: shr-long/2addr", o.pos)
+}
+
+type OpUshrLong2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpUshrLong2Addr) Code() OpCode {
+	return OpCodeUshrLong2Addr
+}
+
+func (o OpUshrLong2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpUshrLong2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: ushr-long/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: ushr-long/2addr", o.pos)
+}
+
+type OpAddFloat2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAddFloat2Addr) Code() OpCode {
+	return OpCodeAddFloat2Addr
+}
+
+func (o OpAddFloat2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAddFloat2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-float/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-float/2addr", o.pos)
+}
+
+type OpSubFloat2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpSubFloat2Addr) Code() OpCode {
+	return OpCodeSubFloat2Addr
+}
+
+func (o OpSubFloat2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpSubFloat2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-float/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-float/2addr", o.pos)
+}
+
+type OpMulFloat2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpMulFloat2Addr) Code() OpCode {
+	return OpCodeMulFloat2Addr
+}
+
+func (o OpMulFloat2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpMulFloat2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-float/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-float/2addr", o.pos)
+}
+
+type OpDivFloat2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDivFloat2Addr) Code() OpCode {
+	return OpCodeDivFloat2Addr
+}
+
+func (o OpDivFloat2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDivFloat2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-float/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-float/2addr", o.pos)
+}
+
+type OpRemFloat2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpRemFloat2Addr) Code() OpCode {
+	return OpCodeRemFloat2Addr
+}
+
+func (o OpRemFloat2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpRemFloat2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-float/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-float/2addr", o.pos)
+}
+
+type OpAddDouble2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpAddDouble2Addr) Code() OpCode {
+	return OpCodeAddDouble2Addr
+}
+
+func (o OpAddDouble2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpAddDouble2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-double/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-double/2addr", o.pos)
+}
+
+type OpSubDouble2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpSubDouble2Addr) Code() OpCode {
+	return OpCodeSubDouble2Addr
+}
+
+func (o OpSubDouble2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpSubDouble2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: sub-double/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: sub-double/2addr", o.pos)
+}
+
+type OpMulDouble2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpMulDouble2Addr) Code() OpCode {
+	return OpCodeMulDouble2Addr
+}
+
+func (o OpMulDouble2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpMulDouble2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-double/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-double/2addr", o.pos)
+}
+
+type OpDivDouble2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpDivDouble2Addr) Code() OpCode {
+	return OpCodeDivDouble2Addr
+}
+
+func (o OpDivDouble2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpDivDouble2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-double/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-double/2addr", o.pos)
+}
+
+type OpRemDouble2Addr struct {
+	opBase
+	Fmt12x
+}
+
+func (o OpRemDouble2Addr) Code() OpCode {
+	return OpCodeRemDouble2Addr
+}
+
+func (o OpRemDouble2Addr) Fmt() Fmt {
+	return o.Fmt12x
+}
+
+func (o OpRemDouble2Addr) String() string {
+	f := o.Fmt12x.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-double/2addr %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-double/2addr", o.pos)
+}
+
+type OpAddIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpAddIntLit16) Code() OpCode {
+	return OpCodeAddIntLit16
+}
+
+func (o OpAddIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpAddIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: add-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: add-int/lit16", o.pos)
+}
+
+type OpRsubIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpRsubIntLit16) Code() OpCode {
+	return OpCodeRsubIntLit16
+}
+
+func (o OpRsubIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpRsubIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rsub-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rsub-int/lit16", o.pos)
+}
+
+type OpMulIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpMulIntLit16) Code() OpCode {
+	return OpCodeMulIntLit16
+}
+
+func (o OpMulIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpMulIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: mul-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: mul-int/lit16", o.pos)
+}
+
+type OpDivIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpDivIntLit16) Code() OpCode {
+	return OpCodeDivIntLit16
+}
+
+func (o OpDivIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpDivIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: div-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: div-int/lit16", o.pos)
+}
+
+type OpRemIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpRemIntLit16) Code() OpCode {
+	return OpCodeRemIntLit16
+}
+
+func (o OpRemIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpRemIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: rem-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: rem-int/lit16", o.pos)
+}
+
+type OpAndIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpAndIntLit16) Code() OpCode {
+	return OpCodeAndIntLit16
+}
+
+func (o OpAndIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpAndIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: and-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: and-int/lit16", o.pos)
+}
+
+type OpOrIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpOrIntLit16) Code() OpCode {
+	return OpCodeOrIntLit16
+}
+
+func (o OpOrIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpOrIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: or-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: or-int/lit16", o.pos)
+}
+
+type OpXorIntLit16 struct {
+	opBase
+	Fmt22s
+}
+
+func (o OpXorIntLit16) Code() OpCode {
+	return OpCodeXorIntLit16
+}
+
+func (o OpXorIntLit16) Fmt() Fmt {
+	return o.Fmt22s
+}
+
+func (o OpXorIntLit16) String() string {
+	f := o.Fmt22s.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: xor-int/lit16 %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: xor-int/lit16", o.pos)
+}
+
 type OpAddIntLit8 struct {
 	opBase
 	Fmt22b
@@ -4806,4 +8834,136 @@ func (o OpUshrIntLit8) String() string {
 	}
 
 	return fmt.Sprintf("0x%x: ushr-int/lit8", o.pos)
+}
+
+type OpInvokePolymorphic struct {
+	opBase
+	Fmt45cc
+}
+
+func (o OpInvokePolymorphic) Code() OpCode {
+	return OpCodeInvokePolymorphic
+}
+
+func (o OpInvokePolymorphic) Fmt() Fmt {
+	return o.Fmt45cc
+}
+
+func (o OpInvokePolymorphic) String() string {
+	f := o.Fmt45cc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-polymorphic %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-polymorphic", o.pos)
+}
+
+type OpInvokePolymorphicRange struct {
+	opBase
+	Fmt4rcc
+}
+
+func (o OpInvokePolymorphicRange) Code() OpCode {
+	return OpCodeInvokePolymorphicRange
+}
+
+func (o OpInvokePolymorphicRange) Fmt() Fmt {
+	return o.Fmt4rcc
+}
+
+func (o OpInvokePolymorphicRange) String() string {
+	f := o.Fmt4rcc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-polymorphic/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-polymorphic/range", o.pos)
+}
+
+type OpInvokeCustom struct {
+	opBase
+	Fmt35c
+}
+
+func (o OpInvokeCustom) Code() OpCode {
+	return OpCodeInvokeCustom
+}
+
+func (o OpInvokeCustom) Fmt() Fmt {
+	return o.Fmt35c
+}
+
+func (o OpInvokeCustom) String() string {
+	f := o.Fmt35c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-custom %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-custom", o.pos)
+}
+
+type OpInvokeCustomRange struct {
+	opBase
+	Fmt3rc
+}
+
+func (o OpInvokeCustomRange) Code() OpCode {
+	return OpCodeInvokeCustomRange
+}
+
+func (o OpInvokeCustomRange) Fmt() Fmt {
+	return o.Fmt3rc
+}
+
+func (o OpInvokeCustomRange) String() string {
+	f := o.Fmt3rc.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: invoke-custom/range %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: invoke-custom/range", o.pos)
+}
+
+type OpConstMethodHandle struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpConstMethodHandle) Code() OpCode {
+	return OpCodeConstMethodHandle
+}
+
+func (o OpConstMethodHandle) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpConstMethodHandle) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: const-method-handle %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: const-method-handle", o.pos)
+}
+
+type OpConstMethodType struct {
+	opBase
+	Fmt21c
+}
+
+func (o OpConstMethodType) Code() OpCode {
+	return OpCodeConstMethodType
+}
+
+func (o OpConstMethodType) Fmt() Fmt {
+	return o.Fmt21c
+}
+
+func (o OpConstMethodType) String() string {
+	f := o.Fmt21c.String()
+	if f != "" {
+		return fmt.Sprintf("0x%x: const-method-type %v", o.pos, f)
+	}
+
+	return fmt.Sprintf("0x%x: const-method-type", o.pos)
 }

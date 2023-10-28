@@ -335,7 +335,9 @@ type Fmt232 struct {
 }
 
 type Fmt22t struct{ Fmt232 }
+type Fmt22s struct{ Fmt232 }
 type Fmt22c struct{ Fmt232 }
+type Fmt22cs struct{ Fmt232 }
 
 func (f Fmt232) internalFmt() {}
 
@@ -373,12 +375,30 @@ func fmt22tSize(_ *OpReader) (int, error) {
 	return 2, nil
 }
 
+func (r *OpReader) readFmt22s() (Fmt22s, error) {
+	f, e := r.readFmt232()
+	return Fmt22s{f}, e
+}
+
+func fmt22sSize(_ *OpReader) (int, error) {
+	return 2, nil
+}
+
 func (r *OpReader) readFmt22c() (Fmt22c, error) {
 	f, e := r.readFmt232()
 	return Fmt22c{f}, e
 }
 
 func fmt22cSize(_ *OpReader) (int, error) {
+	return 2, nil
+}
+
+func (r *OpReader) readFmt22cs() (Fmt22cs, error) {
+	f, e := r.readFmt232()
+	return Fmt22cs{f}, e
+}
+
+func fmt22csSize(_ *OpReader) (int, error) {
 	return 2, nil
 }
 
@@ -619,4 +639,131 @@ func (r *OpReader) readFmt3rmi() (Fmt3rmi, error) {
 
 func fmt3rmiSize(_ *OpReader) (int, error) {
 	return 3, nil
+}
+
+type Fmt45cc struct {
+	A uint8
+	B uint16
+	C uint8
+	D uint8
+	E uint8
+	F uint8
+	G uint8
+	H uint16
+}
+
+func (f Fmt45cc) internalFmt() {}
+
+func (f Fmt45cc) Size() int {
+	return 4
+}
+
+func (f Fmt45cc) String() string {
+	return fmt.Sprintf("a=%v, b=%v, c=%v, d=%v, e=%v, f=%v, g=%v, h=%v", f.A, f.B, f.C, f.D, f.E, f.F, f.G, f.H)
+}
+
+func (r *OpReader) readFmt45cc() (Fmt45cc, error) {
+	var res Fmt45cc
+
+	if r.pos+4 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 12) & 0xF)
+	res.G = uint8((lower >> 8) & 0xF)
+
+	res.B = r.ops[r.pos+1]
+
+	upper := r.ops[r.pos+2]
+	res.C = uint8(upper & 0xF)
+	res.D = uint8((upper >> 4) & 0xF)
+	res.E = uint8((upper >> 8) & 0xF)
+	res.F = uint8((upper >> 12) & 0xF)
+
+	res.H = r.ops[r.pos+3]
+
+	r.pos += 4
+
+	return res, nil
+}
+
+func fmt45ccSize(_ *OpReader) (int, error) {
+	return 4, nil
+}
+
+type Fmt4rcc struct {
+	A uint8
+	B uint16
+	C uint16
+	H uint16
+}
+
+func (f Fmt4rcc) internalFmt() {}
+
+func (f Fmt4rcc) Size() int {
+	return 4
+}
+
+func (f Fmt4rcc) String() string {
+	return fmt.Sprintf("a=%v, b=%v, c=%v, h=%v", f.A, f.B, f.C, f.H)
+}
+
+func (r *OpReader) readFmt4rcc() (Fmt4rcc, error) {
+	var res Fmt4rcc
+
+	if r.pos+4 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 8) & 0xFF)
+
+	res.B = r.ops[r.pos+1]
+	res.C = r.ops[r.pos+1]
+	res.H = r.ops[r.pos+3]
+
+	r.pos += 4
+
+	return res, nil
+}
+
+func fmt4rccSize(_ *OpReader) (int, error) {
+	return 4, nil
+}
+
+type Fmt51l struct {
+	A uint8
+	B uint64
+}
+
+func (f Fmt51l) internalFmt() {}
+
+func (f Fmt51l) Size() int {
+	return 5
+}
+
+func (f Fmt51l) String() string {
+	return fmt.Sprintf("a=%v, b=%v", f.A, f.B)
+}
+
+func (r *OpReader) readFmt51l() (Fmt51l, error) {
+	var res Fmt51l
+
+	if r.pos+5 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 8) & 0xFF)
+	res.B = (uint64(r.ops[r.pos+4]) << 48) | (uint64(r.ops[r.pos+3]) << 32) |
+		(uint64(r.ops[r.pos+2]) << 16) | uint64(r.ops[r.pos+1])
+
+	r.pos += 5
+
+	return res, nil
+}
+
+func fmt51lSize(_ *OpReader) (int, error) {
+	return 5, nil
 }
