@@ -37,7 +37,11 @@ func (r *OpReader) PeekCode() (OpCode, error) {
 	code := OpCode(value & 0xFF)
 
 	if code == OpCodeNop {
-		panic("todo: check pseudo")
+		pseudo := (value >> 8) & 0xFF
+
+		if pseudo != 0 {
+			panic(fmt.Sprintf("todo: impl pseudo: %v", pseudo))
+		}
 	}
 
 	return code, nil
