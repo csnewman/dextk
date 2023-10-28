@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/iancoleman/strcase"
@@ -32,7 +33,7 @@ func main() {
 
 		d.Ops = append(d.Ops, GenOp{
 			DisplayName: op.Name,
-			PascalName:  strcase.ToCamel(op.Name),
+			PascalName:  strcase.ToCamel(strings.ReplaceAll(op.Name, "/", "_")),
 			Size:        size,
 			CodeConst:   fmt.Sprintf("%x", op.Code),
 			Fmt:         op.Fmt,

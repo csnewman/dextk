@@ -80,8 +80,8 @@ func (r *OpReader) readFmt10x() (Fmt10x, error) {
 	return res, nil
 }
 
-func (r *OpReader) readFmt11x() (Fmt11x, error) {
-	var res Fmt11x
+func (r *OpReader) readFmt11() (Fmt11, error) {
+	var res Fmt11
 
 	if r.pos+1 > len(r.ops) {
 		return res, io.EOF
@@ -94,8 +94,44 @@ func (r *OpReader) readFmt11x() (Fmt11x, error) {
 	return res, nil
 }
 
-func (r *OpReader) readFmt21c() (Fmt21c, error) {
-	var res Fmt21c
+func (r *OpReader) readFmt11x() (Fmt11x, error) {
+	f, e := r.readFmt11()
+	return Fmt11x{f}, e
+}
+
+func (r *OpReader) readFmt10t() (Fmt10t, error) {
+	f, e := r.readFmt11()
+	return Fmt10t{f}, e
+}
+
+func (r *OpReader) readFmt12() (Fmt12, error) {
+	var res Fmt12
+
+	if r.pos+1 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 8) & 0xF)
+	res.B = uint8((lower >> 12) & 0xF)
+
+	r.pos += 1
+
+	return res, nil
+}
+
+func (r *OpReader) readFmt12x() (Fmt12x, error) {
+	f, e := r.readFmt12()
+	return Fmt12x{f}, e
+}
+
+func (r *OpReader) readFmt11n() (Fmt11n, error) {
+	f, e := r.readFmt12()
+	return Fmt11n{f}, e
+}
+
+func (r *OpReader) readFmt22() (Fmt22, error) {
+	var res Fmt22
 
 	if r.pos+2 > len(r.ops) {
 		return res, io.EOF
@@ -105,6 +141,76 @@ func (r *OpReader) readFmt21c() (Fmt21c, error) {
 	res.B = r.ops[r.pos+1]
 
 	r.pos += 2
+
+	return res, nil
+}
+
+func (r *OpReader) readFmt22x() (Fmt22x, error) {
+	f, e := r.readFmt22()
+	return Fmt22x{f}, e
+}
+
+func (r *OpReader) readFmt21s() (Fmt21s, error) {
+	f, e := r.readFmt22()
+	return Fmt21s{
+		A: f.A,
+		B: int16(f.B),
+	}, e
+}
+
+func (r *OpReader) readFmt21t() (Fmt21t, error) {
+	f, e := r.readFmt22()
+	return Fmt21t{f}, e
+}
+
+func (r *OpReader) readFmt21h() (Fmt21h, error) {
+	f, e := r.readFmt22()
+	return Fmt21h{f}, e
+}
+
+func (r *OpReader) readFmt21c() (Fmt21c, error) {
+	f, e := r.readFmt22()
+	return Fmt21c{f}, e
+}
+
+func (r *OpReader) readFmt23() (Fmt23, error) {
+	var res Fmt23
+
+	if r.pos+2 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 8) & 0xF)
+	res.B = uint8((lower >> 12) & 0xF)
+	res.C = r.ops[r.pos]
+
+	r.pos += 2
+
+	return res, nil
+}
+
+func (r *OpReader) readFmt22t() (Fmt22t, error) {
+	f, e := r.readFmt23()
+	return Fmt22t{f}, e
+}
+
+func (r *OpReader) readFmt22c() (Fmt22c, error) {
+	f, e := r.readFmt23()
+	return Fmt22c{f}, e
+}
+
+func (r *OpReader) readFmt32x() (Fmt32x, error) {
+	var res Fmt32x
+
+	if r.pos+3 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	res.A = r.ops[r.pos+1]
+	res.B = r.ops[r.pos+2]
+
+	r.pos += 3
 
 	return res, nil
 }
@@ -131,4 +237,35 @@ func (r *OpReader) readFmt35c() (Fmt35c, error) {
 	r.pos += 3
 
 	return res, nil
+}
+
+func (r *OpReader) readFmt31() (Fmt31, error) {
+	var res Fmt31
+
+	if r.pos+3 > len(r.ops) {
+		return res, io.EOF
+	}
+
+	lower := r.ops[r.pos]
+	res.A = uint8((lower >> 8) & 0xFF)
+	res.B = (uint32(r.ops[r.pos+2]) << 16) | uint32(r.ops[r.pos+1])
+
+	r.pos += 3
+
+	return res, nil
+}
+
+func (r *OpReader) readFmt31i() (Fmt31i, error) {
+	f, e := r.readFmt31()
+	return Fmt31i{f}, e
+}
+
+func (r *OpReader) readFmt31t() (Fmt31t, error) {
+	f, e := r.readFmt31()
+	return Fmt31t{f}, e
+}
+
+func (r *OpReader) readFmt31c() (Fmt31c, error) {
+	f, e := r.readFmt31()
+	return Fmt31c{f}, e
 }
