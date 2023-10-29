@@ -97,7 +97,7 @@ func Read(file io.ReaderAt) (*Reader, error) {
 	return r, nil
 }
 
-func (r *Reader) GetString(id uint32) (string, error) {
+func (r *Reader) ReadString(id uint32) (string, error) {
 	if id >= r.StringIDCount {
 		return "", ErrInvalidStringID
 	}
@@ -128,7 +128,7 @@ type Type struct {
 	DescriptorStringID uint32
 }
 
-func (r *Reader) GetType(id uint32) (Type, error) {
+func (r *Reader) ReadType(id uint32) (Type, error) {
 	var (
 		res Type
 		err error
@@ -154,7 +154,7 @@ type Proto struct {
 	ParametersTypeListOff uint32
 }
 
-func (r *Reader) GetProto(id uint32) (Proto, error) {
+func (r *Reader) ReadProto(id uint32) (Proto, error) {
 	var (
 		res Proto
 		err error
@@ -190,7 +190,7 @@ type Field struct {
 	NameStringID uint32
 }
 
-func (r *Reader) GetField(id uint32) (Field, error) {
+func (r *Reader) ReadField(id uint32) (Field, error) {
 	var (
 		res Field
 		err error
@@ -226,7 +226,7 @@ type Method struct {
 	NameStringID uint32
 }
 
-func (r *Reader) GetMethod(id uint32) (Method, error) {
+func (r *Reader) ReadMethod(id uint32) (Method, error) {
 	var (
 		res Method
 		err error
@@ -267,7 +267,7 @@ type ClassDef struct {
 	StaticValuesOff         uint32
 }
 
-func (r *Reader) GetClassDef(id uint32) (ClassDef, error) {
+func (r *Reader) ReadClassDef(id uint32) (ClassDef, error) {
 	var (
 		res ClassDef
 		err error
@@ -340,7 +340,7 @@ type ClassData struct {
 	VirtualMethods []EncodedMethod
 }
 
-func (r *Reader) GetClassData(off uint32) (ClassData, error) {
+func (r *Reader) ReadClassData(off uint32) (ClassData, error) {
 	if off == 0 {
 		panic("invalid class data offset")
 	}
@@ -493,7 +493,7 @@ type TypeList struct {
 	TypeIds []uint16
 }
 
-func (r *Reader) GetTypeList(off uint32) (TypeList, error) {
+func (r *Reader) ReadTypeList(off uint32) (TypeList, error) {
 	if off == 0 {
 		panic("invalid type list offset")
 	}
@@ -552,7 +552,7 @@ type HandlerPair struct {
 	Addr   uint32
 }
 
-func (r *Reader) GetCode(off uint32) (Code, error) {
+func (r *Reader) ReadCode(off uint32) (Code, error) {
 	if off == 0 {
 		panic("invalid code offset")
 	}
