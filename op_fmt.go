@@ -184,6 +184,7 @@ type Fmt22x struct{ Fmt22 }
 type Fmt21t struct{ Fmt22 }
 type Fmt21h struct{ Fmt22 }
 type Fmt21c struct{ Fmt22 }
+type Fmt21s struct{ Fmt22 }
 
 func (f Fmt22) internalFmt() {}
 
@@ -246,27 +247,9 @@ func fmt21cSize(_ *OpReader) (int, error) {
 	return 2, nil
 }
 
-type Fmt21s struct {
-	A uint8
-	B int16
-}
-
-func (f Fmt21s) internalFmt() {}
-
-func (f Fmt21s) Size() int {
-	return 2
-}
-
-func (f Fmt21s) String() string {
-	return fmt.Sprintf("a=%v, b=%v", f.A, f.B)
-}
-
 func (r *OpReader) readFmt21s() (Fmt21s, error) {
 	f, e := r.readFmt22()
-	return Fmt21s{
-		A: f.A,
-		B: int16(f.B),
-	}, e
+	return Fmt21s{f}, e
 }
 
 func fmt21sSize(_ *OpReader) (int, error) {

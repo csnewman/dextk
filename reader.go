@@ -16,6 +16,7 @@ var (
 	ErrInvalidMethodID         = errors.New("invalid method id")
 	ErrInvalidClassDefID       = errors.New("invalid class def id")
 	ErrInvalidTryHandlerOffset = errors.New("invalid try handler offset")
+	ErrUnexpectedType          = errors.New("unexpected typw")
 )
 
 const (
@@ -190,6 +191,16 @@ type Field struct {
 	NameStringID uint32
 }
 
+type FieldRef struct {
+	Class string
+	Type  TypeDescriptor
+	Name  string
+}
+
+func (r FieldRef) String() string {
+	return fmt.Sprintf("%v:%v:%v", r.Class, r.Name, r.Type)
+}
+
 func (r *Reader) ReadField(id uint32) (Field, error) {
 	var (
 		res Field
@@ -220,10 +231,54 @@ func (r *Reader) ReadField(id uint32) (Field, error) {
 	return res, nil
 }
 
+func (r *Reader) ReadFieldAndParse(id uint32) (FieldRef, error) {
+	var res FieldRef
+
+	f, err := r.ReadField(id)
+	if err != nil {
+		return res, err
+	}
+
+	res.Name, err = r.ReadString(f.NameStringID)
+	if err != nil {
+		return res, fmt.Errorf("bad field name: %w", err)
+	}
+
+	res.Type, err = r.ReadTypeAndParse(uint32(f.TypeID))
+	if err != nil {
+		return res, fmt.Errorf("bad field type: %w", err)
+	}
+
+	parsedDesc, err := r.ReadTypeAndParse(uint32(f.ClassTypeID))
+	if err != nil {
+		return res, fmt.Errorf("bad class type: %w", err)
+	}
+
+	if !parsedDesc.IsClass() || parsedDesc.IsArray() {
+		return res, fmt.Errorf("bad class type: %w", ErrUnexpectedType)
+	}
+
+	res.Class = parsedDesc.ClassName
+
+	return res, nil
+}
+
 type Method struct {
 	ClassTypeID  uint16
 	ProtoID      uint16
 	NameStringID uint32
+}
+
+type MethodRef struct {
+	Class      string
+	Name       string
+	Shorty     string
+	ReturnType TypeDescriptor
+	Params     []TypeDescriptor
+}
+
+func (r MethodRef) String() string {
+	return fmt.Sprintf("%v:%v:(%v):%v", r.Class, r.Name, r.Params, r.ReturnType)
 }
 
 func (r *Reader) ReadMethod(id uint32) (Method, error) {
@@ -251,6 +306,64 @@ func (r *Reader) ReadMethod(id uint32) (Method, error) {
 	res.NameStringID, err = r.readUint(entryPos + 4)
 	if err != nil {
 		return res, err
+	}
+
+	return res, nil
+}
+
+func (r *Reader) ReadMethodAndParse(id uint32) (MethodRef, error) {
+	var res MethodRef
+
+	m, err := r.ReadMethod(id)
+	if err != nil {
+		return res, err
+	}
+
+	res.Name, err = r.ReadString(m.NameStringID)
+	if err != nil {
+		return res, fmt.Errorf("bad method name: %w", err)
+	}
+
+	parsedDesc, err := r.ReadTypeAndParse(uint32(m.ClassTypeID))
+	if err != nil {
+		return res, fmt.Errorf("bad class type: %w", err)
+	}
+
+	if !parsedDesc.IsClass() || parsedDesc.IsArray() {
+		return res, fmt.Errorf("bad class type: %w", ErrUnexpectedType)
+	}
+
+	res.Class = parsedDesc.ClassName
+
+	proto, err := r.ReadProto(uint32(m.ProtoID))
+	if err != nil {
+		return res, fmt.Errorf("%w: bad method proto: %w", ErrBadClass, err)
+	}
+
+	res.Shorty, err = r.ReadString(proto.ShortyStringID)
+	if err != nil {
+		return res, fmt.Errorf("bad method shorty: %w", err)
+	}
+
+	res.ReturnType, err = r.ReadTypeAndParse(proto.ReturnTypeID)
+	if err != nil {
+		return res, fmt.Errorf("bad method type: %w", err)
+	}
+
+	if proto.ParametersTypeListOff != 0 {
+		plist, err := r.ReadTypeList(proto.ParametersTypeListOff)
+		if err != nil {
+			return res, fmt.Errorf("bad method params: %w", err)
+		}
+
+		res.Params = make([]TypeDescriptor, len(plist.TypeIds))
+
+		for i, tid := range plist.TypeIds {
+			res.Params[i], err = r.ReadTypeAndParse(uint32(tid))
+			if err != nil {
+				return res, fmt.Errorf("bad method paramm: %w", err)
+			}
+		}
 	}
 
 	return res, nil

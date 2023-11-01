@@ -27,6 +27,10 @@ func (r *OpReader) HasMore() bool {
 	return r.pos < len(r.ops)
 }
 
+func (r *OpReader) Pos() int {
+	return r.pos
+}
+
 func (r *OpReader) Seek(pos int) {
 	r.pos = pos
 }
