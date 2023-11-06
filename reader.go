@@ -16,7 +16,7 @@ var (
 	ErrInvalidMethodID         = errors.New("invalid method id")
 	ErrInvalidClassDefID       = errors.New("invalid class def id")
 	ErrInvalidTryHandlerOffset = errors.New("invalid try handler offset")
-	ErrUnexpectedType          = errors.New("unexpected typw")
+	ErrUnexpectedType          = errors.New("unexpected type")
 )
 
 const (
@@ -329,8 +329,8 @@ func (r *Reader) ReadMethodAndParse(id uint32) (MethodRef, error) {
 		return res, fmt.Errorf("bad class type: %w", err)
 	}
 
-	if !parsedDesc.IsClass() || parsedDesc.IsArray() {
-		return res, fmt.Errorf("bad class type: %w", ErrUnexpectedType)
+	if !parsedDesc.IsClass() && !parsedDesc.IsArray() {
+		return res, fmt.Errorf("bad class type: %w: %v", ErrUnexpectedType, parsedDesc)
 	}
 
 	res.Class = parsedDesc.ClassName
