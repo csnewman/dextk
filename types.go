@@ -95,7 +95,7 @@ func (d TypeDescriptor) Base() TypeDescriptor {
 }
 
 func (d TypeDescriptor) IsArray() bool {
-	return d.Type == '['
+	return d.ArrayLength != 0
 }
 
 func (d TypeDescriptor) IsClass() bool {
