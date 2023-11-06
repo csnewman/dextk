@@ -3,230 +3,230 @@ package dextk
 import "fmt"
 
 const (
-	OpCodeNop OpCode = 0x0
-	OpCodeMove OpCode = 0x1
-	OpCodeMoveFrom16 OpCode = 0x2
-	OpCodeMove16 OpCode = 0x3
-	OpCodeMoveWide OpCode = 0x4
-	OpCodeMoveWideFrom16 OpCode = 0x5
-	OpCodeMoveWide16 OpCode = 0x6
-	OpCodeMoveObject OpCode = 0x7
-	OpCodeMoveObjectFrom16 OpCode = 0x8
-	OpCodeMoveObject16 OpCode = 0x9
-	OpCodeMoveResult OpCode = 0xa
-	OpCodeMoveResultWide OpCode = 0xb
-	OpCodeMoveResultObject OpCode = 0xc
-	OpCodeMoveException OpCode = 0xd
-	OpCodeReturnVoid OpCode = 0xe
-	OpCodeReturn OpCode = 0xf
-	OpCodeReturnWide OpCode = 0x10
-	OpCodeReturnObject OpCode = 0x11
-	OpCodeConst4 OpCode = 0x12
-	OpCodeConst16 OpCode = 0x13
-	OpCodeConst OpCode = 0x14
-	OpCodeConstHigh16 OpCode = 0x15
-	OpCodeConstWide16 OpCode = 0x16
-	OpCodeConstWide32 OpCode = 0x17
-	OpCodeConstWide OpCode = 0x18
-	OpCodeConstWideHigh16 OpCode = 0x19
-	OpCodeConstString OpCode = 0x1a
-	OpCodeConstStringJumbo OpCode = 0x1b
-	OpCodeConstClass OpCode = 0x1c
-	OpCodeMonitorEnter OpCode = 0x1d
-	OpCodeMonitorExit OpCode = 0x1e
-	OpCodeCheckCast OpCode = 0x1f
-	OpCodeInstanceOf OpCode = 0x20
-	OpCodeArrayLength OpCode = 0x21
-	OpCodeNewInstance OpCode = 0x22
-	OpCodeNewArray OpCode = 0x23
-	OpCodeFilledNewArray OpCode = 0x24
-	OpCodeFilledNewArrayRange OpCode = 0x25
-	OpCodeFillArrayData OpCode = 0x26
-	OpCodeThrow OpCode = 0x27
-	OpCodeGoto OpCode = 0x28
-	OpCodeGoto16 OpCode = 0x29
-	OpCodeGoto32 OpCode = 0x2a
-	OpCodePackedSwitch OpCode = 0x2b
-	OpCodeSparseSwitch OpCode = 0x2c
-	OpCodeCmplFloat OpCode = 0x2d
-	OpCodeCmpgFloat OpCode = 0x2e
-	OpCodeCmplDouble OpCode = 0x2f
-	OpCodeCmpgDouble OpCode = 0x30
-	OpCodeCmpLong OpCode = 0x31
-	OpCodeIfEq OpCode = 0x32
-	OpCodeIfNe OpCode = 0x33
-	OpCodeIfLt OpCode = 0x34
-	OpCodeIfGe OpCode = 0x35
-	OpCodeIfGt OpCode = 0x36
-	OpCodeIfLe OpCode = 0x37
-	OpCodeIfEqz OpCode = 0x38
-	OpCodeIfNez OpCode = 0x39
-	OpCodeIfLtz OpCode = 0x3a
-	OpCodeIfGez OpCode = 0x3b
-	OpCodeIfGtz OpCode = 0x3c
-	OpCodeIfLez OpCode = 0x3d
-	OpCodeAget OpCode = 0x44
-	OpCodeAgetWide OpCode = 0x45
-	OpCodeAgetObject OpCode = 0x46
-	OpCodeAgetBoolean OpCode = 0x47
-	OpCodeAgetByte OpCode = 0x48
-	OpCodeAgetChar OpCode = 0x49
-	OpCodeAgetShort OpCode = 0x4a
-	OpCodeAput OpCode = 0x4b
-	OpCodeAputWide OpCode = 0x4c
-	OpCodeAputObject OpCode = 0x4d
-	OpCodeAputBoolean OpCode = 0x4e
-	OpCodeAputByte OpCode = 0x4f
-	OpCodeAputChar OpCode = 0x50
-	OpCodeAputShort OpCode = 0x51
-	OpCodeIget OpCode = 0x52
-	OpCodeIgetWide OpCode = 0x53
-	OpCodeIgetObject OpCode = 0x54
-	OpCodeIgetBoolean OpCode = 0x55
-	OpCodeIgetByte OpCode = 0x56
-	OpCodeIgetChar OpCode = 0x57
-	OpCodeIgetShort OpCode = 0x58
-	OpCodeIput OpCode = 0x59
-	OpCodeIputWide OpCode = 0x5a
-	OpCodeIputObject OpCode = 0x5b
-	OpCodeIputBoolean OpCode = 0x5c
-	OpCodeIputByte OpCode = 0x5d
-	OpCodeIputChar OpCode = 0x5e
-	OpCodeIputShort OpCode = 0x5f
-	OpCodeSget OpCode = 0x60
-	OpCodeSgetWide OpCode = 0x61
-	OpCodeSgetObject OpCode = 0x62
-	OpCodeSgetBoolean OpCode = 0x63
-	OpCodeSgetByte OpCode = 0x64
-	OpCodeSgetChar OpCode = 0x65
-	OpCodeSgetShort OpCode = 0x66
-	OpCodeSput OpCode = 0x67
-	OpCodeSputWide OpCode = 0x68
-	OpCodeSputObject OpCode = 0x69
-	OpCodeSputBoolean OpCode = 0x6a
-	OpCodeSputByte OpCode = 0x6b
-	OpCodeSputChar OpCode = 0x6c
-	OpCodeSputShort OpCode = 0x6d
-	OpCodeInvokeVirtual OpCode = 0x6e
-	OpCodeInvokeSuper OpCode = 0x6f
-	OpCodeInvokeDirect OpCode = 0x70
-	OpCodeInvokeStatic OpCode = 0x71
-	OpCodeInvokeInterface OpCode = 0x72
-	OpCodeInvokeVirtualRange OpCode = 0x74
-	OpCodeInvokeSuperRange OpCode = 0x75
-	OpCodeInvokeDirectRange OpCode = 0x76
-	OpCodeInvokeStaticRange OpCode = 0x77
-	OpCodeInvokeInterfaceRange OpCode = 0x78
-	OpCodeNegInt OpCode = 0x7b
-	OpCodeNotInt OpCode = 0x7c
-	OpCodeNegLong OpCode = 0x7d
-	OpCodeNotLong OpCode = 0x7e
-	OpCodeNegFloat OpCode = 0x7f
-	OpCodeNegDouble OpCode = 0x80
-	OpCodeIntToLong OpCode = 0x81
-	OpCodeIntToFloat OpCode = 0x82
-	OpCodeIntToDouble OpCode = 0x83
-	OpCodeLongToInt OpCode = 0x84
-	OpCodeLongToFloat OpCode = 0x85
-	OpCodeLongToDouble OpCode = 0x86
-	OpCodeFloatToInt OpCode = 0x87
-	OpCodeFloatToLong OpCode = 0x88
-	OpCodeFloatToDouble OpCode = 0x89
-	OpCodeDoubleToInt OpCode = 0x8a
-	OpCodeDoubleToLong OpCode = 0x8b
-	OpCodeDoubleToFloat OpCode = 0x8c
-	OpCodeIntToByte OpCode = 0x8d
-	OpCodeIntToChar OpCode = 0x8e
-	OpCodeIntToShort OpCode = 0x8f
-	OpCodeAddInt OpCode = 0x90
-	OpCodeSubInt OpCode = 0x91
-	OpCodeMulInt OpCode = 0x92
-	OpCodeDivInt OpCode = 0x93
-	OpCodeRemInt OpCode = 0x94
-	OpCodeAndInt OpCode = 0x95
-	OpCodeOrInt OpCode = 0x96
-	OpCodeXorInt OpCode = 0x97
-	OpCodeShlInt OpCode = 0x98
-	OpCodeShrInt OpCode = 0x99
-	OpCodeUshrInt OpCode = 0x9a
-	OpCodeAddLong OpCode = 0x9b
-	OpCodeSubLong OpCode = 0x9c
-	OpCodeMulLong OpCode = 0x9d
-	OpCodeDivLong OpCode = 0x9e
-	OpCodeRemLong OpCode = 0x9f
-	OpCodeAndLong OpCode = 0xa0
-	OpCodeOrLong OpCode = 0xa1
-	OpCodeXorLong OpCode = 0xa2
-	OpCodeShlLong OpCode = 0xa3
-	OpCodeShrLong OpCode = 0xa4
-	OpCodeUshrLong OpCode = 0xa5
-	OpCodeAddFloat OpCode = 0xa6
-	OpCodeSubFloat OpCode = 0xa7
-	OpCodeMulFloat OpCode = 0xa8
-	OpCodeDivFloat OpCode = 0xa9
-	OpCodeRemFloat OpCode = 0xaa
-	OpCodeAddDouble OpCode = 0xab
-	OpCodeSubDouble OpCode = 0xac
-	OpCodeMulDouble OpCode = 0xad
-	OpCodeDivDouble OpCode = 0xae
-	OpCodeRemDouble OpCode = 0xaf
-	OpCodeAddInt2Addr OpCode = 0xb0
-	OpCodeSubInt2Addr OpCode = 0xb1
-	OpCodeMulInt2Addr OpCode = 0xb2
-	OpCodeDivInt2Addr OpCode = 0xb3
-	OpCodeRemInt2Addr OpCode = 0xb4
-	OpCodeAndInt2Addr OpCode = 0xb5
-	OpCodeOrInt2Addr OpCode = 0xb6
-	OpCodeXorInt2Addr OpCode = 0xb7
-	OpCodeShlInt2Addr OpCode = 0xb8
-	OpCodeShrInt2Addr OpCode = 0xb9
-	OpCodeUshrInt2Addr OpCode = 0xba
-	OpCodeAddLong2Addr OpCode = 0xbb
-	OpCodeSubLong2Addr OpCode = 0xbc
-	OpCodeMulLong2Addr OpCode = 0xbd
-	OpCodeDivLong2Addr OpCode = 0xbe
-	OpCodeRemLong2Addr OpCode = 0xbf
-	OpCodeAndLong2Addr OpCode = 0xc0
-	OpCodeOrLong2Addr OpCode = 0xc1
-	OpCodeXorLong2Addr OpCode = 0xc2
-	OpCodeShlLong2Addr OpCode = 0xc3
-	OpCodeShrLong2Addr OpCode = 0xc4
-	OpCodeUshrLong2Addr OpCode = 0xc5
-	OpCodeAddFloat2Addr OpCode = 0xc6
-	OpCodeSubFloat2Addr OpCode = 0xc7
-	OpCodeMulFloat2Addr OpCode = 0xc8
-	OpCodeDivFloat2Addr OpCode = 0xc9
-	OpCodeRemFloat2Addr OpCode = 0xca
-	OpCodeAddDouble2Addr OpCode = 0xcb
-	OpCodeSubDouble2Addr OpCode = 0xcc
-	OpCodeMulDouble2Addr OpCode = 0xcd
-	OpCodeDivDouble2Addr OpCode = 0xce
-	OpCodeRemDouble2Addr OpCode = 0xcf
-	OpCodeAddIntLit16 OpCode = 0xd0
-	OpCodeRsubIntLit16 OpCode = 0xd1
-	OpCodeMulIntLit16 OpCode = 0xd2
-	OpCodeDivIntLit16 OpCode = 0xd3
-	OpCodeRemIntLit16 OpCode = 0xd4
-	OpCodeAndIntLit16 OpCode = 0xd5
-	OpCodeOrIntLit16 OpCode = 0xd6
-	OpCodeXorIntLit16 OpCode = 0xd7
-	OpCodeAddIntLit8 OpCode = 0xd8
-	OpCodeRsubIntLit8 OpCode = 0xd9
-	OpCodeMulIntLit8 OpCode = 0xda
-	OpCodeDivIntLit8 OpCode = 0xdb
-	OpCodeRemIntLit8 OpCode = 0xdc
-	OpCodeAndIntLit8 OpCode = 0xdd
-	OpCodeOrIntLit8 OpCode = 0xde
-	OpCodeXorIntLit8 OpCode = 0xdf
-	OpCodeShlIntLit8 OpCode = 0xe0
-	OpCodeShrIntLit8 OpCode = 0xe1
-	OpCodeUshrIntLit8 OpCode = 0xe2
-	OpCodeInvokePolymorphic OpCode = 0xfa
+	OpCodeNop                    OpCode = 0x0
+	OpCodeMove                   OpCode = 0x1
+	OpCodeMoveFrom16             OpCode = 0x2
+	OpCodeMove16                 OpCode = 0x3
+	OpCodeMoveWide               OpCode = 0x4
+	OpCodeMoveWideFrom16         OpCode = 0x5
+	OpCodeMoveWide16             OpCode = 0x6
+	OpCodeMoveObject             OpCode = 0x7
+	OpCodeMoveObjectFrom16       OpCode = 0x8
+	OpCodeMoveObject16           OpCode = 0x9
+	OpCodeMoveResult             OpCode = 0xa
+	OpCodeMoveResultWide         OpCode = 0xb
+	OpCodeMoveResultObject       OpCode = 0xc
+	OpCodeMoveException          OpCode = 0xd
+	OpCodeReturnVoid             OpCode = 0xe
+	OpCodeReturn                 OpCode = 0xf
+	OpCodeReturnWide             OpCode = 0x10
+	OpCodeReturnObject           OpCode = 0x11
+	OpCodeConst4                 OpCode = 0x12
+	OpCodeConst16                OpCode = 0x13
+	OpCodeConst                  OpCode = 0x14
+	OpCodeConstHigh16            OpCode = 0x15
+	OpCodeConstWide16            OpCode = 0x16
+	OpCodeConstWide32            OpCode = 0x17
+	OpCodeConstWide              OpCode = 0x18
+	OpCodeConstWideHigh16        OpCode = 0x19
+	OpCodeConstString            OpCode = 0x1a
+	OpCodeConstStringJumbo       OpCode = 0x1b
+	OpCodeConstClass             OpCode = 0x1c
+	OpCodeMonitorEnter           OpCode = 0x1d
+	OpCodeMonitorExit            OpCode = 0x1e
+	OpCodeCheckCast              OpCode = 0x1f
+	OpCodeInstanceOf             OpCode = 0x20
+	OpCodeArrayLength            OpCode = 0x21
+	OpCodeNewInstance            OpCode = 0x22
+	OpCodeNewArray               OpCode = 0x23
+	OpCodeFilledNewArray         OpCode = 0x24
+	OpCodeFilledNewArrayRange    OpCode = 0x25
+	OpCodeFillArrayData          OpCode = 0x26
+	OpCodeThrow                  OpCode = 0x27
+	OpCodeGoto                   OpCode = 0x28
+	OpCodeGoto16                 OpCode = 0x29
+	OpCodeGoto32                 OpCode = 0x2a
+	OpCodePackedSwitch           OpCode = 0x2b
+	OpCodeSparseSwitch           OpCode = 0x2c
+	OpCodeCmplFloat              OpCode = 0x2d
+	OpCodeCmpgFloat              OpCode = 0x2e
+	OpCodeCmplDouble             OpCode = 0x2f
+	OpCodeCmpgDouble             OpCode = 0x30
+	OpCodeCmpLong                OpCode = 0x31
+	OpCodeIfEq                   OpCode = 0x32
+	OpCodeIfNe                   OpCode = 0x33
+	OpCodeIfLt                   OpCode = 0x34
+	OpCodeIfGe                   OpCode = 0x35
+	OpCodeIfGt                   OpCode = 0x36
+	OpCodeIfLe                   OpCode = 0x37
+	OpCodeIfEqz                  OpCode = 0x38
+	OpCodeIfNez                  OpCode = 0x39
+	OpCodeIfLtz                  OpCode = 0x3a
+	OpCodeIfGez                  OpCode = 0x3b
+	OpCodeIfGtz                  OpCode = 0x3c
+	OpCodeIfLez                  OpCode = 0x3d
+	OpCodeAget                   OpCode = 0x44
+	OpCodeAgetWide               OpCode = 0x45
+	OpCodeAgetObject             OpCode = 0x46
+	OpCodeAgetBoolean            OpCode = 0x47
+	OpCodeAgetByte               OpCode = 0x48
+	OpCodeAgetChar               OpCode = 0x49
+	OpCodeAgetShort              OpCode = 0x4a
+	OpCodeAput                   OpCode = 0x4b
+	OpCodeAputWide               OpCode = 0x4c
+	OpCodeAputObject             OpCode = 0x4d
+	OpCodeAputBoolean            OpCode = 0x4e
+	OpCodeAputByte               OpCode = 0x4f
+	OpCodeAputChar               OpCode = 0x50
+	OpCodeAputShort              OpCode = 0x51
+	OpCodeIget                   OpCode = 0x52
+	OpCodeIgetWide               OpCode = 0x53
+	OpCodeIgetObject             OpCode = 0x54
+	OpCodeIgetBoolean            OpCode = 0x55
+	OpCodeIgetByte               OpCode = 0x56
+	OpCodeIgetChar               OpCode = 0x57
+	OpCodeIgetShort              OpCode = 0x58
+	OpCodeIput                   OpCode = 0x59
+	OpCodeIputWide               OpCode = 0x5a
+	OpCodeIputObject             OpCode = 0x5b
+	OpCodeIputBoolean            OpCode = 0x5c
+	OpCodeIputByte               OpCode = 0x5d
+	OpCodeIputChar               OpCode = 0x5e
+	OpCodeIputShort              OpCode = 0x5f
+	OpCodeSget                   OpCode = 0x60
+	OpCodeSgetWide               OpCode = 0x61
+	OpCodeSgetObject             OpCode = 0x62
+	OpCodeSgetBoolean            OpCode = 0x63
+	OpCodeSgetByte               OpCode = 0x64
+	OpCodeSgetChar               OpCode = 0x65
+	OpCodeSgetShort              OpCode = 0x66
+	OpCodeSput                   OpCode = 0x67
+	OpCodeSputWide               OpCode = 0x68
+	OpCodeSputObject             OpCode = 0x69
+	OpCodeSputBoolean            OpCode = 0x6a
+	OpCodeSputByte               OpCode = 0x6b
+	OpCodeSputChar               OpCode = 0x6c
+	OpCodeSputShort              OpCode = 0x6d
+	OpCodeInvokeVirtual          OpCode = 0x6e
+	OpCodeInvokeSuper            OpCode = 0x6f
+	OpCodeInvokeDirect           OpCode = 0x70
+	OpCodeInvokeStatic           OpCode = 0x71
+	OpCodeInvokeInterface        OpCode = 0x72
+	OpCodeInvokeVirtualRange     OpCode = 0x74
+	OpCodeInvokeSuperRange       OpCode = 0x75
+	OpCodeInvokeDirectRange      OpCode = 0x76
+	OpCodeInvokeStaticRange      OpCode = 0x77
+	OpCodeInvokeInterfaceRange   OpCode = 0x78
+	OpCodeNegInt                 OpCode = 0x7b
+	OpCodeNotInt                 OpCode = 0x7c
+	OpCodeNegLong                OpCode = 0x7d
+	OpCodeNotLong                OpCode = 0x7e
+	OpCodeNegFloat               OpCode = 0x7f
+	OpCodeNegDouble              OpCode = 0x80
+	OpCodeIntToLong              OpCode = 0x81
+	OpCodeIntToFloat             OpCode = 0x82
+	OpCodeIntToDouble            OpCode = 0x83
+	OpCodeLongToInt              OpCode = 0x84
+	OpCodeLongToFloat            OpCode = 0x85
+	OpCodeLongToDouble           OpCode = 0x86
+	OpCodeFloatToInt             OpCode = 0x87
+	OpCodeFloatToLong            OpCode = 0x88
+	OpCodeFloatToDouble          OpCode = 0x89
+	OpCodeDoubleToInt            OpCode = 0x8a
+	OpCodeDoubleToLong           OpCode = 0x8b
+	OpCodeDoubleToFloat          OpCode = 0x8c
+	OpCodeIntToByte              OpCode = 0x8d
+	OpCodeIntToChar              OpCode = 0x8e
+	OpCodeIntToShort             OpCode = 0x8f
+	OpCodeAddInt                 OpCode = 0x90
+	OpCodeSubInt                 OpCode = 0x91
+	OpCodeMulInt                 OpCode = 0x92
+	OpCodeDivInt                 OpCode = 0x93
+	OpCodeRemInt                 OpCode = 0x94
+	OpCodeAndInt                 OpCode = 0x95
+	OpCodeOrInt                  OpCode = 0x96
+	OpCodeXorInt                 OpCode = 0x97
+	OpCodeShlInt                 OpCode = 0x98
+	OpCodeShrInt                 OpCode = 0x99
+	OpCodeUshrInt                OpCode = 0x9a
+	OpCodeAddLong                OpCode = 0x9b
+	OpCodeSubLong                OpCode = 0x9c
+	OpCodeMulLong                OpCode = 0x9d
+	OpCodeDivLong                OpCode = 0x9e
+	OpCodeRemLong                OpCode = 0x9f
+	OpCodeAndLong                OpCode = 0xa0
+	OpCodeOrLong                 OpCode = 0xa1
+	OpCodeXorLong                OpCode = 0xa2
+	OpCodeShlLong                OpCode = 0xa3
+	OpCodeShrLong                OpCode = 0xa4
+	OpCodeUshrLong               OpCode = 0xa5
+	OpCodeAddFloat               OpCode = 0xa6
+	OpCodeSubFloat               OpCode = 0xa7
+	OpCodeMulFloat               OpCode = 0xa8
+	OpCodeDivFloat               OpCode = 0xa9
+	OpCodeRemFloat               OpCode = 0xaa
+	OpCodeAddDouble              OpCode = 0xab
+	OpCodeSubDouble              OpCode = 0xac
+	OpCodeMulDouble              OpCode = 0xad
+	OpCodeDivDouble              OpCode = 0xae
+	OpCodeRemDouble              OpCode = 0xaf
+	OpCodeAddInt2Addr            OpCode = 0xb0
+	OpCodeSubInt2Addr            OpCode = 0xb1
+	OpCodeMulInt2Addr            OpCode = 0xb2
+	OpCodeDivInt2Addr            OpCode = 0xb3
+	OpCodeRemInt2Addr            OpCode = 0xb4
+	OpCodeAndInt2Addr            OpCode = 0xb5
+	OpCodeOrInt2Addr             OpCode = 0xb6
+	OpCodeXorInt2Addr            OpCode = 0xb7
+	OpCodeShlInt2Addr            OpCode = 0xb8
+	OpCodeShrInt2Addr            OpCode = 0xb9
+	OpCodeUshrInt2Addr           OpCode = 0xba
+	OpCodeAddLong2Addr           OpCode = 0xbb
+	OpCodeSubLong2Addr           OpCode = 0xbc
+	OpCodeMulLong2Addr           OpCode = 0xbd
+	OpCodeDivLong2Addr           OpCode = 0xbe
+	OpCodeRemLong2Addr           OpCode = 0xbf
+	OpCodeAndLong2Addr           OpCode = 0xc0
+	OpCodeOrLong2Addr            OpCode = 0xc1
+	OpCodeXorLong2Addr           OpCode = 0xc2
+	OpCodeShlLong2Addr           OpCode = 0xc3
+	OpCodeShrLong2Addr           OpCode = 0xc4
+	OpCodeUshrLong2Addr          OpCode = 0xc5
+	OpCodeAddFloat2Addr          OpCode = 0xc6
+	OpCodeSubFloat2Addr          OpCode = 0xc7
+	OpCodeMulFloat2Addr          OpCode = 0xc8
+	OpCodeDivFloat2Addr          OpCode = 0xc9
+	OpCodeRemFloat2Addr          OpCode = 0xca
+	OpCodeAddDouble2Addr         OpCode = 0xcb
+	OpCodeSubDouble2Addr         OpCode = 0xcc
+	OpCodeMulDouble2Addr         OpCode = 0xcd
+	OpCodeDivDouble2Addr         OpCode = 0xce
+	OpCodeRemDouble2Addr         OpCode = 0xcf
+	OpCodeAddIntLit16            OpCode = 0xd0
+	OpCodeRsubIntLit16           OpCode = 0xd1
+	OpCodeMulIntLit16            OpCode = 0xd2
+	OpCodeDivIntLit16            OpCode = 0xd3
+	OpCodeRemIntLit16            OpCode = 0xd4
+	OpCodeAndIntLit16            OpCode = 0xd5
+	OpCodeOrIntLit16             OpCode = 0xd6
+	OpCodeXorIntLit16            OpCode = 0xd7
+	OpCodeAddIntLit8             OpCode = 0xd8
+	OpCodeRsubIntLit8            OpCode = 0xd9
+	OpCodeMulIntLit8             OpCode = 0xda
+	OpCodeDivIntLit8             OpCode = 0xdb
+	OpCodeRemIntLit8             OpCode = 0xdc
+	OpCodeAndIntLit8             OpCode = 0xdd
+	OpCodeOrIntLit8              OpCode = 0xde
+	OpCodeXorIntLit8             OpCode = 0xdf
+	OpCodeShlIntLit8             OpCode = 0xe0
+	OpCodeShrIntLit8             OpCode = 0xe1
+	OpCodeUshrIntLit8            OpCode = 0xe2
+	OpCodeInvokePolymorphic      OpCode = 0xfa
 	OpCodeInvokePolymorphicRange OpCode = 0xfb
-	OpCodeInvokeCustom OpCode = 0xfc
-	OpCodeInvokeCustomRange OpCode = 0xfd
-	OpCodeConstMethodHandle OpCode = 0xfe
-	OpCodeConstMethodType OpCode = 0xff
+	OpCodeInvokeCustom           OpCode = 0xfc
+	OpCodeInvokeCustomRange      OpCode = 0xfd
+	OpCodeConstMethodHandle      OpCode = 0xfe
+	OpCodeConstMethodType        OpCode = 0xff
 )
 
 var opConfigs = map[OpCode]opConfig{
@@ -241,7 +241,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNop {
+			return OpNop{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -258,7 +258,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMove {
+			return OpMove{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -275,7 +275,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveFrom16 {
+			return OpMoveFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -292,7 +292,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMove16 {
+			return OpMove16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -309,7 +309,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveWide {
+			return OpMoveWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -326,7 +326,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveWideFrom16 {
+			return OpMoveWideFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -343,7 +343,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveWide16 {
+			return OpMoveWide16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -360,7 +360,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveObject {
+			return OpMoveObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -377,7 +377,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveObjectFrom16 {
+			return OpMoveObjectFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -394,7 +394,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveObject16 {
+			return OpMoveObject16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -411,7 +411,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveResult {
+			return OpMoveResult{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -428,7 +428,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveResultWide {
+			return OpMoveResultWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -445,7 +445,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveResultObject {
+			return OpMoveResultObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -462,7 +462,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMoveException {
+			return OpMoveException{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -479,7 +479,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpReturnVoid {
+			return OpReturnVoid{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -496,7 +496,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpReturn {
+			return OpReturn{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -513,7 +513,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpReturnWide {
+			return OpReturnWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -530,7 +530,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpReturnObject {
+			return OpReturnObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -547,7 +547,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConst4 {
+			return OpConst4{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -564,7 +564,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConst16 {
+			return OpConst16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -581,7 +581,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConst {
+			return OpConst{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -598,7 +598,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstHigh16 {
+			return OpConstHigh16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -615,7 +615,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstWide16 {
+			return OpConstWide16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -632,7 +632,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstWide32 {
+			return OpConstWide32{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -649,7 +649,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstWide {
+			return OpConstWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -666,7 +666,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstWideHigh16 {
+			return OpConstWideHigh16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -683,7 +683,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstString {
+			return OpConstString{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -700,7 +700,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstStringJumbo {
+			return OpConstStringJumbo{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -717,7 +717,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstClass {
+			return OpConstClass{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -734,7 +734,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMonitorEnter {
+			return OpMonitorEnter{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -751,7 +751,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMonitorExit {
+			return OpMonitorExit{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -768,7 +768,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCheckCast {
+			return OpCheckCast{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -785,7 +785,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInstanceOf {
+			return OpInstanceOf{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -802,7 +802,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpArrayLength {
+			return OpArrayLength{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -819,7 +819,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNewInstance {
+			return OpNewInstance{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -836,7 +836,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNewArray {
+			return OpNewArray{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -853,7 +853,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFilledNewArray {
+			return OpFilledNewArray{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -870,7 +870,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFilledNewArrayRange {
+			return OpFilledNewArrayRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -887,7 +887,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFillArrayData {
+			return OpFillArrayData{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -904,7 +904,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpThrow {
+			return OpThrow{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -921,7 +921,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpGoto {
+			return OpGoto{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -938,7 +938,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpGoto16 {
+			return OpGoto16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -955,7 +955,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpGoto32 {
+			return OpGoto32{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -972,7 +972,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpPackedSwitch {
+			return OpPackedSwitch{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -989,7 +989,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSparseSwitch {
+			return OpSparseSwitch{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1006,7 +1006,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCmplFloat {
+			return OpCmplFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1023,7 +1023,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCmpgFloat {
+			return OpCmpgFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1040,7 +1040,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCmplDouble {
+			return OpCmplDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1057,7 +1057,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCmpgDouble {
+			return OpCmpgDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1074,7 +1074,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpCmpLong {
+			return OpCmpLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1091,7 +1091,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfEq {
+			return OpIfEq{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1108,7 +1108,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfNe {
+			return OpIfNe{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1125,7 +1125,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfLt {
+			return OpIfLt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1142,7 +1142,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfGe {
+			return OpIfGe{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1159,7 +1159,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfGt {
+			return OpIfGt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1176,7 +1176,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfLe {
+			return OpIfLe{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1193,7 +1193,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfEqz {
+			return OpIfEqz{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1210,7 +1210,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfNez {
+			return OpIfNez{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1227,7 +1227,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfLtz {
+			return OpIfLtz{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1244,7 +1244,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfGez {
+			return OpIfGez{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1261,7 +1261,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfGtz {
+			return OpIfGtz{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1278,7 +1278,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIfLez {
+			return OpIfLez{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1295,7 +1295,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAget {
+			return OpAget{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1312,7 +1312,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetWide {
+			return OpAgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1329,7 +1329,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetObject {
+			return OpAgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1346,7 +1346,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetBoolean {
+			return OpAgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1363,7 +1363,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetByte {
+			return OpAgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1380,7 +1380,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetChar {
+			return OpAgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1397,7 +1397,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAgetShort {
+			return OpAgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1414,7 +1414,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAput {
+			return OpAput{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1431,7 +1431,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputWide {
+			return OpAputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1448,7 +1448,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputObject {
+			return OpAputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1465,7 +1465,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputBoolean {
+			return OpAputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1482,7 +1482,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputByte {
+			return OpAputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1499,7 +1499,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputChar {
+			return OpAputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1516,7 +1516,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAputShort {
+			return OpAputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1533,7 +1533,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIget {
+			return OpIget{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1550,7 +1550,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetWide {
+			return OpIgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1567,7 +1567,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetObject {
+			return OpIgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1584,7 +1584,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetBoolean {
+			return OpIgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1601,7 +1601,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetByte {
+			return OpIgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1618,7 +1618,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetChar {
+			return OpIgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1635,7 +1635,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIgetShort {
+			return OpIgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1652,7 +1652,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIput {
+			return OpIput{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1669,7 +1669,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputWide {
+			return OpIputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1686,7 +1686,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputObject {
+			return OpIputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1703,7 +1703,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputBoolean {
+			return OpIputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1720,7 +1720,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputByte {
+			return OpIputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1737,7 +1737,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputChar {
+			return OpIputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1754,7 +1754,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIputShort {
+			return OpIputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1771,7 +1771,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSget {
+			return OpSget{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1788,7 +1788,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetWide {
+			return OpSgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1805,7 +1805,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetObject {
+			return OpSgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1822,7 +1822,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetBoolean {
+			return OpSgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1839,7 +1839,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetByte {
+			return OpSgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1856,7 +1856,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetChar {
+			return OpSgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1873,7 +1873,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSgetShort {
+			return OpSgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1890,7 +1890,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSput {
+			return OpSput{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1907,7 +1907,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputWide {
+			return OpSputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1924,7 +1924,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputObject {
+			return OpSputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1941,7 +1941,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputBoolean {
+			return OpSputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1958,7 +1958,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputByte {
+			return OpSputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1975,7 +1975,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputChar {
+			return OpSputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -1992,7 +1992,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSputShort {
+			return OpSputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2009,7 +2009,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeVirtual {
+			return OpInvokeVirtual{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2026,7 +2026,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeSuper {
+			return OpInvokeSuper{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2043,7 +2043,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeDirect {
+			return OpInvokeDirect{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2060,7 +2060,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeStatic {
+			return OpInvokeStatic{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2077,7 +2077,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeInterface {
+			return OpInvokeInterface{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2094,7 +2094,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeVirtualRange {
+			return OpInvokeVirtualRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2111,7 +2111,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeSuperRange {
+			return OpInvokeSuperRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2128,7 +2128,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeDirectRange {
+			return OpInvokeDirectRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2145,7 +2145,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeStaticRange {
+			return OpInvokeStaticRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2162,7 +2162,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeInterfaceRange {
+			return OpInvokeInterfaceRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2179,7 +2179,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNegInt {
+			return OpNegInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2196,7 +2196,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNotInt {
+			return OpNotInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2213,7 +2213,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNegLong {
+			return OpNegLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2230,7 +2230,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNotLong {
+			return OpNotLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2247,7 +2247,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNegFloat {
+			return OpNegFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2264,7 +2264,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpNegDouble {
+			return OpNegDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2281,7 +2281,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToLong {
+			return OpIntToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2298,7 +2298,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToFloat {
+			return OpIntToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2315,7 +2315,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToDouble {
+			return OpIntToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2332,7 +2332,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpLongToInt {
+			return OpLongToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2349,7 +2349,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpLongToFloat {
+			return OpLongToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2366,7 +2366,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpLongToDouble {
+			return OpLongToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2383,7 +2383,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFloatToInt {
+			return OpFloatToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2400,7 +2400,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFloatToLong {
+			return OpFloatToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2417,7 +2417,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpFloatToDouble {
+			return OpFloatToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2434,7 +2434,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDoubleToInt {
+			return OpDoubleToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2451,7 +2451,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDoubleToLong {
+			return OpDoubleToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2468,7 +2468,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDoubleToFloat {
+			return OpDoubleToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2485,7 +2485,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToByte {
+			return OpIntToByte{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2502,7 +2502,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToChar {
+			return OpIntToChar{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2519,7 +2519,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpIntToShort {
+			return OpIntToShort{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2536,7 +2536,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddInt {
+			return OpAddInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2553,7 +2553,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubInt {
+			return OpSubInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2570,7 +2570,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulInt {
+			return OpMulInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2587,7 +2587,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivInt {
+			return OpDivInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2604,7 +2604,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemInt {
+			return OpRemInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2621,7 +2621,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndInt {
+			return OpAndInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2638,7 +2638,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrInt {
+			return OpOrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2655,7 +2655,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorInt {
+			return OpXorInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2672,7 +2672,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShlInt {
+			return OpShlInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2689,7 +2689,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShrInt {
+			return OpShrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2706,7 +2706,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpUshrInt {
+			return OpUshrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2723,7 +2723,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddLong {
+			return OpAddLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2740,7 +2740,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubLong {
+			return OpSubLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2757,7 +2757,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulLong {
+			return OpMulLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2774,7 +2774,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivLong {
+			return OpDivLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2791,7 +2791,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemLong {
+			return OpRemLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2808,7 +2808,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndLong {
+			return OpAndLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2825,7 +2825,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrLong {
+			return OpOrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2842,7 +2842,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorLong {
+			return OpXorLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2859,7 +2859,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShlLong {
+			return OpShlLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2876,7 +2876,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShrLong {
+			return OpShrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2893,7 +2893,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpUshrLong {
+			return OpUshrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2910,7 +2910,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddFloat {
+			return OpAddFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2927,7 +2927,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubFloat {
+			return OpSubFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2944,7 +2944,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulFloat {
+			return OpMulFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2961,7 +2961,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivFloat {
+			return OpDivFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2978,7 +2978,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemFloat {
+			return OpRemFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -2995,7 +2995,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddDouble {
+			return OpAddDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3012,7 +3012,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubDouble {
+			return OpSubDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3029,7 +3029,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulDouble {
+			return OpMulDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3046,7 +3046,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivDouble {
+			return OpDivDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3063,7 +3063,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemDouble {
+			return OpRemDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3080,7 +3080,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddInt2Addr {
+			return OpAddInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3097,7 +3097,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubInt2Addr {
+			return OpSubInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3114,7 +3114,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulInt2Addr {
+			return OpMulInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3131,7 +3131,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivInt2Addr {
+			return OpDivInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3148,7 +3148,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemInt2Addr {
+			return OpRemInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3165,7 +3165,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndInt2Addr {
+			return OpAndInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3182,7 +3182,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrInt2Addr {
+			return OpOrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3199,7 +3199,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorInt2Addr {
+			return OpXorInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3216,7 +3216,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShlInt2Addr {
+			return OpShlInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3233,7 +3233,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShrInt2Addr {
+			return OpShrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3250,7 +3250,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpUshrInt2Addr {
+			return OpUshrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3267,7 +3267,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddLong2Addr {
+			return OpAddLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3284,7 +3284,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubLong2Addr {
+			return OpSubLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3301,7 +3301,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulLong2Addr {
+			return OpMulLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3318,7 +3318,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivLong2Addr {
+			return OpDivLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3335,7 +3335,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemLong2Addr {
+			return OpRemLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3352,7 +3352,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndLong2Addr {
+			return OpAndLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3369,7 +3369,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrLong2Addr {
+			return OpOrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3386,7 +3386,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorLong2Addr {
+			return OpXorLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3403,7 +3403,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShlLong2Addr {
+			return OpShlLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3420,7 +3420,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShrLong2Addr {
+			return OpShrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3437,7 +3437,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpUshrLong2Addr {
+			return OpUshrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3454,7 +3454,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddFloat2Addr {
+			return OpAddFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3471,7 +3471,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubFloat2Addr {
+			return OpSubFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3488,7 +3488,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulFloat2Addr {
+			return OpMulFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3505,7 +3505,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivFloat2Addr {
+			return OpDivFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3522,7 +3522,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemFloat2Addr {
+			return OpRemFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3539,7 +3539,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddDouble2Addr {
+			return OpAddDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3556,7 +3556,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpSubDouble2Addr {
+			return OpSubDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3573,7 +3573,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulDouble2Addr {
+			return OpMulDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3590,7 +3590,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivDouble2Addr {
+			return OpDivDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3607,7 +3607,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemDouble2Addr {
+			return OpRemDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3624,7 +3624,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddIntLit16 {
+			return OpAddIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3641,7 +3641,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRsubIntLit16 {
+			return OpRsubIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3658,7 +3658,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulIntLit16 {
+			return OpMulIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3675,7 +3675,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivIntLit16 {
+			return OpDivIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3692,7 +3692,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemIntLit16 {
+			return OpRemIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3709,7 +3709,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndIntLit16 {
+			return OpAndIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3726,7 +3726,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrIntLit16 {
+			return OpOrIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3743,7 +3743,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorIntLit16 {
+			return OpXorIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3760,7 +3760,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAddIntLit8 {
+			return OpAddIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3777,7 +3777,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRsubIntLit8 {
+			return OpRsubIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3794,7 +3794,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpMulIntLit8 {
+			return OpMulIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3811,7 +3811,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpDivIntLit8 {
+			return OpDivIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3828,7 +3828,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpRemIntLit8 {
+			return OpRemIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3845,7 +3845,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpAndIntLit8 {
+			return OpAndIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3862,7 +3862,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpOrIntLit8 {
+			return OpOrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3879,7 +3879,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpXorIntLit8 {
+			return OpXorIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3896,7 +3896,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShlIntLit8 {
+			return OpShlIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3913,7 +3913,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpShrIntLit8 {
+			return OpShrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3930,7 +3930,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpUshrIntLit8 {
+			return OpUshrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3947,7 +3947,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokePolymorphic {
+			return OpInvokePolymorphic{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3964,7 +3964,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokePolymorphicRange {
+			return OpInvokePolymorphicRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3981,7 +3981,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeCustom {
+			return OpInvokeCustom{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -3998,7 +3998,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpInvokeCustomRange {
+			return OpInvokeCustomRange{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -4015,7 +4015,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstMethodHandle {
+			return OpConstMethodHandle{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -4032,7 +4032,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &OpConstMethodType {
+			return OpConstMethodType{
 				opBase{pos: pos},
 				f,
 			}, nil

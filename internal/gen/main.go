@@ -73,7 +73,7 @@ var opConfigs = map[OpCode]opConfig{
 				return nil, err
 			}
 
-			return &Op{{$o.PascalName}} {
+			return Op{{$o.PascalName}} {
 				opBase{pos: pos},
 				f,
 			}, nil

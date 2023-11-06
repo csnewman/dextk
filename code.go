@@ -507,61 +507,61 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 		var parsed OpNode
 
 		switch ot := o.(type) {
-		case *OpNop, *OpPseudoPackedSwitchPayload, *OpPseudoSparseSwitchPayload, *OpPseudoFillArrayDataPayload:
-			parsed = &NopOpNode{
+		case OpNop, OpPseudoPackedSwitchPayload, OpPseudoSparseSwitchPayload, OpPseudoFillArrayDataPayload:
+			parsed = NopOpNode{
 				Raw: ot,
 			}
-		case *OpMove, *OpMoveWide, *OpMoveObject:
+		case OpMove, OpMoveWide, OpMoveObject:
 			data := (ot.Fmt()).(Fmt12x)
 
-			parsed = &MoveOpNode{
+			parsed = MoveOpNode{
 				Raw: ot,
 				Src: uint16(data.B),
 				Dst: uint16(data.A),
 			}
-		case *OpMoveFrom16, *OpMoveWideFrom16, *OpMoveObjectFrom16:
+		case OpMoveFrom16, OpMoveWideFrom16, OpMoveObjectFrom16:
 			data := (ot.Fmt()).(Fmt22x)
 
-			parsed = &MoveOpNode{
+			parsed = MoveOpNode{
 				Raw: ot,
 				Src: data.B,
 				Dst: uint16(data.A),
 			}
-		case *OpMove16, *OpMoveWide16, *OpMoveObject16:
+		case OpMove16, OpMoveWide16, OpMoveObject16:
 			data := (ot.Fmt()).(Fmt32x)
 
-			parsed = &MoveOpNode{
+			parsed = MoveOpNode{
 				Raw: ot,
 				Src: data.B,
 				Dst: data.A,
 			}
-		case *OpMoveResult, *OpMoveResultWide, *OpMoveResultObject:
+		case OpMoveResult, OpMoveResultWide, OpMoveResultObject:
 			data := (ot.Fmt()).(Fmt11x)
 
-			parsed = &MoveResultOpNode{
+			parsed = MoveResultOpNode{
 				Raw: ot,
 				Dst: data.A,
 			}
-		case *OpMoveException:
+		case OpMoveException:
 			data := (ot.Fmt()).(Fmt11x)
 
-			parsed = &MoveExceptionOpNode{
+			parsed = MoveExceptionOpNode{
 				Raw: ot,
 				Dst: data.A,
 			}
-		case *OpReturnVoid:
-			parsed = &ReturnOpNode{
+		case OpReturnVoid:
+			parsed = ReturnOpNode{
 				Raw:   ot,
 				Value: -1,
 			}
-		case *OpReturn, *OpReturnWide, *OpReturnObject:
+		case OpReturn, OpReturnWide, OpReturnObject:
 			data := (ot.Fmt()).(Fmt11x)
 
-			parsed = &ReturnOpNode{
+			parsed = ReturnOpNode{
 				Raw:   ot,
 				Value: int16(data.A),
 			}
-		case *OpConst4:
+		case OpConst4:
 			data := (ot.Fmt()).(Fmt11n)
 
 			val := uint32(data.B)
@@ -571,12 +571,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			conv := int32(val)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConst16:
+		case OpConst16:
 			data := (ot.Fmt()).(Fmt21s)
 
 			val := uint32(data.B)
@@ -586,30 +586,30 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			conv := int32(val)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConst:
+		case OpConst:
 			data := (ot.Fmt()).(Fmt31i)
 			conv := int32(data.B)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstHigh16:
+		case OpConstHigh16:
 			data := (ot.Fmt()).(Fmt21h)
 			conv := int32(uint32(data.B) << 16)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstWide16:
+		case OpConstWide16:
 			data := (ot.Fmt()).(Fmt21s)
 
 			val := uint64(data.B)
@@ -619,12 +619,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			conv := int64(val)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstWide32:
+		case OpConstWide32:
 			data := (ot.Fmt()).(Fmt31i)
 
 			val := uint64(data.B)
@@ -634,113 +634,113 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			conv := int64(val)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstWide:
+		case OpConstWide:
 			data := (ot.Fmt()).(Fmt51l)
 			conv := int64(data.B)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstWideHigh16:
+		case OpConstWideHigh16:
 			data := (ot.Fmt()).(Fmt21h)
 			conv := int64(uint64(data.B) << 48)
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: conv,
 			}
-		case *OpConstString:
+		case OpConstString:
 			data := (ot.Fmt()).(Fmt21c)
 			val, err := r.ReadString(uint32(data.B))
 			if err != nil {
 				return res, err
 			}
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: val,
 			}
-		case *OpConstStringJumbo:
+		case OpConstStringJumbo:
 			data := (ot.Fmt()).(Fmt31c)
 			val, err := r.ReadString(data.B)
 			if err != nil {
 				return res, err
 			}
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: val,
 			}
-		case *OpConstClass:
+		case OpConstClass:
 			data := (ot.Fmt()).(Fmt21c)
 			val, err := r.ReadTypeAndParse(uint32(data.B))
 			if err != nil {
 				return res, err
 			}
 
-			parsed = &ConstOpNode{
+			parsed = ConstOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Value: val,
 			}
-		case *OpMonitorEnter:
+		case OpMonitorEnter:
 			data := (ot.Fmt()).(Fmt11x)
-			parsed = &MonitorOpNode{
+			parsed = MonitorOpNode{
 				Raw:   ot,
 				Ref:   data.A,
 				Enter: true,
 			}
-		case *OpMonitorExit:
+		case OpMonitorExit:
 			data := (ot.Fmt()).(Fmt11x)
-			parsed = &MonitorOpNode{
+			parsed = MonitorOpNode{
 				Raw:   ot,
 				Ref:   data.A,
 				Enter: false,
 			}
-		case *OpCheckCast:
+		case OpCheckCast:
 			data := (ot.Fmt()).(Fmt21c)
 			val, err := r.ReadTypeAndParse(uint32(data.B))
 			if err != nil {
 				return res, err
 			}
 
-			parsed = &CheckCastOpNode{
+			parsed = CheckCastOpNode{
 				Raw:  ot,
 				Ref:  data.A,
 				Type: val,
 			}
-		case *OpInstanceOf:
+		case OpInstanceOf:
 			data := (ot.Fmt()).(Fmt22c)
 			val, err := r.ReadTypeAndParse(uint32(data.C))
 			if err != nil {
 				return res, err
 			}
 
-			parsed = &InstanceOfOpNode{
+			parsed = InstanceOfOpNode{
 				Raw:  ot,
 				Dst:  data.A,
 				Src:  data.B,
 				Type: val,
 			}
-		case *OpArrayLength:
+		case OpArrayLength:
 			data := (ot.Fmt()).(Fmt12x)
 
-			parsed = &ArrayLenOpNode{
+			parsed = ArrayLenOpNode{
 				Raw: ot,
 				Dst: data.A,
 				Ref: data.B,
 			}
-		case *OpNewInstance:
+		case OpNewInstance:
 			data := (ot.Fmt()).(Fmt21c)
 
 			parsedDesc, err := r.ReadTypeAndParse(uint32(data.B))
@@ -752,12 +752,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid descriptor", ErrBadOp)
 			}
 
-			parsed = &NewInstanceOpNode{
+			parsed = NewInstanceOpNode{
 				Raw:  ot,
 				Dst:  data.A,
 				Type: parsedDesc.ClassName,
 			}
-		case *OpNewArray:
+		case OpNewArray:
 			data := (ot.Fmt()).(Fmt22c)
 
 			parsedDesc, err := r.ReadTypeAndParse(uint32(data.C))
@@ -769,13 +769,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: %v: invalid descriptor", ErrBadOp, ot)
 			}
 
-			parsed = &NewArrayOpNode{
+			parsed = NewArrayOpNode{
 				Raw:     ot,
 				Dst:     data.A,
 				SizeReg: data.B,
 				Type:    parsedDesc,
 			}
-		case *OpFilledNewArray:
+		case OpFilledNewArray:
 			data := (ot.Fmt()).(Fmt35c)
 
 			parsedDesc, err := r.ReadTypeAndParse(uint32(data.B))
@@ -809,12 +809,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				values[4] = uint16(data.G)
 			}
 
-			parsed = &FilledNewArrayOpNode{
+			parsed = FilledNewArrayOpNode{
 				Raw:       ot,
 				Type:      parsedDesc,
 				ValueRegs: values,
 			}
-		case *OpFilledNewArrayRange:
+		case OpFilledNewArrayRange:
 			data := (ot.Fmt()).(Fmt3rc)
 
 			parsedDesc, err := r.ReadTypeAndParse(uint32(data.B))
@@ -832,12 +832,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				values[i] = data.C + uint16(i)
 			}
 
-			parsed = &FilledNewArrayOpNode{
+			parsed = FilledNewArrayOpNode{
 				Raw:       ot,
 				Type:      parsedDesc,
 				ValueRegs: values,
 			}
-		case *OpFillArrayData:
+		case OpFillArrayData:
 			data := (ot.Fmt()).(Fmt31t)
 
 			tgt := pos + int(int32(data.B))
@@ -853,26 +853,26 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid data %w", ErrBadOp, err)
 			}
 
-			tableOp, ok := (rtop).(*OpPseudoFillArrayDataPayload)
+			tableOp, ok := (rtop).(OpPseudoFillArrayDataPayload)
 			if !ok {
 				return res, fmt.Errorf("%w: invalid data %v", ErrBadOp, tableOp)
 			}
 
 			or.Seek(oldPos)
 
-			parsed = &FillArrayDataOpNode{
+			parsed = FillArrayDataOpNode{
 				Raw:                     ot,
 				Ref:                     data.A,
 				FmtFillArrayDataPayload: tableOp.FmtFillArrayDataPayload,
 			}
-		case *OpThrow:
+		case OpThrow:
 			data := (ot.Fmt()).(Fmt11x)
 
-			parsed = &ThrowOpNode{
+			parsed = ThrowOpNode{
 				Raw: ot,
 				Reg: data.A,
 			}
-		case *OpGoto:
+		case OpGoto:
 			data := (ot.Fmt()).(Fmt10t)
 
 			tgt := pos + int(int8(data.A))
@@ -885,11 +885,11 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
 			}
 
-			parsed = &GotoOpNode{
+			parsed = GotoOpNode{
 				Raw: ot,
 				Tgt: int(id),
 			}
-		case *OpGoto16:
+		case OpGoto16:
 			data := (ot.Fmt()).(Fmt20t)
 
 			tgt := pos + int(int16(data.A))
@@ -902,11 +902,11 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
 			}
 
-			parsed = &GotoOpNode{
+			parsed = GotoOpNode{
 				Raw: ot,
 				Tgt: int(id),
 			}
-		case *OpGoto32:
+		case OpGoto32:
 			data := (ot.Fmt()).(Fmt30t)
 
 			tgt := pos + int(int32(data.A))
@@ -919,11 +919,11 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
 			}
 
-			parsed = &GotoOpNode{
+			parsed = GotoOpNode{
 				Raw: ot,
 				Tgt: int(id),
 			}
-		case *OpPackedSwitch:
+		case OpPackedSwitch:
 			data := (ot.Fmt()).(Fmt31t)
 
 			tgt := pos + int(int32(data.B))
@@ -939,7 +939,7 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid table %w", ErrBadOp, err)
 			}
 
-			tableOp, ok := (rtop).(*OpPseudoPackedSwitchPayload)
+			tableOp, ok := (rtop).(OpPseudoPackedSwitchPayload)
 			if !ok {
 				return res, fmt.Errorf("%w: invalid table %v", ErrBadOp, tableOp)
 			}
@@ -952,13 +952,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				tgts[i] = pos + int(target)
 			}
 
-			parsed = &PackedSwitchOpNode{
+			parsed = PackedSwitchOpNode{
 				Raw:      ot,
 				Reg:      data.A,
 				FirstKey: tableOp.FirstKey,
 				Targets:  tgts,
 			}
-		case *OpSparseSwitch:
+		case OpSparseSwitch:
 			data := (ot.Fmt()).(Fmt31t)
 
 			tgt := pos + int(int32(data.B))
@@ -974,7 +974,7 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid table %w", ErrBadOp, err)
 			}
 
-			tableOp, ok := (rtop).(*OpPseudoSparseSwitchPayload)
+			tableOp, ok := (rtop).(OpPseudoSparseSwitchPayload)
 			if !ok {
 				return res, fmt.Errorf("%w: invalid table %v", ErrBadOp, tableOp)
 			}
@@ -987,22 +987,22 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				tgts[i] = pos + int(target)
 			}
 
-			parsed = &SparseSwitchOpNode{
+			parsed = SparseSwitchOpNode{
 				Raw:     ot,
 				Reg:     data.A,
 				Keys:    tableOp.Keys,
 				Targets: tgts,
 			}
-		case *OpCmplFloat, *OpCmpgFloat, *OpCmplDouble, *OpCmpgDouble, *OpCmpLong:
+		case OpCmplFloat, OpCmpgFloat, OpCmplDouble, OpCmpgDouble, OpCmpLong:
 			data := (ot.Fmt()).(Fmt23x)
 
-			parsed = &CmpOpNode{
+			parsed = CmpOpNode{
 				Raw:  ot,
 				SrcA: data.B,
 				SrcB: data.C,
 				Dst:  data.A,
 			}
-		case *OpIfEq, *OpIfNe, *OpIfLt, *OpIfGe, *OpIfGt, *OpIfLe:
+		case OpIfEq, OpIfNe, OpIfLt, OpIfGe, OpIfGt, OpIfLe:
 			data := (ot.Fmt()).(Fmt22t)
 
 			tgt := pos + int(int16(data.C))
@@ -1015,13 +1015,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
 			}
 
-			parsed = &IfTestOpNode{
+			parsed = IfTestOpNode{
 				Raw: ot,
 				A:   data.A,
 				B:   int16(data.B),
 				Tgt: int(id),
 			}
-		case *OpIfEqz, *OpIfNez, *OpIfLtz, *OpIfGez, *OpIfGtz, *OpIfLez:
+		case OpIfEqz, OpIfNez, OpIfLtz, OpIfGez, OpIfGtz, OpIfLez:
 			data := (ot.Fmt()).(Fmt21t)
 
 			tgt := pos + int(int16(data.B))
@@ -1034,31 +1034,31 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
 			}
 
-			parsed = &IfTestOpNode{
+			parsed = IfTestOpNode{
 				Raw: ot,
 				A:   data.A,
 				B:   -1,
 				Tgt: int(id),
 			}
-		case *OpAget, *OpAgetWide, *OpAgetObject, *OpAgetBoolean, *OpAgetByte, *OpAgetChar, *OpAgetShort:
+		case OpAget, OpAgetWide, OpAgetObject, OpAgetBoolean, OpAgetByte, OpAgetChar, OpAgetShort:
 			data := (ot.Fmt()).(Fmt23x)
 
-			parsed = &AGetOpNode{
+			parsed = AGetOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Array: data.B,
 				Index: data.C,
 			}
-		case *OpAput, *OpAputWide, *OpAputObject, *OpAputBoolean, *OpAputByte, *OpAputChar, *OpAputShort:
+		case OpAput, OpAputWide, OpAputObject, OpAputBoolean, OpAputByte, OpAputChar, OpAputShort:
 			data := (ot.Fmt()).(Fmt23x)
 
-			parsed = &APutOpNode{
+			parsed = APutOpNode{
 				Raw:   ot,
 				Src:   data.A,
 				Array: data.B,
 				Index: data.C,
 			}
-		case *OpIget, *OpIgetWide, *OpIgetObject, *OpIgetBoolean, *OpIgetByte, *OpIgetChar, *OpIgetShort:
+		case OpIget, OpIgetWide, OpIgetObject, OpIgetBoolean, OpIgetByte, OpIgetChar, OpIgetShort:
 			data := (ot.Fmt()).(Fmt22c)
 
 			f, err := r.ReadFieldAndParse(uint32(data.C))
@@ -1066,13 +1066,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, err
 			}
 
-			parsed = &IGetOpNode{
+			parsed = IGetOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Obj:   data.B,
 				Field: f,
 			}
-		case *OpIput, *OpIputWide, *OpIputObject, *OpIputBoolean, *OpIputByte, *OpIputChar, *OpIputShort:
+		case OpIput, OpIputWide, OpIputObject, OpIputBoolean, OpIputByte, OpIputChar, OpIputShort:
 			data := (ot.Fmt()).(Fmt22c)
 
 			f, err := r.ReadFieldAndParse(uint32(data.C))
@@ -1080,13 +1080,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, err
 			}
 
-			parsed = &IPutOpNode{
+			parsed = IPutOpNode{
 				Raw:   ot,
 				Src:   data.A,
 				Obj:   data.B,
 				Field: f,
 			}
-		case *OpSget, *OpSgetWide, *OpSgetObject, *OpSgetBoolean, *OpSgetByte, *OpSgetChar, *OpSgetShort:
+		case OpSget, OpSgetWide, OpSgetObject, OpSgetBoolean, OpSgetByte, OpSgetChar, OpSgetShort:
 			data := (ot.Fmt()).(Fmt21c)
 
 			f, err := r.ReadFieldAndParse(uint32(data.B))
@@ -1094,12 +1094,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, err
 			}
 
-			parsed = &SGetOpNode{
+			parsed = SGetOpNode{
 				Raw:   ot,
 				Dst:   data.A,
 				Field: f,
 			}
-		case *OpSput, *OpSputWide, *OpSputObject, *OpSputBoolean, *OpSputByte, *OpSputChar, *OpSputShort:
+		case OpSput, OpSputWide, OpSputObject, OpSputBoolean, OpSputByte, OpSputChar, OpSputShort:
 			data := (ot.Fmt()).(Fmt21c)
 
 			f, err := r.ReadFieldAndParse(uint32(data.B))
@@ -1107,12 +1107,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				return res, err
 			}
 
-			parsed = &SPutOpNode{
+			parsed = SPutOpNode{
 				Raw:   ot,
 				Src:   data.A,
 				Field: f,
 			}
-		case *OpInvokeVirtual, *OpInvokeSuper, *OpInvokeDirect, *OpInvokeStatic, *OpInvokeInterface:
+		case OpInvokeVirtual, OpInvokeSuper, OpInvokeDirect, OpInvokeStatic, OpInvokeInterface:
 			data := (ot.Fmt()).(Fmt35c)
 
 			m, err := r.ReadMethodAndParse(uint32(data.B))
@@ -1142,13 +1142,13 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				args[4] = uint16(data.G)
 			}
 
-			parsed = &InvokeOpNode{
+			parsed = InvokeOpNode{
 				Raw:    ot,
 				Method: m,
 				Args:   args,
 			}
-		case *OpInvokeVirtualRange, *OpInvokeSuperRange, *OpInvokeDirectRange, *OpInvokeStaticRange,
-			*OpInvokeInterfaceRange:
+		case OpInvokeVirtualRange, OpInvokeSuperRange, OpInvokeDirectRange, OpInvokeStaticRange,
+			OpInvokeInterfaceRange:
 			data := (ot.Fmt()).(Fmt3rc)
 
 			m, err := r.ReadMethodAndParse(uint32(data.B))
@@ -1162,63 +1162,63 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 				args[i] = data.C + uint16(i)
 			}
 
-			parsed = &InvokeOpNode{
+			parsed = InvokeOpNode{
 				Raw:    ot,
 				Method: m,
 				Args:   args,
 			}
-		case *OpNegInt, *OpNotInt, *OpNegLong, *OpNotLong, *OpNegFloat, *OpNegDouble, *OpIntToLong, *OpIntToFloat,
-			*OpIntToDouble, *OpLongToInt, *OpLongToFloat, *OpLongToDouble, *OpFloatToInt, *OpFloatToLong,
-			*OpFloatToDouble, *OpDoubleToInt, *OpDoubleToLong, *OpDoubleToFloat, *OpIntToByte, *OpIntToChar,
-			*OpIntToShort:
+		case OpNegInt, OpNotInt, OpNegLong, OpNotLong, OpNegFloat, OpNegDouble, OpIntToLong, OpIntToFloat,
+			OpIntToDouble, OpLongToInt, OpLongToFloat, OpLongToDouble, OpFloatToInt, OpFloatToLong,
+			OpFloatToDouble, OpDoubleToInt, OpDoubleToLong, OpDoubleToFloat, OpIntToByte, OpIntToChar,
+			OpIntToShort:
 			data := (ot.Fmt()).(Fmt12x)
 
-			parsed = &UnaryOpNode{
+			parsed = UnaryOpNode{
 				Raw: ot,
 				Dst: data.A,
 				Src: data.B,
 			}
-		case *OpAddInt, *OpSubInt, *OpMulInt, *OpDivInt, *OpRemInt, *OpAndInt, *OpOrInt, *OpXorInt, *OpShlInt,
-			*OpShrInt, *OpUshrInt, *OpAddLong, *OpSubLong, *OpMulLong, *OpDivLong, *OpRemLong, *OpAndLong, *OpOrLong,
-			*OpXorLong, *OpShlLong, *OpShrLong, *OpUshrLong, *OpAddFloat, *OpSubFloat, *OpMulFloat, *OpDivFloat,
-			*OpRemFloat, *OpAddDouble, *OpSubDouble, *OpMulDouble, *OpDivDouble, *OpRemDouble:
+		case OpAddInt, OpSubInt, OpMulInt, OpDivInt, OpRemInt, OpAndInt, OpOrInt, OpXorInt, OpShlInt,
+			OpShrInt, OpUshrInt, OpAddLong, OpSubLong, OpMulLong, OpDivLong, OpRemLong, OpAndLong, OpOrLong,
+			OpXorLong, OpShlLong, OpShrLong, OpUshrLong, OpAddFloat, OpSubFloat, OpMulFloat, OpDivFloat,
+			OpRemFloat, OpAddDouble, OpSubDouble, OpMulDouble, OpDivDouble, OpRemDouble:
 			data := (ot.Fmt()).(Fmt23x)
 
-			parsed = &BinaryOpNode{
+			parsed = BinaryOpNode{
 				Raw:  ot,
 				Dst:  data.A,
 				SrcA: data.B,
 				SrcB: data.C,
 			}
-		case *OpAddInt2Addr, *OpSubInt2Addr, *OpMulInt2Addr, *OpDivInt2Addr, *OpRemInt2Addr, *OpAndInt2Addr,
-			*OpOrInt2Addr, *OpXorInt2Addr, *OpShlInt2Addr, *OpShrInt2Addr, *OpUshrInt2Addr, *OpAddLong2Addr,
-			*OpSubLong2Addr, *OpMulLong2Addr, *OpDivLong2Addr, *OpRemLong2Addr, *OpAndLong2Addr, *OpOrLong2Addr,
-			*OpXorLong2Addr, *OpShlLong2Addr, *OpShrLong2Addr, *OpUshrLong2Addr, *OpAddFloat2Addr, *OpSubFloat2Addr,
-			*OpMulFloat2Addr, *OpDivFloat2Addr, *OpRemFloat2Addr, *OpAddDouble2Addr, *OpSubDouble2Addr,
-			*OpMulDouble2Addr, *OpDivDouble2Addr, *OpRemDouble2Addr:
+		case OpAddInt2Addr, OpSubInt2Addr, OpMulInt2Addr, OpDivInt2Addr, OpRemInt2Addr, OpAndInt2Addr,
+			OpOrInt2Addr, OpXorInt2Addr, OpShlInt2Addr, OpShrInt2Addr, OpUshrInt2Addr, OpAddLong2Addr,
+			OpSubLong2Addr, OpMulLong2Addr, OpDivLong2Addr, OpRemLong2Addr, OpAndLong2Addr, OpOrLong2Addr,
+			OpXorLong2Addr, OpShlLong2Addr, OpShrLong2Addr, OpUshrLong2Addr, OpAddFloat2Addr, OpSubFloat2Addr,
+			OpMulFloat2Addr, OpDivFloat2Addr, OpRemFloat2Addr, OpAddDouble2Addr, OpSubDouble2Addr,
+			OpMulDouble2Addr, OpDivDouble2Addr, OpRemDouble2Addr:
 			data := (ot.Fmt()).(Fmt12x)
 
-			parsed = &BinaryOpNode{
+			parsed = BinaryOpNode{
 				Raw:  ot,
 				Dst:  data.A,
 				SrcA: data.A,
 				SrcB: data.B,
 			}
-		case *OpAddIntLit16, *OpRsubIntLit16, *OpMulIntLit16, *OpDivIntLit16, *OpRemIntLit16, *OpAndIntLit16,
-			*OpOrIntLit16, *OpXorIntLit16:
+		case OpAddIntLit16, OpRsubIntLit16, OpMulIntLit16, OpDivIntLit16, OpRemIntLit16, OpAndIntLit16,
+			OpOrIntLit16, OpXorIntLit16:
 			data := (ot.Fmt()).(Fmt22s)
 
-			parsed = &BinaryLiteralOpNode{
+			parsed = BinaryLiteralOpNode{
 				Raw:    ot,
 				Dst:    data.A,
 				SrcA:   data.B,
 				ValueB: int16(data.C),
 			}
-		case *OpAddIntLit8, *OpRsubIntLit8, *OpMulIntLit8, *OpDivIntLit8, *OpRemIntLit8, *OpAndIntLit8, *OpOrIntLit8,
-			*OpXorIntLit8, *OpShlIntLit8, *OpShrIntLit8, *OpUshrIntLit8:
+		case OpAddIntLit8, OpRsubIntLit8, OpMulIntLit8, OpDivIntLit8, OpRemIntLit8, OpAndIntLit8, OpOrIntLit8,
+			OpXorIntLit8, OpShlIntLit8, OpShrIntLit8, OpUshrIntLit8:
 			data := (ot.Fmt()).(Fmt22b)
 
-			parsed = &BinaryLiteralOpNode{
+			parsed = BinaryLiteralOpNode{
 				Raw:    ot,
 				Dst:    data.A,
 				SrcA:   data.B,
@@ -1227,7 +1227,7 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 		// TODO: invoke-polymorphic, invoke-polymorphic/range, invoke-custom, invoke-custom/range, const-method-handle,
 		//       const-method-type
 		default:
-			parsed = &UnknownOpNode{
+			parsed = UnknownOpNode{
 				Raw: ot,
 			}
 		}

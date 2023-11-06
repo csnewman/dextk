@@ -101,7 +101,7 @@ func init() {
 				return nil, err
 			}
 
-			return &OpPseudoPackedSwitchPayload{
+			return OpPseudoPackedSwitchPayload{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -118,7 +118,7 @@ func init() {
 				return nil, err
 			}
 
-			return &OpPseudoSparseSwitchPayload{
+			return OpPseudoSparseSwitchPayload{
 				opBase{pos: pos},
 				f,
 			}, nil
@@ -135,7 +135,7 @@ func init() {
 				return nil, err
 			}
 
-			return &OpPseudoFillArrayDataPayload{
+			return OpPseudoFillArrayDataPayload{
 				opBase{pos: pos},
 				f,
 			}, nil
