@@ -18,30 +18,54 @@ const (
 )
 
 func (c OpCode) String() string {
-	cfg, found := opConfigs[c]
-	if !found {
-		return fmt.Sprintf("unknown(0x%x)", int16(c))
+	cfg, found := opConfigsExtra[c]
+	if found {
+		return cfg.Name
 	}
 
-	return cfg.Name
+	if c >= 0 && c <= 255 {
+		cfg := opConfigs[c]
+
+		if cfg.Name != "" {
+			return cfg.Name
+		}
+	}
+
+	return fmt.Sprintf("unknown(0x%x)", int16(c))
 }
 
 func (c OpCode) Size(r *OpReader) (int, error) {
-	cfg, found := opConfigs[c]
-	if !found {
-		return 0, fmt.Errorf("%w: %x", ErrUnsupportedOp, int16(c))
+	cfg, found := opConfigsExtra[c]
+	if found {
+		return cfg.Size(r)
 	}
 
-	return cfg.Size(r)
+	if c >= 0 && c <= 255 {
+		cfg := opConfigs[c]
+
+		if cfg.Name != "" {
+			return cfg.Size(r)
+		}
+	}
+
+	return 0, fmt.Errorf("%w: %x", ErrUnsupportedOp, int16(c))
 }
 
 func (c OpCode) Read(r *OpReader) (Op, error) {
-	cfg, found := opConfigs[c]
-	if !found {
-		return nil, fmt.Errorf("%w: %x", ErrUnsupportedOp, int16(c))
+	cfg, found := opConfigsExtra[c]
+	if found {
+		return cfg.Reader(r)
 	}
 
-	return cfg.Reader(r)
+	if c >= 0 && c <= 255 {
+		cfg := opConfigs[c]
+
+		if cfg.Name != "" {
+			return cfg.Reader(r)
+		}
+	}
+
+	return nil, fmt.Errorf("%w: %x", ErrUnsupportedOp, int16(c))
 }
 
 type Op interface {

@@ -90,7 +90,7 @@ func (r *OpReader) Read() (Op, error) {
 }
 
 func init() {
-	opConfigs[OpCodePseudoPackedSwitchPayload] = opConfig{
+	opConfigsExtra[OpCodePseudoPackedSwitchPayload] = opConfig{
 		Name: "pseudo-packed-switch-payload",
 		Size: fmtPackedSwitchPayloadSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -107,7 +107,7 @@ func init() {
 			}, nil
 		},
 	}
-	opConfigs[OpCodePseudoSparseSwitchPayload] = opConfig{
+	opConfigsExtra[OpCodePseudoSparseSwitchPayload] = opConfig{
 		Name: "pseudo-sparse-switch-payload",
 		Size: fmtSparseSwitchPayloadSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -124,7 +124,7 @@ func init() {
 			}, nil
 		},
 	}
-	opConfigs[OpCodePseudoFillArrayDataPayload] = opConfig{
+	opConfigsExtra[OpCodePseudoFillArrayDataPayload] = opConfig{
 		Name: "pseudo-fill-array-data-payload",
 		Size: fmtFillArrayDataPayloadSize,
 		Reader: func(r *OpReader) (Op, error) {

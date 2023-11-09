@@ -60,7 +60,9 @@ const (
 {{- end}}
 )
 
-var opConfigs = map[OpCode]opConfig{
+var opConfigsExtra = map[OpCode]opConfig{}
+
+var opConfigs = [256]opConfig{
 {{- range $o := $top.Ops}}
 	OpCode{{$o.PascalName}}: {
 		Name: "{{$o.DisplayName}}",
