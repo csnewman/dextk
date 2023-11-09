@@ -148,7 +148,7 @@ func (n ArrayLenOpNode) RawOp() Op {
 }
 
 func (n ArrayLenOpNode) String() string {
-	return fmt.Sprintf("%v ref=%v dst=%v type=%v", n.Raw.Code(), n.Ref, n.Dst)
+	return fmt.Sprintf("%v ref=%v dst=%v", n.Raw.Code(), n.Ref, n.Dst)
 }
 
 type NewInstanceOpNode struct {
