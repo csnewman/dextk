@@ -4,6 +4,12 @@ import (
 	"io"
 )
 
+const (
+	cacheShift = 12
+	cacheSize  = 1 << cacheShift
+	cacheMask  = cacheSize - 1
+)
+
 type cachedReader struct {
 	slots   int
 	store   []byte
@@ -13,7 +19,7 @@ type cachedReader struct {
 }
 
 func newCachedReader(r io.ReaderAt, slots int) *cachedReader {
-	store := make([]byte, 4096*slots)
+	store := make([]byte, cacheSize*slots)
 	mappings := make([]int64, slots)
 	lengths := make([]int, slots)
 
@@ -35,8 +41,8 @@ func (r *cachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
 	cur := 0
 
 	for remaining > 0 {
-		chunk := pos >> 12
-		inner := int(pos & 0xFFF)
+		chunk := pos >> cacheShift
+		inner := int(pos & cacheMask)
 
 		data, err := r.getChunk(chunk)
 		if err != nil {
@@ -54,7 +60,7 @@ func (r *cachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
 		cur += rsize
 		pos += int64(rsize)
 
-		if remaining > 0 && rsize != 4096-inner {
+		if remaining > 0 && rsize != cacheSize-inner {
 			return len(tgt) - remaining, io.EOF
 		}
 	}
@@ -69,8 +75,8 @@ func (r *cachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
 func (r *cachedReader) getChunk(chunk int64) ([]byte, error) {
 	slot := chunk % int64(r.slots)
 
-	slotStart := int(slot << 12)
-	slotEnd := slotStart + 4096
+	slotStart := int(slot << cacheShift)
+	slotEnd := slotStart + cacheSize
 
 	if r.mapping[slot] == chunk {
 		l := r.lengths[slot]
@@ -80,7 +86,7 @@ func (r *cachedReader) getChunk(chunk int64) ([]byte, error) {
 
 	data := r.store[slotStart:slotEnd]
 
-	size, err := r.r.ReadAt(data, chunk<<12)
+	size, err := r.r.ReadAt(data, chunk<<cacheShift)
 	if err != nil && err != io.EOF {
 		return nil, err
 	}
