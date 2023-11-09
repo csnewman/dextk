@@ -47,7 +47,7 @@ func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
 
 		// Ensure there is a next character
 		if res.ArrayLength == l {
-			return res, ErrBadTypeDesc
+			return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 		}
 	}
 
@@ -57,18 +57,18 @@ func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
 	if res.Type != 'L' {
 		// Only a single character should appear if not a string
 		if res.ArrayLength+1 != l {
-			return res, ErrBadTypeDesc
+			return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 		}
 
 		return res, nil
 	}
 
 	if value[l-1] != ';' {
-		return res, ErrBadTypeDesc
+		return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 	}
 
 	if l-2-res.ArrayLength <= 0 {
-		return res, ErrBadTypeDesc
+		return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 	}
 
 	res.ClassName = value[1+res.ArrayLength : l-1]

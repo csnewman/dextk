@@ -5,11 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
+
+	"github.com/anders/jutf"
 )
 
 var (
 	ErrInvalidHeader           = errors.New("invalid header")
 	ErrInvalidStringID         = errors.New("invalid string id")
+	ErrNoStringEnd             = errors.New("failed to find terminating byte")
 	ErrInvalidTypeID           = errors.New("invalid type id")
 	ErrInvalidProtoID          = errors.New("invalid proto id")
 	ErrInvalidFieldID          = errors.New("invalid field id")
@@ -115,14 +118,39 @@ func (r *Reader) ReadString(id uint32) (string, error) {
 		return "", err
 	}
 
-	data := make([]byte, strSize)
+	if strSize == 0 {
+		return "", nil
+	}
 
-	_, err = r.file.ReadAt(data, int64(strPos+n))
-	if err != nil {
+	// mutf-8 encodes upto 3 bytes per char
+	data := make([]byte, strSize*3+1)
+
+	rsize, err := r.file.ReadAt(data, int64(strPos+n))
+	if err != nil && err != io.EOF {
 		return "", err
 	}
 
-	return string(data), nil
+	// Find the null terminating byte
+	pos := 0
+
+	for pos < rsize {
+		if data[pos] == 0 {
+			break
+		}
+
+		pos++
+	}
+
+	if pos == rsize {
+		return "", ErrNoStringEnd
+	}
+
+	str, err := jutf.Decode(data[:pos])
+	if err != nil {
+		return "", fmt.Errorf("mutf8-8 decode failed: %w", err)
+	}
+
+	return str, nil
 }
 
 type Type struct {
