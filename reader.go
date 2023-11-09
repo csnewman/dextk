@@ -48,7 +48,9 @@ type Reader struct {
 	classDefOff   uint32
 }
 
-func Read(file io.ReaderAt) (*Reader, error) {
+func Read(reader io.ReaderAt, cacheSlots int) (*Reader, error) {
+	file := newCachedReader(reader, cacheSlots)
+
 	header := make([]byte, 112)
 
 	_, err := file.ReadAt(header[0:40], 0)
