@@ -5,8 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-
-	"github.com/anders/jutf"
 )
 
 var (
@@ -147,7 +145,7 @@ func (r *Reader) ReadString(id uint32) (string, error) {
 		return "", ErrNoStringEnd
 	}
 
-	str, err := jutf.Decode(data[:pos])
+	str, err := MUTF8Decode(data[:pos], int(strSize))
 	if err != nil {
 		return "", fmt.Errorf("mutf8-8 decode failed: %w", err)
 	}

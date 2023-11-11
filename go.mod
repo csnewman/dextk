@@ -3,7 +3,6 @@ module github.com/csnewman/dextk
 go 1.21
 
 require (
-	github.com/anders/jutf v0.0.0-20200704004632-cd98ac92ec31
 	github.com/iancoleman/strcase v0.3.0
 	github.com/stretchr/testify v1.8.4
 )

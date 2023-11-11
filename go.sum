@@ -1,5 +1,3 @@
-github.com/anders/jutf v0.0.0-20200704004632-cd98ac92ec31 h1:WIgrklGgz+ow5tG8M8JoC+kfxIXUclDH8xMcJn1ELsw=
-github.com/anders/jutf v0.0.0-20200704004632-cd98ac92ec31/go.mod h1:PmeWaBCuAVejCUrFg3dpoaNdGr3eF7lDo09kcwD6HKA=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/iancoleman/strcase v0.3.0 h1:nTXanmYxhfFAMjZL34Ov6gkzEsSJZ5DbhxWjvSASxEI=
