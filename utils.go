@@ -7,6 +7,7 @@ import (
 	"io"
 	"math"
 	"unicode/utf16"
+	"unicode/utf8"
 )
 
 const reNotImpl = "reverse endian not implemented"
@@ -90,6 +91,10 @@ func (r *Reader) readUleb128(pos uint32) (uint32, uint32, error) {
 var ErrMUTF8 = errors.New("invalid encoding")
 
 func MUTF8Decode(d []byte, expectedSize int) (string, error) {
+	if utf8.Valid(d) {
+		return string(d), nil
+	}
+
 	inLen := len(d)
 	buf := make([]uint16, 0, expectedSize)
 
