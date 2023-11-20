@@ -10,7 +10,7 @@ const (
 	cacheMask  = cacheSize - 1
 )
 
-type CachedReader struct {
+type cachedReader struct {
 	slots   int
 	store   []byte
 	mapping []int64
@@ -18,7 +18,7 @@ type CachedReader struct {
 	r       io.ReaderAt
 }
 
-func NewCachedReader(r io.ReaderAt, slots int) *CachedReader {
+func newCachedReader(r io.ReaderAt, slots int) *cachedReader {
 	store := make([]byte, cacheSize*slots)
 	mappings := make([]int64, slots)
 	lengths := make([]int, slots)
@@ -27,7 +27,7 @@ func NewCachedReader(r io.ReaderAt, slots int) *CachedReader {
 		mappings[i] = -1
 	}
 
-	return &CachedReader{
+	return &cachedReader{
 		slots,
 		store,
 		mappings,
@@ -36,7 +36,7 @@ func NewCachedReader(r io.ReaderAt, slots int) *CachedReader {
 	}
 }
 
-func (r *CachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
+func (r *cachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
 	remaining := len(tgt)
 	cur := 0
 
@@ -72,7 +72,7 @@ func (r *CachedReader) ReadAt(tgt []byte, pos int64) (int, error) {
 	return len(tgt), nil
 }
 
-func (r *CachedReader) getChunk(chunk int64) ([]byte, error) {
+func (r *cachedReader) getChunk(chunk int64) ([]byte, error) {
 	slot := chunk % int64(r.slots)
 
 	slotStart := int(slot << cacheShift)
