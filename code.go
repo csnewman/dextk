@@ -877,12 +877,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			tgt := pos + int(int8(data.A))
 			if tgt < 0 || tgt >= len(idMap) {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto jump offset %v", ErrBadOp, tgt)
 			}
 
 			id := idMap[tgt]
 			if id == 0 && tgt != 0 {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto jump offset %v", ErrBadOp, tgt)
 			}
 
 			parsed = GotoOpNode{
@@ -894,12 +894,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			tgt := pos + int(int16(data.A))
 			if tgt < 0 || tgt >= len(idMap) {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto16 jump offset %v", ErrBadOp, tgt)
 			}
 
 			id := idMap[tgt]
 			if id == 0 && tgt != 0 {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto16 jump offset %v", ErrBadOp, tgt)
 			}
 
 			parsed = GotoOpNode{
@@ -911,12 +911,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			tgt := pos + int(int32(data.A))
 			if tgt < 0 || tgt >= len(idMap) {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto32 jump offset %v", ErrBadOp, tgt)
 			}
 
 			id := idMap[tgt]
 			if id == 0 && tgt != 0 {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid goto32 jump offset %v", ErrBadOp, tgt)
 			}
 
 			parsed = GotoOpNode{
@@ -1007,12 +1007,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			tgt := pos + int(int16(data.C))
 			if tgt < 0 || tgt >= len(idMap) {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid if jump offset %v", ErrBadOp, tgt)
 			}
 
 			id := idMap[tgt]
 			if id == 0 && tgt != 0 {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid if jump offset %v", ErrBadOp, tgt)
 			}
 
 			parsed = IfTestOpNode{
@@ -1026,12 +1026,12 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 			tgt := pos + int(int16(data.B))
 			if tgt < 0 || tgt >= len(idMap) {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid ifz jump offset %v", ErrBadOp, tgt)
 			}
 
 			id := idMap[tgt]
 			if id == 0 && tgt != 0 {
-				return res, fmt.Errorf("%w: invalid jump offset %v", ErrBadOp, tgt)
+				return res, fmt.Errorf("%w: invalid ifz jump offset %v", ErrBadOp, tgt)
 			}
 
 			parsed = IfTestOpNode{
