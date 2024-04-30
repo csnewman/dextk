@@ -1,11 +1,11 @@
 module github.com/csnewman/dextk
 
-go 1.21
+go 1.22
 
 require (
 	github.com/iancoleman/strcase v0.3.0
-	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 )
 
 require (
