@@ -135,6 +135,8 @@ func (r *Reader) ReadClassAndParse(id uint32) (ClassNode, error) {
 		return res, fmt.Errorf("%w: %w", ErrBadClass, err)
 	}
 
+	res.AccessFlags = def.AccessFlags
+
 	// Read class name
 	{
 		parsedDesc, err := r.ReadTypeAndParse(def.ClassTypeID)
