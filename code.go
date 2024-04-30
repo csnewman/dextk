@@ -466,7 +466,7 @@ func (r *Reader) ReadCodeAndParse(off uint32) (CodeNode, error) {
 
 	c, err := r.ReadCode(off)
 	if err != nil {
-		return res, nil
+		return res, err
 	}
 
 	res.RegisterCount = c.RegisterCount
