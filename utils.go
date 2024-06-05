@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"unicode/utf16"
-	"unicode/utf8"
 )
 
 const reNotImpl = "reverse endian not implemented"
@@ -90,42 +88,36 @@ func (r *Reader) readUleb128(pos uint32) (uint32, uint32, error) {
 
 var ErrMUTF8 = errors.New("invalid encoding")
 
-func MUTF8Decode(d []byte, expectedSize int) (string, error) {
-	if utf8.Valid(d) {
-		return string(d), nil
-	}
-
+func MUTF8Decode(d []byte, expectedSize int) (String, error) {
 	inLen := len(d)
 	buf := make([]uint16, 0, expectedSize)
 
 	for i := 0; i < inLen; {
 		if d[i] == 0 {
-			return "", fmt.Errorf("%w: null unexpected", ErrMUTF8)
+			return String{}, fmt.Errorf("%w: null unexpected", ErrMUTF8)
 		} else if d[i] < 0x80 {
 			buf = append(buf, uint16(d[i]))
 			i++
 		} else if d[i]&0xE0 == 0xC0 {
 			if i+1 >= inLen {
-				return "", fmt.Errorf("%w: bytes missing", ErrMUTF8)
+				return String{}, fmt.Errorf("%w: bytes missing", ErrMUTF8)
 			}
 
 			buf = append(buf, ((uint16(d[i])&0x1F)<<6)|(uint16(d[i+1])&0x3F))
 			i += 2
 		} else if d[i]&0xF0 == 0xE0 {
 			if i+2 >= inLen {
-				return "", fmt.Errorf("%w: bytes missing", ErrMUTF8)
+				return String{}, fmt.Errorf("%w: bytes missing", ErrMUTF8)
 			}
 
 			buf = append(buf, ((uint16(d[i])&0x0F)<<12)|((uint16(d[i+1])&0x3F)<<6)|(uint16(d[i+2])&0x3F))
 			i += 3
 		} else {
-			return "", fmt.Errorf("%w: unexpected byte", ErrMUTF8)
+			return String{}, fmt.Errorf("%w: unexpected byte", ErrMUTF8)
 		}
 	}
 
-	runes := utf16.Decode(buf)
-
-	return string(runes), nil
+	return StringFromUTF16(buf), nil
 }
 
 func (r *Reader) readSleb128(pos uint32) (int32, uint32, error) {

@@ -17,7 +17,7 @@ type StringIter struct {
 
 type StringNode struct {
 	Id    uint32
-	Value string
+	Value String
 }
 
 func (r *Reader) StringIter() *StringIter {
@@ -62,11 +62,11 @@ type ClassIter struct {
 
 type ClassNode struct {
 	Id          uint32
-	Name        string
+	Name        String
 	AccessFlags uint32
-	SuperClass  string
-	Interfaces  []string
-	SourceFile  string
+	SuperClass  String
+	Interfaces  []String
+	SourceFile  String
 
 	StaticFields   []FieldNode
 	InstanceFields []FieldNode
@@ -78,14 +78,14 @@ type FieldNode struct {
 	Id          uint32
 	AccessFlags uint32
 	Type        TypeDescriptor
-	Name        string
+	Name        String
 }
 
 type MethodNode struct {
 	Id          uint32
 	AccessFlags uint32
-	Name        string
-	Shorty      string
+	Name        String
+	Shorty      String
 	ReturnType  TypeDescriptor
 	Params      []TypeDescriptor
 	CodeOff     uint32
@@ -172,7 +172,7 @@ func (r *Reader) ReadClassAndParse(id uint32) (ClassNode, error) {
 			return res, fmt.Errorf("%w: bad interface list: %w", ErrBadClass, err)
 		}
 
-		res.Interfaces = make([]string, len(list.TypeIds))
+		res.Interfaces = make([]String, len(list.TypeIds))
 
 		for p, id := range list.TypeIds {
 			parsedDesc, err := r.ReadTypeAndParse(uint32(id))

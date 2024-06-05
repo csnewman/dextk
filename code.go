@@ -154,7 +154,7 @@ func (n ArrayLenOpNode) String() string {
 type NewInstanceOpNode struct {
 	Raw  Op
 	Dst  uint8
-	Type string
+	Type String
 }
 
 func (n NewInstanceOpNode) RawOp() Op {

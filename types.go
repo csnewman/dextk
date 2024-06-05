@@ -30,19 +30,19 @@ func (r *Reader) ReadTypeAndParse(id uint32) (TypeDescriptor, error) {
 type TypeDescriptor struct {
 	Type        uint8
 	ArrayLength int
-	ClassName   string
+	ClassName   String
 }
 
-func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
+func ParseTypeDescriptor(value String) (TypeDescriptor, error) {
 	var res TypeDescriptor
 
-	l := len(value)
+	l := len(value.Raw)
 
 	if l == 0 {
 		return res, ErrEmptyTypeDesc
 	}
 
-	for value[res.ArrayLength] == '[' {
+	for value.Raw[res.ArrayLength] == '[' {
 		res.ArrayLength++
 
 		// Ensure there is a next character
@@ -51,7 +51,7 @@ func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
 		}
 	}
 
-	res.Type = value[res.ArrayLength]
+	res.Type = uint8(value.Raw[res.ArrayLength])
 
 	// Check if a string
 	if res.Type != 'L' {
@@ -63,7 +63,7 @@ func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
 		return res, nil
 	}
 
-	if value[l-1] != ';' {
+	if value.Raw[l-1] != ';' {
 		return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 	}
 
@@ -71,7 +71,7 @@ func ParseTypeDescriptor(value string) (TypeDescriptor, error) {
 		return res, fmt.Errorf("%w: %v", ErrBadTypeDesc, value)
 	}
 
-	res.ClassName = value[1+res.ArrayLength : l-1]
+	res.ClassName = StringFromUTF16(value.Raw[1+res.ArrayLength : l-1])
 
 	return res, nil
 }

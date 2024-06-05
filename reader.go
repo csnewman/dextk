@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"unicode/utf16"
 )
 
 var (
@@ -109,25 +110,41 @@ func Read(file io.ReaderAt, opts ...Opt) (*Reader, error) {
 	return r, nil
 }
 
-func (r *Reader) ReadString(id uint32) (string, error) {
+type String struct {
+	Raw    []uint16
+	Parsed string
+}
+
+func StringFromUTF16(points []uint16) String {
+	return String{
+		Raw:    points,
+		Parsed: string(utf16.Decode(points)),
+	}
+}
+
+func (s String) String() string {
+	return s.Parsed
+}
+
+func (r *Reader) ReadString(id uint32) (String, error) {
 	if id >= r.StringIDCount {
-		return "", ErrInvalidStringID
+		return String{}, ErrInvalidStringID
 	}
 
 	idPos := r.stringIDOff + (id * 4)
 
 	strPos, err := r.readUint(idPos)
 	if err != nil {
-		return "", err
+		return String{}, err
 	}
 
 	strSize, n, err := r.readUleb128(strPos)
 	if err != nil {
-		return "", err
+		return String{}, err
 	}
 
 	if strSize == 0 {
-		return "", nil
+		return String{}, nil
 	}
 
 	// mutf-8 encodes upto 3 bytes per char
@@ -135,7 +152,7 @@ func (r *Reader) ReadString(id uint32) (string, error) {
 
 	rsize, err := r.file.ReadAt(data, int64(strPos+n))
 	if err != nil && err != io.EOF {
-		return "", err
+		return String{}, err
 	}
 
 	// Find the null terminating byte
@@ -150,12 +167,12 @@ func (r *Reader) ReadString(id uint32) (string, error) {
 	}
 
 	if pos == rsize {
-		return "", ErrNoStringEnd
+		return String{}, ErrNoStringEnd
 	}
 
 	str, err := MUTF8Decode(data[:pos], int(strSize))
 	if err != nil {
-		return "", fmt.Errorf("mutf8-8 decode failed: %w", err)
+		return String{}, fmt.Errorf("mutf8-8 decode failed: %w", err)
 	}
 
 	return str, nil
@@ -228,9 +245,9 @@ type Field struct {
 }
 
 type FieldRef struct {
-	Class string
+	Class String
 	Type  TypeDescriptor
-	Name  string
+	Name  String
 }
 
 func (r FieldRef) String() string {
@@ -306,9 +323,9 @@ type Method struct {
 }
 
 type MethodRef struct {
-	Class      string
-	Name       string
-	Shorty     string
+	Class      String
+	Name       String
+	Shorty     String
 	ReturnType TypeDescriptor
 	Params     []TypeDescriptor
 }
