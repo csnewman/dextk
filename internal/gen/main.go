@@ -62,9 +62,11 @@ const (
 
 var opConfigsExtra = map[OpCode]opConfig{}
 
-var opConfigs = [256]opConfig{
+var opConfigs = [256]opConfig{}
+
+func init() {
 {{- range $o := $top.Ops}}
-	OpCode{{$o.PascalName}}: {
+	opConfigs[OpCode{{$o.PascalName}}] = opConfig{
 		Name: "{{$o.DisplayName}}",
 		Size: fmt{{$o.Fmt}}Size,
 		Reader: func(r *OpReader) (Op, error) {
@@ -75,12 +77,12 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return Op{{$o.PascalName}} {
+			return Op{{$o.PascalName}}{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
+	}
 {{- end}}
 }
 {{range $o := $top.Ops}}

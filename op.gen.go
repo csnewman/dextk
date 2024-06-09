@@ -231,8 +231,10 @@ const (
 
 var opConfigsExtra = map[OpCode]opConfig{}
 
-var opConfigs = [256]opConfig{
-	OpCodeNop: {
+var opConfigs = [256]opConfig{}
+
+func init() {
+	opConfigs[OpCodeNop] = opConfig{
 		Name: "nop",
 		Size: fmt10xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -243,13 +245,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNop {
+			return OpNop{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMove: {
+	}
+	opConfigs[OpCodeMove] = opConfig{
 		Name: "move",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -260,13 +262,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMove {
+			return OpMove{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveFrom16: {
+	}
+	opConfigs[OpCodeMoveFrom16] = opConfig{
 		Name: "move/from16",
 		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -277,13 +279,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveFrom16 {
+			return OpMoveFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMove16: {
+	}
+	opConfigs[OpCodeMove16] = opConfig{
 		Name: "move/16",
 		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -294,13 +296,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMove16 {
+			return OpMove16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveWide: {
+	}
+	opConfigs[OpCodeMoveWide] = opConfig{
 		Name: "move-wide",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -311,13 +313,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveWide {
+			return OpMoveWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveWideFrom16: {
+	}
+	opConfigs[OpCodeMoveWideFrom16] = opConfig{
 		Name: "move-wide/from16",
 		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -328,13 +330,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveWideFrom16 {
+			return OpMoveWideFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveWide16: {
+	}
+	opConfigs[OpCodeMoveWide16] = opConfig{
 		Name: "move-wide/16",
 		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -345,13 +347,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveWide16 {
+			return OpMoveWide16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveObject: {
+	}
+	opConfigs[OpCodeMoveObject] = opConfig{
 		Name: "move-object",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -362,13 +364,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveObject {
+			return OpMoveObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveObjectFrom16: {
+	}
+	opConfigs[OpCodeMoveObjectFrom16] = opConfig{
 		Name: "move-object/from16",
 		Size: fmt22xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -379,13 +381,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveObjectFrom16 {
+			return OpMoveObjectFrom16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveObject16: {
+	}
+	opConfigs[OpCodeMoveObject16] = opConfig{
 		Name: "move-object/16",
 		Size: fmt32xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -396,13 +398,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveObject16 {
+			return OpMoveObject16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveResult: {
+	}
+	opConfigs[OpCodeMoveResult] = opConfig{
 		Name: "move-result",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -413,13 +415,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveResult {
+			return OpMoveResult{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveResultWide: {
+	}
+	opConfigs[OpCodeMoveResultWide] = opConfig{
 		Name: "move-result-wide",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -430,13 +432,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveResultWide {
+			return OpMoveResultWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveResultObject: {
+	}
+	opConfigs[OpCodeMoveResultObject] = opConfig{
 		Name: "move-result-object",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -447,13 +449,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveResultObject {
+			return OpMoveResultObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMoveException: {
+	}
+	opConfigs[OpCodeMoveException] = opConfig{
 		Name: "move-exception",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -464,13 +466,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMoveException {
+			return OpMoveException{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeReturnVoid: {
+	}
+	opConfigs[OpCodeReturnVoid] = opConfig{
 		Name: "return-void",
 		Size: fmt10xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -481,13 +483,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpReturnVoid {
+			return OpReturnVoid{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeReturn: {
+	}
+	opConfigs[OpCodeReturn] = opConfig{
 		Name: "return",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -498,13 +500,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpReturn {
+			return OpReturn{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeReturnWide: {
+	}
+	opConfigs[OpCodeReturnWide] = opConfig{
 		Name: "return-wide",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -515,13 +517,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpReturnWide {
+			return OpReturnWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeReturnObject: {
+	}
+	opConfigs[OpCodeReturnObject] = opConfig{
 		Name: "return-object",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -532,13 +534,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpReturnObject {
+			return OpReturnObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConst4: {
+	}
+	opConfigs[OpCodeConst4] = opConfig{
 		Name: "const/4",
 		Size: fmt11nSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -549,13 +551,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConst4 {
+			return OpConst4{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConst16: {
+	}
+	opConfigs[OpCodeConst16] = opConfig{
 		Name: "const/16",
 		Size: fmt21sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -566,13 +568,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConst16 {
+			return OpConst16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConst: {
+	}
+	opConfigs[OpCodeConst] = opConfig{
 		Name: "const",
 		Size: fmt31iSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -583,13 +585,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConst {
+			return OpConst{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstHigh16: {
+	}
+	opConfigs[OpCodeConstHigh16] = opConfig{
 		Name: "const/high16",
 		Size: fmt21hSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -600,13 +602,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstHigh16 {
+			return OpConstHigh16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstWide16: {
+	}
+	opConfigs[OpCodeConstWide16] = opConfig{
 		Name: "const-wide/16",
 		Size: fmt21sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -617,13 +619,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstWide16 {
+			return OpConstWide16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstWide32: {
+	}
+	opConfigs[OpCodeConstWide32] = opConfig{
 		Name: "const-wide/32",
 		Size: fmt31iSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -634,13 +636,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstWide32 {
+			return OpConstWide32{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstWide: {
+	}
+	opConfigs[OpCodeConstWide] = opConfig{
 		Name: "const-wide",
 		Size: fmt51lSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -651,13 +653,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstWide {
+			return OpConstWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstWideHigh16: {
+	}
+	opConfigs[OpCodeConstWideHigh16] = opConfig{
 		Name: "const-wide/high16",
 		Size: fmt21hSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -668,13 +670,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstWideHigh16 {
+			return OpConstWideHigh16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstString: {
+	}
+	opConfigs[OpCodeConstString] = opConfig{
 		Name: "const-string",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -685,13 +687,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstString {
+			return OpConstString{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstStringJumbo: {
+	}
+	opConfigs[OpCodeConstStringJumbo] = opConfig{
 		Name: "const-string/jumbo",
 		Size: fmt31cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -702,13 +704,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstStringJumbo {
+			return OpConstStringJumbo{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstClass: {
+	}
+	opConfigs[OpCodeConstClass] = opConfig{
 		Name: "const-class",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -719,13 +721,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstClass {
+			return OpConstClass{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMonitorEnter: {
+	}
+	opConfigs[OpCodeMonitorEnter] = opConfig{
 		Name: "monitor-enter",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -736,13 +738,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMonitorEnter {
+			return OpMonitorEnter{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMonitorExit: {
+	}
+	opConfigs[OpCodeMonitorExit] = opConfig{
 		Name: "monitor-exit",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -753,13 +755,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMonitorExit {
+			return OpMonitorExit{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCheckCast: {
+	}
+	opConfigs[OpCodeCheckCast] = opConfig{
 		Name: "check-cast",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -770,13 +772,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCheckCast {
+			return OpCheckCast{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInstanceOf: {
+	}
+	opConfigs[OpCodeInstanceOf] = opConfig{
 		Name: "instance-of",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -787,13 +789,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInstanceOf {
+			return OpInstanceOf{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeArrayLength: {
+	}
+	opConfigs[OpCodeArrayLength] = opConfig{
 		Name: "array-length",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -804,13 +806,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpArrayLength {
+			return OpArrayLength{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNewInstance: {
+	}
+	opConfigs[OpCodeNewInstance] = opConfig{
 		Name: "new-instance",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -821,13 +823,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNewInstance {
+			return OpNewInstance{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNewArray: {
+	}
+	opConfigs[OpCodeNewArray] = opConfig{
 		Name: "new-array",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -838,13 +840,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNewArray {
+			return OpNewArray{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFilledNewArray: {
+	}
+	opConfigs[OpCodeFilledNewArray] = opConfig{
 		Name: "filled-new-array",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -855,13 +857,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFilledNewArray {
+			return OpFilledNewArray{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFilledNewArrayRange: {
+	}
+	opConfigs[OpCodeFilledNewArrayRange] = opConfig{
 		Name: "filled-new-array/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -872,13 +874,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFilledNewArrayRange {
+			return OpFilledNewArrayRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFillArrayData: {
+	}
+	opConfigs[OpCodeFillArrayData] = opConfig{
 		Name: "fill-array-data",
 		Size: fmt31tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -889,13 +891,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFillArrayData {
+			return OpFillArrayData{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeThrow: {
+	}
+	opConfigs[OpCodeThrow] = opConfig{
 		Name: "throw",
 		Size: fmt11xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -906,13 +908,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpThrow {
+			return OpThrow{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeGoto: {
+	}
+	opConfigs[OpCodeGoto] = opConfig{
 		Name: "goto",
 		Size: fmt10tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -923,13 +925,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpGoto {
+			return OpGoto{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeGoto16: {
+	}
+	opConfigs[OpCodeGoto16] = opConfig{
 		Name: "goto/16",
 		Size: fmt20tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -940,13 +942,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpGoto16 {
+			return OpGoto16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeGoto32: {
+	}
+	opConfigs[OpCodeGoto32] = opConfig{
 		Name: "goto/32",
 		Size: fmt30tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -957,13 +959,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpGoto32 {
+			return OpGoto32{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodePackedSwitch: {
+	}
+	opConfigs[OpCodePackedSwitch] = opConfig{
 		Name: "packed-switch",
 		Size: fmt31tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -974,13 +976,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpPackedSwitch {
+			return OpPackedSwitch{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSparseSwitch: {
+	}
+	opConfigs[OpCodeSparseSwitch] = opConfig{
 		Name: "sparse-switch",
 		Size: fmt31tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -991,13 +993,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSparseSwitch {
+			return OpSparseSwitch{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCmplFloat: {
+	}
+	opConfigs[OpCodeCmplFloat] = opConfig{
 		Name: "cmpl-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1008,13 +1010,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCmplFloat {
+			return OpCmplFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCmpgFloat: {
+	}
+	opConfigs[OpCodeCmpgFloat] = opConfig{
 		Name: "cmpg-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1025,13 +1027,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCmpgFloat {
+			return OpCmpgFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCmplDouble: {
+	}
+	opConfigs[OpCodeCmplDouble] = opConfig{
 		Name: "cmpl-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1042,13 +1044,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCmplDouble {
+			return OpCmplDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCmpgDouble: {
+	}
+	opConfigs[OpCodeCmpgDouble] = opConfig{
 		Name: "cmpg-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1059,13 +1061,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCmpgDouble {
+			return OpCmpgDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeCmpLong: {
+	}
+	opConfigs[OpCodeCmpLong] = opConfig{
 		Name: "cmp-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1076,13 +1078,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpCmpLong {
+			return OpCmpLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfEq: {
+	}
+	opConfigs[OpCodeIfEq] = opConfig{
 		Name: "if-eq",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1093,13 +1095,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfEq {
+			return OpIfEq{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfNe: {
+	}
+	opConfigs[OpCodeIfNe] = opConfig{
 		Name: "if-ne",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1110,13 +1112,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfNe {
+			return OpIfNe{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfLt: {
+	}
+	opConfigs[OpCodeIfLt] = opConfig{
 		Name: "if-lt",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1127,13 +1129,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfLt {
+			return OpIfLt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfGe: {
+	}
+	opConfigs[OpCodeIfGe] = opConfig{
 		Name: "if-ge",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1144,13 +1146,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfGe {
+			return OpIfGe{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfGt: {
+	}
+	opConfigs[OpCodeIfGt] = opConfig{
 		Name: "if-gt",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1161,13 +1163,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfGt {
+			return OpIfGt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfLe: {
+	}
+	opConfigs[OpCodeIfLe] = opConfig{
 		Name: "if-le",
 		Size: fmt22tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1178,13 +1180,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfLe {
+			return OpIfLe{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfEqz: {
+	}
+	opConfigs[OpCodeIfEqz] = opConfig{
 		Name: "if-eqz",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1195,13 +1197,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfEqz {
+			return OpIfEqz{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfNez: {
+	}
+	opConfigs[OpCodeIfNez] = opConfig{
 		Name: "if-nez",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1212,13 +1214,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfNez {
+			return OpIfNez{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfLtz: {
+	}
+	opConfigs[OpCodeIfLtz] = opConfig{
 		Name: "if-ltz",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1229,13 +1231,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfLtz {
+			return OpIfLtz{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfGez: {
+	}
+	opConfigs[OpCodeIfGez] = opConfig{
 		Name: "if-gez",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1246,13 +1248,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfGez {
+			return OpIfGez{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfGtz: {
+	}
+	opConfigs[OpCodeIfGtz] = opConfig{
 		Name: "if-gtz",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1263,13 +1265,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfGtz {
+			return OpIfGtz{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIfLez: {
+	}
+	opConfigs[OpCodeIfLez] = opConfig{
 		Name: "if-lez",
 		Size: fmt21tSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1280,13 +1282,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIfLez {
+			return OpIfLez{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAget: {
+	}
+	opConfigs[OpCodeAget] = opConfig{
 		Name: "aget",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1297,13 +1299,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAget {
+			return OpAget{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetWide: {
+	}
+	opConfigs[OpCodeAgetWide] = opConfig{
 		Name: "aget-wide",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1314,13 +1316,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetWide {
+			return OpAgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetObject: {
+	}
+	opConfigs[OpCodeAgetObject] = opConfig{
 		Name: "aget-object",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1331,13 +1333,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetObject {
+			return OpAgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetBoolean: {
+	}
+	opConfigs[OpCodeAgetBoolean] = opConfig{
 		Name: "aget-boolean",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1348,13 +1350,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetBoolean {
+			return OpAgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetByte: {
+	}
+	opConfigs[OpCodeAgetByte] = opConfig{
 		Name: "aget-byte",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1365,13 +1367,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetByte {
+			return OpAgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetChar: {
+	}
+	opConfigs[OpCodeAgetChar] = opConfig{
 		Name: "aget-char",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1382,13 +1384,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetChar {
+			return OpAgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAgetShort: {
+	}
+	opConfigs[OpCodeAgetShort] = opConfig{
 		Name: "aget-short",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1399,13 +1401,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAgetShort {
+			return OpAgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAput: {
+	}
+	opConfigs[OpCodeAput] = opConfig{
 		Name: "aput",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1416,13 +1418,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAput {
+			return OpAput{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputWide: {
+	}
+	opConfigs[OpCodeAputWide] = opConfig{
 		Name: "aput-wide",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1433,13 +1435,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputWide {
+			return OpAputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputObject: {
+	}
+	opConfigs[OpCodeAputObject] = opConfig{
 		Name: "aput-object",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1450,13 +1452,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputObject {
+			return OpAputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputBoolean: {
+	}
+	opConfigs[OpCodeAputBoolean] = opConfig{
 		Name: "aput-boolean",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1467,13 +1469,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputBoolean {
+			return OpAputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputByte: {
+	}
+	opConfigs[OpCodeAputByte] = opConfig{
 		Name: "aput-byte",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1484,13 +1486,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputByte {
+			return OpAputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputChar: {
+	}
+	opConfigs[OpCodeAputChar] = opConfig{
 		Name: "aput-char",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1501,13 +1503,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputChar {
+			return OpAputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAputShort: {
+	}
+	opConfigs[OpCodeAputShort] = opConfig{
 		Name: "aput-short",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1518,13 +1520,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAputShort {
+			return OpAputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIget: {
+	}
+	opConfigs[OpCodeIget] = opConfig{
 		Name: "iget",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1535,13 +1537,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIget {
+			return OpIget{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetWide: {
+	}
+	opConfigs[OpCodeIgetWide] = opConfig{
 		Name: "iget-wide",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1552,13 +1554,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetWide {
+			return OpIgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetObject: {
+	}
+	opConfigs[OpCodeIgetObject] = opConfig{
 		Name: "iget-object",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1569,13 +1571,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetObject {
+			return OpIgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetBoolean: {
+	}
+	opConfigs[OpCodeIgetBoolean] = opConfig{
 		Name: "iget-boolean",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1586,13 +1588,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetBoolean {
+			return OpIgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetByte: {
+	}
+	opConfigs[OpCodeIgetByte] = opConfig{
 		Name: "iget-byte",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1603,13 +1605,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetByte {
+			return OpIgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetChar: {
+	}
+	opConfigs[OpCodeIgetChar] = opConfig{
 		Name: "iget-char",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1620,13 +1622,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetChar {
+			return OpIgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIgetShort: {
+	}
+	opConfigs[OpCodeIgetShort] = opConfig{
 		Name: "iget-short",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1637,13 +1639,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIgetShort {
+			return OpIgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIput: {
+	}
+	opConfigs[OpCodeIput] = opConfig{
 		Name: "iput",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1654,13 +1656,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIput {
+			return OpIput{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputWide: {
+	}
+	opConfigs[OpCodeIputWide] = opConfig{
 		Name: "iput-wide",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1671,13 +1673,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputWide {
+			return OpIputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputObject: {
+	}
+	opConfigs[OpCodeIputObject] = opConfig{
 		Name: "iput-object",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1688,13 +1690,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputObject {
+			return OpIputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputBoolean: {
+	}
+	opConfigs[OpCodeIputBoolean] = opConfig{
 		Name: "iput-boolean",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1705,13 +1707,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputBoolean {
+			return OpIputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputByte: {
+	}
+	opConfigs[OpCodeIputByte] = opConfig{
 		Name: "iput-byte",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1722,13 +1724,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputByte {
+			return OpIputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputChar: {
+	}
+	opConfigs[OpCodeIputChar] = opConfig{
 		Name: "iput-char",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1739,13 +1741,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputChar {
+			return OpIputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIputShort: {
+	}
+	opConfigs[OpCodeIputShort] = opConfig{
 		Name: "iput-short",
 		Size: fmt22cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1756,13 +1758,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIputShort {
+			return OpIputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSget: {
+	}
+	opConfigs[OpCodeSget] = opConfig{
 		Name: "sget",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1773,13 +1775,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSget {
+			return OpSget{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetWide: {
+	}
+	opConfigs[OpCodeSgetWide] = opConfig{
 		Name: "sget-wide",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1790,13 +1792,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetWide {
+			return OpSgetWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetObject: {
+	}
+	opConfigs[OpCodeSgetObject] = opConfig{
 		Name: "sget-object",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1807,13 +1809,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetObject {
+			return OpSgetObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetBoolean: {
+	}
+	opConfigs[OpCodeSgetBoolean] = opConfig{
 		Name: "sget-boolean",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1824,13 +1826,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetBoolean {
+			return OpSgetBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetByte: {
+	}
+	opConfigs[OpCodeSgetByte] = opConfig{
 		Name: "sget-byte",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1841,13 +1843,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetByte {
+			return OpSgetByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetChar: {
+	}
+	opConfigs[OpCodeSgetChar] = opConfig{
 		Name: "sget-char",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1858,13 +1860,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetChar {
+			return OpSgetChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSgetShort: {
+	}
+	opConfigs[OpCodeSgetShort] = opConfig{
 		Name: "sget-short",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1875,13 +1877,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSgetShort {
+			return OpSgetShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSput: {
+	}
+	opConfigs[OpCodeSput] = opConfig{
 		Name: "sput",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1892,13 +1894,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSput {
+			return OpSput{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputWide: {
+	}
+	opConfigs[OpCodeSputWide] = opConfig{
 		Name: "sput-wide",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1909,13 +1911,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputWide {
+			return OpSputWide{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputObject: {
+	}
+	opConfigs[OpCodeSputObject] = opConfig{
 		Name: "sput-object",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1926,13 +1928,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputObject {
+			return OpSputObject{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputBoolean: {
+	}
+	opConfigs[OpCodeSputBoolean] = opConfig{
 		Name: "sput-boolean",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1943,13 +1945,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputBoolean {
+			return OpSputBoolean{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputByte: {
+	}
+	opConfigs[OpCodeSputByte] = opConfig{
 		Name: "sput-byte",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1960,13 +1962,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputByte {
+			return OpSputByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputChar: {
+	}
+	opConfigs[OpCodeSputChar] = opConfig{
 		Name: "sput-char",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1977,13 +1979,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputChar {
+			return OpSputChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSputShort: {
+	}
+	opConfigs[OpCodeSputShort] = opConfig{
 		Name: "sput-short",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -1994,13 +1996,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSputShort {
+			return OpSputShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeVirtual: {
+	}
+	opConfigs[OpCodeInvokeVirtual] = opConfig{
 		Name: "invoke-virtual",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2011,13 +2013,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeVirtual {
+			return OpInvokeVirtual{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeSuper: {
+	}
+	opConfigs[OpCodeInvokeSuper] = opConfig{
 		Name: "invoke-super",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2028,13 +2030,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeSuper {
+			return OpInvokeSuper{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeDirect: {
+	}
+	opConfigs[OpCodeInvokeDirect] = opConfig{
 		Name: "invoke-direct",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2045,13 +2047,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeDirect {
+			return OpInvokeDirect{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeStatic: {
+	}
+	opConfigs[OpCodeInvokeStatic] = opConfig{
 		Name: "invoke-static",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2062,13 +2064,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeStatic {
+			return OpInvokeStatic{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeInterface: {
+	}
+	opConfigs[OpCodeInvokeInterface] = opConfig{
 		Name: "invoke-interface",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2079,13 +2081,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeInterface {
+			return OpInvokeInterface{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeVirtualRange: {
+	}
+	opConfigs[OpCodeInvokeVirtualRange] = opConfig{
 		Name: "invoke-virtual/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2096,13 +2098,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeVirtualRange {
+			return OpInvokeVirtualRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeSuperRange: {
+	}
+	opConfigs[OpCodeInvokeSuperRange] = opConfig{
 		Name: "invoke-super/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2113,13 +2115,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeSuperRange {
+			return OpInvokeSuperRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeDirectRange: {
+	}
+	opConfigs[OpCodeInvokeDirectRange] = opConfig{
 		Name: "invoke-direct/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2130,13 +2132,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeDirectRange {
+			return OpInvokeDirectRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeStaticRange: {
+	}
+	opConfigs[OpCodeInvokeStaticRange] = opConfig{
 		Name: "invoke-static/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2147,13 +2149,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeStaticRange {
+			return OpInvokeStaticRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeInterfaceRange: {
+	}
+	opConfigs[OpCodeInvokeInterfaceRange] = opConfig{
 		Name: "invoke-interface/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2164,13 +2166,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeInterfaceRange {
+			return OpInvokeInterfaceRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNegInt: {
+	}
+	opConfigs[OpCodeNegInt] = opConfig{
 		Name: "neg-int",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2181,13 +2183,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNegInt {
+			return OpNegInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNotInt: {
+	}
+	opConfigs[OpCodeNotInt] = opConfig{
 		Name: "not-int",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2198,13 +2200,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNotInt {
+			return OpNotInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNegLong: {
+	}
+	opConfigs[OpCodeNegLong] = opConfig{
 		Name: "neg-long",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2215,13 +2217,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNegLong {
+			return OpNegLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNotLong: {
+	}
+	opConfigs[OpCodeNotLong] = opConfig{
 		Name: "not-long",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2232,13 +2234,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNotLong {
+			return OpNotLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNegFloat: {
+	}
+	opConfigs[OpCodeNegFloat] = opConfig{
 		Name: "neg-float",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2249,13 +2251,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNegFloat {
+			return OpNegFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeNegDouble: {
+	}
+	opConfigs[OpCodeNegDouble] = opConfig{
 		Name: "neg-double",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2266,13 +2268,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpNegDouble {
+			return OpNegDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToLong: {
+	}
+	opConfigs[OpCodeIntToLong] = opConfig{
 		Name: "int-to-long",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2283,13 +2285,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToLong {
+			return OpIntToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToFloat: {
+	}
+	opConfigs[OpCodeIntToFloat] = opConfig{
 		Name: "int-to-float",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2300,13 +2302,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToFloat {
+			return OpIntToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToDouble: {
+	}
+	opConfigs[OpCodeIntToDouble] = opConfig{
 		Name: "int-to-double",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2317,13 +2319,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToDouble {
+			return OpIntToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeLongToInt: {
+	}
+	opConfigs[OpCodeLongToInt] = opConfig{
 		Name: "long-to-int",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2334,13 +2336,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpLongToInt {
+			return OpLongToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeLongToFloat: {
+	}
+	opConfigs[OpCodeLongToFloat] = opConfig{
 		Name: "long-to-float",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2351,13 +2353,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpLongToFloat {
+			return OpLongToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeLongToDouble: {
+	}
+	opConfigs[OpCodeLongToDouble] = opConfig{
 		Name: "long-to-double",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2368,13 +2370,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpLongToDouble {
+			return OpLongToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFloatToInt: {
+	}
+	opConfigs[OpCodeFloatToInt] = opConfig{
 		Name: "float-to-int",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2385,13 +2387,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFloatToInt {
+			return OpFloatToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFloatToLong: {
+	}
+	opConfigs[OpCodeFloatToLong] = opConfig{
 		Name: "float-to-long",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2402,13 +2404,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFloatToLong {
+			return OpFloatToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeFloatToDouble: {
+	}
+	opConfigs[OpCodeFloatToDouble] = opConfig{
 		Name: "float-to-double",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2419,13 +2421,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpFloatToDouble {
+			return OpFloatToDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDoubleToInt: {
+	}
+	opConfigs[OpCodeDoubleToInt] = opConfig{
 		Name: "double-to-int",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2436,13 +2438,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDoubleToInt {
+			return OpDoubleToInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDoubleToLong: {
+	}
+	opConfigs[OpCodeDoubleToLong] = opConfig{
 		Name: "double-to-long",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2453,13 +2455,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDoubleToLong {
+			return OpDoubleToLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDoubleToFloat: {
+	}
+	opConfigs[OpCodeDoubleToFloat] = opConfig{
 		Name: "double-to-float",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2470,13 +2472,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDoubleToFloat {
+			return OpDoubleToFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToByte: {
+	}
+	opConfigs[OpCodeIntToByte] = opConfig{
 		Name: "int-to-byte",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2487,13 +2489,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToByte {
+			return OpIntToByte{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToChar: {
+	}
+	opConfigs[OpCodeIntToChar] = opConfig{
 		Name: "int-to-char",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2504,13 +2506,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToChar {
+			return OpIntToChar{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeIntToShort: {
+	}
+	opConfigs[OpCodeIntToShort] = opConfig{
 		Name: "int-to-short",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2521,13 +2523,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpIntToShort {
+			return OpIntToShort{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddInt: {
+	}
+	opConfigs[OpCodeAddInt] = opConfig{
 		Name: "add-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2538,13 +2540,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddInt {
+			return OpAddInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubInt: {
+	}
+	opConfigs[OpCodeSubInt] = opConfig{
 		Name: "sub-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2555,13 +2557,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubInt {
+			return OpSubInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulInt: {
+	}
+	opConfigs[OpCodeMulInt] = opConfig{
 		Name: "mul-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2572,13 +2574,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulInt {
+			return OpMulInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivInt: {
+	}
+	opConfigs[OpCodeDivInt] = opConfig{
 		Name: "div-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2589,13 +2591,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivInt {
+			return OpDivInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemInt: {
+	}
+	opConfigs[OpCodeRemInt] = opConfig{
 		Name: "rem-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2606,13 +2608,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemInt {
+			return OpRemInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndInt: {
+	}
+	opConfigs[OpCodeAndInt] = opConfig{
 		Name: "and-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2623,13 +2625,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndInt {
+			return OpAndInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrInt: {
+	}
+	opConfigs[OpCodeOrInt] = opConfig{
 		Name: "or-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2640,13 +2642,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrInt {
+			return OpOrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorInt: {
+	}
+	opConfigs[OpCodeXorInt] = opConfig{
 		Name: "xor-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2657,13 +2659,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorInt {
+			return OpXorInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShlInt: {
+	}
+	opConfigs[OpCodeShlInt] = opConfig{
 		Name: "shl-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2674,13 +2676,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShlInt {
+			return OpShlInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShrInt: {
+	}
+	opConfigs[OpCodeShrInt] = opConfig{
 		Name: "shr-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2691,13 +2693,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShrInt {
+			return OpShrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeUshrInt: {
+	}
+	opConfigs[OpCodeUshrInt] = opConfig{
 		Name: "ushr-int",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2708,13 +2710,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpUshrInt {
+			return OpUshrInt{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddLong: {
+	}
+	opConfigs[OpCodeAddLong] = opConfig{
 		Name: "add-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2725,13 +2727,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddLong {
+			return OpAddLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubLong: {
+	}
+	opConfigs[OpCodeSubLong] = opConfig{
 		Name: "sub-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2742,13 +2744,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubLong {
+			return OpSubLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulLong: {
+	}
+	opConfigs[OpCodeMulLong] = opConfig{
 		Name: "mul-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2759,13 +2761,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulLong {
+			return OpMulLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivLong: {
+	}
+	opConfigs[OpCodeDivLong] = opConfig{
 		Name: "div-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2776,13 +2778,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivLong {
+			return OpDivLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemLong: {
+	}
+	opConfigs[OpCodeRemLong] = opConfig{
 		Name: "rem-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2793,13 +2795,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemLong {
+			return OpRemLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndLong: {
+	}
+	opConfigs[OpCodeAndLong] = opConfig{
 		Name: "and-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2810,13 +2812,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndLong {
+			return OpAndLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrLong: {
+	}
+	opConfigs[OpCodeOrLong] = opConfig{
 		Name: "or-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2827,13 +2829,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrLong {
+			return OpOrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorLong: {
+	}
+	opConfigs[OpCodeXorLong] = opConfig{
 		Name: "xor-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2844,13 +2846,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorLong {
+			return OpXorLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShlLong: {
+	}
+	opConfigs[OpCodeShlLong] = opConfig{
 		Name: "shl-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2861,13 +2863,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShlLong {
+			return OpShlLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShrLong: {
+	}
+	opConfigs[OpCodeShrLong] = opConfig{
 		Name: "shr-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2878,13 +2880,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShrLong {
+			return OpShrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeUshrLong: {
+	}
+	opConfigs[OpCodeUshrLong] = opConfig{
 		Name: "ushr-long",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2895,13 +2897,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpUshrLong {
+			return OpUshrLong{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddFloat: {
+	}
+	opConfigs[OpCodeAddFloat] = opConfig{
 		Name: "add-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2912,13 +2914,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddFloat {
+			return OpAddFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubFloat: {
+	}
+	opConfigs[OpCodeSubFloat] = opConfig{
 		Name: "sub-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2929,13 +2931,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubFloat {
+			return OpSubFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulFloat: {
+	}
+	opConfigs[OpCodeMulFloat] = opConfig{
 		Name: "mul-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2946,13 +2948,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulFloat {
+			return OpMulFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivFloat: {
+	}
+	opConfigs[OpCodeDivFloat] = opConfig{
 		Name: "div-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2963,13 +2965,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivFloat {
+			return OpDivFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemFloat: {
+	}
+	opConfigs[OpCodeRemFloat] = opConfig{
 		Name: "rem-float",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2980,13 +2982,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemFloat {
+			return OpRemFloat{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddDouble: {
+	}
+	opConfigs[OpCodeAddDouble] = opConfig{
 		Name: "add-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -2997,13 +2999,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddDouble {
+			return OpAddDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubDouble: {
+	}
+	opConfigs[OpCodeSubDouble] = opConfig{
 		Name: "sub-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3014,13 +3016,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubDouble {
+			return OpSubDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulDouble: {
+	}
+	opConfigs[OpCodeMulDouble] = opConfig{
 		Name: "mul-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3031,13 +3033,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulDouble {
+			return OpMulDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivDouble: {
+	}
+	opConfigs[OpCodeDivDouble] = opConfig{
 		Name: "div-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3048,13 +3050,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivDouble {
+			return OpDivDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemDouble: {
+	}
+	opConfigs[OpCodeRemDouble] = opConfig{
 		Name: "rem-double",
 		Size: fmt23xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3065,13 +3067,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemDouble {
+			return OpRemDouble{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddInt2Addr: {
+	}
+	opConfigs[OpCodeAddInt2Addr] = opConfig{
 		Name: "add-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3082,13 +3084,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddInt2Addr {
+			return OpAddInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubInt2Addr: {
+	}
+	opConfigs[OpCodeSubInt2Addr] = opConfig{
 		Name: "sub-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3099,13 +3101,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubInt2Addr {
+			return OpSubInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulInt2Addr: {
+	}
+	opConfigs[OpCodeMulInt2Addr] = opConfig{
 		Name: "mul-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3116,13 +3118,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulInt2Addr {
+			return OpMulInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivInt2Addr: {
+	}
+	opConfigs[OpCodeDivInt2Addr] = opConfig{
 		Name: "div-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3133,13 +3135,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivInt2Addr {
+			return OpDivInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemInt2Addr: {
+	}
+	opConfigs[OpCodeRemInt2Addr] = opConfig{
 		Name: "rem-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3150,13 +3152,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemInt2Addr {
+			return OpRemInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndInt2Addr: {
+	}
+	opConfigs[OpCodeAndInt2Addr] = opConfig{
 		Name: "and-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3167,13 +3169,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndInt2Addr {
+			return OpAndInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrInt2Addr: {
+	}
+	opConfigs[OpCodeOrInt2Addr] = opConfig{
 		Name: "or-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3184,13 +3186,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrInt2Addr {
+			return OpOrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorInt2Addr: {
+	}
+	opConfigs[OpCodeXorInt2Addr] = opConfig{
 		Name: "xor-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3201,13 +3203,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorInt2Addr {
+			return OpXorInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShlInt2Addr: {
+	}
+	opConfigs[OpCodeShlInt2Addr] = opConfig{
 		Name: "shl-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3218,13 +3220,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShlInt2Addr {
+			return OpShlInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShrInt2Addr: {
+	}
+	opConfigs[OpCodeShrInt2Addr] = opConfig{
 		Name: "shr-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3235,13 +3237,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShrInt2Addr {
+			return OpShrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeUshrInt2Addr: {
+	}
+	opConfigs[OpCodeUshrInt2Addr] = opConfig{
 		Name: "ushr-int/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3252,13 +3254,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpUshrInt2Addr {
+			return OpUshrInt2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddLong2Addr: {
+	}
+	opConfigs[OpCodeAddLong2Addr] = opConfig{
 		Name: "add-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3269,13 +3271,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddLong2Addr {
+			return OpAddLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubLong2Addr: {
+	}
+	opConfigs[OpCodeSubLong2Addr] = opConfig{
 		Name: "sub-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3286,13 +3288,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubLong2Addr {
+			return OpSubLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulLong2Addr: {
+	}
+	opConfigs[OpCodeMulLong2Addr] = opConfig{
 		Name: "mul-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3303,13 +3305,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulLong2Addr {
+			return OpMulLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivLong2Addr: {
+	}
+	opConfigs[OpCodeDivLong2Addr] = opConfig{
 		Name: "div-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3320,13 +3322,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivLong2Addr {
+			return OpDivLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemLong2Addr: {
+	}
+	opConfigs[OpCodeRemLong2Addr] = opConfig{
 		Name: "rem-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3337,13 +3339,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemLong2Addr {
+			return OpRemLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndLong2Addr: {
+	}
+	opConfigs[OpCodeAndLong2Addr] = opConfig{
 		Name: "and-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3354,13 +3356,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndLong2Addr {
+			return OpAndLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrLong2Addr: {
+	}
+	opConfigs[OpCodeOrLong2Addr] = opConfig{
 		Name: "or-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3371,13 +3373,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrLong2Addr {
+			return OpOrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorLong2Addr: {
+	}
+	opConfigs[OpCodeXorLong2Addr] = opConfig{
 		Name: "xor-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3388,13 +3390,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorLong2Addr {
+			return OpXorLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShlLong2Addr: {
+	}
+	opConfigs[OpCodeShlLong2Addr] = opConfig{
 		Name: "shl-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3405,13 +3407,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShlLong2Addr {
+			return OpShlLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShrLong2Addr: {
+	}
+	opConfigs[OpCodeShrLong2Addr] = opConfig{
 		Name: "shr-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3422,13 +3424,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShrLong2Addr {
+			return OpShrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeUshrLong2Addr: {
+	}
+	opConfigs[OpCodeUshrLong2Addr] = opConfig{
 		Name: "ushr-long/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3439,13 +3441,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpUshrLong2Addr {
+			return OpUshrLong2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddFloat2Addr: {
+	}
+	opConfigs[OpCodeAddFloat2Addr] = opConfig{
 		Name: "add-float/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3456,13 +3458,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddFloat2Addr {
+			return OpAddFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubFloat2Addr: {
+	}
+	opConfigs[OpCodeSubFloat2Addr] = opConfig{
 		Name: "sub-float/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3473,13 +3475,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubFloat2Addr {
+			return OpSubFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulFloat2Addr: {
+	}
+	opConfigs[OpCodeMulFloat2Addr] = opConfig{
 		Name: "mul-float/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3490,13 +3492,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulFloat2Addr {
+			return OpMulFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivFloat2Addr: {
+	}
+	opConfigs[OpCodeDivFloat2Addr] = opConfig{
 		Name: "div-float/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3507,13 +3509,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivFloat2Addr {
+			return OpDivFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemFloat2Addr: {
+	}
+	opConfigs[OpCodeRemFloat2Addr] = opConfig{
 		Name: "rem-float/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3524,13 +3526,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemFloat2Addr {
+			return OpRemFloat2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddDouble2Addr: {
+	}
+	opConfigs[OpCodeAddDouble2Addr] = opConfig{
 		Name: "add-double/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3541,13 +3543,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddDouble2Addr {
+			return OpAddDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeSubDouble2Addr: {
+	}
+	opConfigs[OpCodeSubDouble2Addr] = opConfig{
 		Name: "sub-double/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3558,13 +3560,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpSubDouble2Addr {
+			return OpSubDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulDouble2Addr: {
+	}
+	opConfigs[OpCodeMulDouble2Addr] = opConfig{
 		Name: "mul-double/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3575,13 +3577,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulDouble2Addr {
+			return OpMulDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivDouble2Addr: {
+	}
+	opConfigs[OpCodeDivDouble2Addr] = opConfig{
 		Name: "div-double/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3592,13 +3594,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivDouble2Addr {
+			return OpDivDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemDouble2Addr: {
+	}
+	opConfigs[OpCodeRemDouble2Addr] = opConfig{
 		Name: "rem-double/2addr",
 		Size: fmt12xSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3609,13 +3611,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemDouble2Addr {
+			return OpRemDouble2Addr{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddIntLit16: {
+	}
+	opConfigs[OpCodeAddIntLit16] = opConfig{
 		Name: "add-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3626,13 +3628,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddIntLit16 {
+			return OpAddIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRsubIntLit16: {
+	}
+	opConfigs[OpCodeRsubIntLit16] = opConfig{
 		Name: "rsub-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3643,13 +3645,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRsubIntLit16 {
+			return OpRsubIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulIntLit16: {
+	}
+	opConfigs[OpCodeMulIntLit16] = opConfig{
 		Name: "mul-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3660,13 +3662,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulIntLit16 {
+			return OpMulIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivIntLit16: {
+	}
+	opConfigs[OpCodeDivIntLit16] = opConfig{
 		Name: "div-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3677,13 +3679,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivIntLit16 {
+			return OpDivIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemIntLit16: {
+	}
+	opConfigs[OpCodeRemIntLit16] = opConfig{
 		Name: "rem-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3694,13 +3696,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemIntLit16 {
+			return OpRemIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndIntLit16: {
+	}
+	opConfigs[OpCodeAndIntLit16] = opConfig{
 		Name: "and-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3711,13 +3713,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndIntLit16 {
+			return OpAndIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrIntLit16: {
+	}
+	opConfigs[OpCodeOrIntLit16] = opConfig{
 		Name: "or-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3728,13 +3730,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrIntLit16 {
+			return OpOrIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorIntLit16: {
+	}
+	opConfigs[OpCodeXorIntLit16] = opConfig{
 		Name: "xor-int/lit16",
 		Size: fmt22sSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3745,13 +3747,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorIntLit16 {
+			return OpXorIntLit16{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAddIntLit8: {
+	}
+	opConfigs[OpCodeAddIntLit8] = opConfig{
 		Name: "add-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3762,13 +3764,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAddIntLit8 {
+			return OpAddIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRsubIntLit8: {
+	}
+	opConfigs[OpCodeRsubIntLit8] = opConfig{
 		Name: "rsub-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3779,13 +3781,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRsubIntLit8 {
+			return OpRsubIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeMulIntLit8: {
+	}
+	opConfigs[OpCodeMulIntLit8] = opConfig{
 		Name: "mul-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3796,13 +3798,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpMulIntLit8 {
+			return OpMulIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeDivIntLit8: {
+	}
+	opConfigs[OpCodeDivIntLit8] = opConfig{
 		Name: "div-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3813,13 +3815,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpDivIntLit8 {
+			return OpDivIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeRemIntLit8: {
+	}
+	opConfigs[OpCodeRemIntLit8] = opConfig{
 		Name: "rem-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3830,13 +3832,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpRemIntLit8 {
+			return OpRemIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeAndIntLit8: {
+	}
+	opConfigs[OpCodeAndIntLit8] = opConfig{
 		Name: "and-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3847,13 +3849,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpAndIntLit8 {
+			return OpAndIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeOrIntLit8: {
+	}
+	opConfigs[OpCodeOrIntLit8] = opConfig{
 		Name: "or-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3864,13 +3866,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpOrIntLit8 {
+			return OpOrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeXorIntLit8: {
+	}
+	opConfigs[OpCodeXorIntLit8] = opConfig{
 		Name: "xor-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3881,13 +3883,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpXorIntLit8 {
+			return OpXorIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShlIntLit8: {
+	}
+	opConfigs[OpCodeShlIntLit8] = opConfig{
 		Name: "shl-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3898,13 +3900,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShlIntLit8 {
+			return OpShlIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeShrIntLit8: {
+	}
+	opConfigs[OpCodeShrIntLit8] = opConfig{
 		Name: "shr-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3915,13 +3917,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpShrIntLit8 {
+			return OpShrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeUshrIntLit8: {
+	}
+	opConfigs[OpCodeUshrIntLit8] = opConfig{
 		Name: "ushr-int/lit8",
 		Size: fmt22bSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3932,13 +3934,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpUshrIntLit8 {
+			return OpUshrIntLit8{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokePolymorphic: {
+	}
+	opConfigs[OpCodeInvokePolymorphic] = opConfig{
 		Name: "invoke-polymorphic",
 		Size: fmt45ccSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3949,13 +3951,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokePolymorphic {
+			return OpInvokePolymorphic{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokePolymorphicRange: {
+	}
+	opConfigs[OpCodeInvokePolymorphicRange] = opConfig{
 		Name: "invoke-polymorphic/range",
 		Size: fmt4rccSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3966,13 +3968,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokePolymorphicRange {
+			return OpInvokePolymorphicRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeCustom: {
+	}
+	opConfigs[OpCodeInvokeCustom] = opConfig{
 		Name: "invoke-custom",
 		Size: fmt35cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -3983,13 +3985,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeCustom {
+			return OpInvokeCustom{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeInvokeCustomRange: {
+	}
+	opConfigs[OpCodeInvokeCustomRange] = opConfig{
 		Name: "invoke-custom/range",
 		Size: fmt3rcSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -4000,13 +4002,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpInvokeCustomRange {
+			return OpInvokeCustomRange{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstMethodHandle: {
+	}
+	opConfigs[OpCodeConstMethodHandle] = opConfig{
 		Name: "const-method-handle",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -4017,13 +4019,13 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstMethodHandle {
+			return OpConstMethodHandle{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
-	OpCodeConstMethodType: {
+	}
+	opConfigs[OpCodeConstMethodType] = opConfig{
 		Name: "const-method-type",
 		Size: fmt21cSize,
 		Reader: func(r *OpReader) (Op, error) {
@@ -4034,12 +4036,12 @@ var opConfigs = [256]opConfig{
 				return nil, err
 			}
 
-			return OpConstMethodType {
+			return OpConstMethodType{
 				opBase{pos: pos},
 				f,
 			}, nil
 		},
-	},
+	}
 }
 
 type OpNop struct {
